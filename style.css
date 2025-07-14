@@ -418,6 +418,30 @@ img.brand:hover{
 opacity: 1;
 }
 
+/* Brand Collection/Partners Section */
+#brand-collection {
+  background-color: #f9f9f9;
+}
+
+#brand-collection .brand {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+#brand-collection .brand:hover {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  #brand-collection .brand {
+    max-width: 80px;
+  }
+}
 
 /*---- video section style ----*/
 /* color box style */
