@@ -13,7 +13,26 @@
     });
   }
 
-
+// Brand/Partner Carousel
+var brandSwiper = new Swiper("#brand-collection .swiper", {
+  slidesPerView: 2,
+  spaceBetween: 20,
+  autoplay: {
+    delay: 2500,
+    disableOnInteraction: false,
+  },
+  breakpoints: {
+    640: {
+      slidesPerView: 3,
+    },
+    768: {
+      slidesPerView: 4,
+    },
+    1024: {
+      slidesPerView: 5,
+    },
+  },
+});
   // background color when scroll 
   var initScrollNav = function () {
     var scroll = $(window).scrollTop();
