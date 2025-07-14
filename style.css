@@ -421,6 +421,17 @@ opacity: 1;
 /* Brand Collection/Partners Section */
 #brand-collection {
   background-color: #f9f9f9;
+    padding: 25px 0;
+}
+
+.brandSwiper {
+  padding: 10px 0;
+}
+
+.brandSwiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #brand-collection .brand {
@@ -430,6 +441,7 @@ opacity: 1;
   filter: grayscale(100%);
   opacity: 0.7;
   transition: all 0.3s ease;
+    padding: 0 15px; 
 }
 
 #brand-collection .brand:hover {
@@ -507,7 +519,7 @@ div#cboxOverlay {
 /*---- footer section style ----*/
 #footer {
   background-color: #f5f5f5;
-    padding: 3rem 0;
+    padding: 25px 0;
 }
 
 .footer-menu .menu-list {
