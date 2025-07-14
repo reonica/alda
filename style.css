@@ -340,18 +340,25 @@ a {
 
 
 /* nav bar style  */
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link.show {
-  color: var(--bs-navbar-active-color);
+.main-menu {
+  background-color: transparent;
+}
+
+.navbar.fixed-top {
+  transition: all 0.3s ease;
+}
+
+.navbar.fixed-top.bg-scrolled {
+  background-color: #ededed !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link {
-  color: #000;
+  color: #191919 !important;
   font-size: 0.875rem;
   font-weight: 900;
   text-transform: uppercase;
 }
-
 
 /* hero section style */
 .banner-text {
