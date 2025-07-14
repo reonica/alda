@@ -61,7 +61,7 @@ CSS STRUCTURE:
 
 /* Theme Colors */
 :root {
-  --accent-color: #CECCFF;
+  --accent-color: #191919;
   --dark-color: #222222;
   --light-dark-color: #727272;
   --light-color: #fff;
@@ -98,8 +98,8 @@ body {
   --bs-body-line-height: 2;
   --bs-body-color: #222222;
 
-  --bs-primary: #CECCFF;
-  --bs-primary-rgb: 206, 204, 255;
+  --bs-primary: #191919;
+  --bs-primary-rgb: 25, 25, 25;
 
   --bs-primary-bg-subtle: #FFF9EB;
   --bs-border-color: #F7F7F7;
@@ -122,15 +122,15 @@ body {
   padding: 1.2rem 3rem;
   transition: all 0.3s ease-in;
   --bs-btn-color: #222222;
-  --bs-btn-bg: #CECCFF;
-  --bs-btn-border-color: #CECCFF;
+  --bs-btn-bg: #191919;
+  --bs-btn-border-color: #191919;
   --bs-btn-hover-color: #222222;
   --bs-btn-hover-bg: #bebcfa;
   --bs-btn-hover-border-color: #bebcfa;
   --bs-btn-focus-shadow-rgb: 49, 132, 253;
   --bs-btn-active-color: #222222;
-  --bs-btn-active-bg: #CECCFF;
-  --bs-btn-active-border-color: #CECCFF;
+  --bs-btn-active-bg: #191919;
+  --bs-btn-active-border-color: #191919;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #222222;
   --bs-btn-disabled-bg: #d3d7dd;
