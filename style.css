@@ -481,18 +481,18 @@ div#cboxOverlay {
 
 
 /*---- footer section style ----*/
-#footer{
-  background-color: #332E54;
+#footer {
+  background-color: #f5f5f5;
 }
 
 .form-control {
   font-size: 1rem;
-  color: #908F8D;
+  color: #191919;
   line-height: normal;
   letter-spacing: 0.02125rem;
   text-transform: capitalize;
   border-radius: 0.25rem;
-  border: 1px solid rgba(65, 64, 62, 0.20);
+  border: 1px solid rgba(25, 25, 25, 0.2);
   background: #FFF;
   display: flex;
   padding: 1.25rem 0rem 1.25rem 1.25rem;
@@ -502,31 +502,31 @@ div#cboxOverlay {
 }
 
 .form-control:focus {
-  border-color: #41403E;
+  border-color: #191919;
   box-shadow: none;
 }
 
-
 /* footer style */
 a.footer-link {
-  color: #A1A1A1;
+  color: #191919;
   font-size: 1.0625rem;
   text-transform: uppercase;
 }
 
 a.footer-link:hover {
-  color: var(--light-color);
+  color: #333333;
 }
 
-iconify-icon.social-icon{
-  color: #A1A1A1;
-}
-iconify-icon.social-icon:hover{
-  color: var(--light-color);
+.social-icon {
+  color: #191919;
 }
 
-p.footer-para{
-  color: #A1A1A1;
+.social-icon:hover {
+  color: #333333;
+}
+
+p.footer-para {
+  color: #191919;
 }
 
 
