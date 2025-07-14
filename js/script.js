@@ -1,57 +1,29 @@
 (function ($) {
-
   "use strict";
 
+  // Khởi tạo Preloader
   var initPreloader = function () {
     $(document).ready(function ($) {
       var Body = $('body');
       Body.addClass('preloader-site');
     });
-    $(window).load(function () {
+    $(window).on('load', function () {
       $('.preloader-wrapper').fadeOut();
       $('body').removeClass('preloader-site');
     });
   }
 
-// Brand Carousel
-var brandSwiper = new Swiper(".brandSwiper", {
-  slidesPerView: 2,
-  spaceBetween: 20,
-  centeredSlides: true,
-  loop: true,
-  autoplay: {
-    delay: 2500,
-    disableOnInteraction: false,
-  },
-  breakpoints: {
-    640: {
-      slidesPerView: 3,
-    },
-    768: {
-      slidesPerView: 4,
-    },
-    1024: {
-      slidesPerView: 5,
-      spaceBetween: 30,
-    },
-  },
-});
-  // background color when scroll 
+  // Màu nền khi scroll
   var initScrollNav = function () {
     var scroll = $(window).scrollTop();
-  
     if (scroll >= 200) {
       $('.navbar.fixed-top').addClass("bg-scrolled");
     } else {
       $('.navbar.fixed-top').removeClass("bg-scrolled");
     }
   }
-  
-  $(window).scroll(function () {
-    initScrollNav();
-  });
 
-  // init Chocolat light box
+  // Khởi tạo lightbox
   var initChocolat = function () {
     Chocolat(document.querySelectorAll('.image-link'), {
       imageSize: 'contain',
@@ -59,20 +31,15 @@ var brandSwiper = new Swiper(".brandSwiper", {
     })
   }
 
-
+  // Xử lý số lượng sản phẩm
   var initProductQty = function () {
-
     $('.product-qty').each(function () {
-
       var $el_product = $(this);
-      var quantity = 0;
-
       $el_product.find('.quantity-right-plus').click(function (e) {
         e.preventDefault();
         var quantity = parseInt($el_product.find('#quantity').val());
         $el_product.find('#quantity').val(quantity + 1);
       });
-
       $el_product.find('.quantity-left-minus').click(function (e) {
         e.preventDefault();
         var quantity = parseInt($el_product.find('#quantity').val());
@@ -80,15 +47,13 @@ var brandSwiper = new Swiper(".brandSwiper", {
           $el_product.find('#quantity').val(quantity - 1);
         }
       });
-
     });
-
   }
 
-  // document ready
+  // Document ready
   $(document).ready(function () {
-
-    var swiper = new Swiper(".testimonial-swiper", {
+    // Testimonial Swiper
+    var testimonialSwiper = new Swiper(".testimonial-swiper", {
       slidesPerView: 1,
       spaceBetween: 20,
       pagination: {
@@ -97,8 +62,8 @@ var brandSwiper = new Swiper(".brandSwiper", {
       },
     });
 
-    // product single page
-    var thumb_slider = new Swiper(".product-thumbnail-slider", {
+    // Product Swipers
+    var thumbSlider = new Swiper(".product-thumbnail-slider", {
       loop: true,
       slidesPerView: 3,
       autoplay: true,
@@ -106,37 +71,58 @@ var brandSwiper = new Swiper(".brandSwiper", {
       spaceBetween: 30,
     });
 
-    var large_slider = new Swiper(".product-large-slider", {
+    var largeSlider = new Swiper(".product-large-slider", {
       loop: true,
       slidesPerView: 1,
       autoplay: true,
       effect: 'fade',
       thumbs: {
-        swiper: thumb_slider,
+        swiper: thumbSlider,
       },
     });
 
-    window.addEventListener("load", (event) => {
-
-      var $grid = $('.entry-container').isotope({
-        itemSelector: '.entry-item',
-        layoutMode: 'masonry'
+    // Brand Swiper - ĐÃ ĐƯA VÀO TRONG READY VÀ THÊM KIỂM TRA TỒN TẠI
+    if ($('.brandSwiper').length) {
+      var brandSwiper = new Swiper(".brandSwiper", {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+        breakpoints: {
+          640: { slidesPerView: 3 },
+          768: { slidesPerView: 4 },
+          1024: { slidesPerView: 5, spaceBetween: 30 }
+        }
       });
+    }
 
+    // Isotope
+    window.addEventListener("load", function () {
+      if ($('.entry-container').length) {
+        var $grid = $('.entry-container').isotope({
+          itemSelector: '.entry-item',
+          layoutMode: 'masonry'
+        });
+      }
     });
 
-    $(".youtube").colorbox({
-      iframe: true,
-      innerWidth: 960,
-      innerHeight: 585
-    });
+    // Colorbox
+    if ($(".youtube").length) {
+      $(".youtube").colorbox({
+        iframe: true,
+        innerWidth: 960,
+        innerHeight: 585
+      });
+    }
 
     initPreloader();
     initChocolat();
     initProductQty();
-
-
-
-  }); // End of a document
+    $(window).scroll(initScrollNav);
+  });
 
 })(jQuery);
