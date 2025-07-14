@@ -485,6 +485,12 @@ div#cboxOverlay {
   background-color: #f5f5f5;
 }
 
+#footer,
+#footer .container,
+#footer .container *:not(.btn) {
+  color: #191919 !important;
+}
+
 .form-control {
   font-size: 1rem;
   color: #191919;
