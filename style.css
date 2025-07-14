@@ -483,6 +483,30 @@ div#cboxOverlay {
 /*---- footer section style ----*/
 #footer {
   background-color: #f5f5f5;
+    padding: 3rem 0;
+}
+
+.footer-menu .menu-list {
+  margin-bottom: 1.5rem;
+}
+
+.footer-menu .menu-item {
+  margin-bottom: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #footer {
+    padding: 2rem 0;
+  }
+  
+  .footer-menu .menu-item {
+    margin-bottom: 0.6rem;
+  }
+  
+  .footer-menu .menu-list {
+    margin-bottom: 1rem;
+  }
 }
 
 #footer,
