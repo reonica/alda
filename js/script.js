@@ -13,10 +13,12 @@
     });
   }
 
-// Brand/Partner Carousel
-var brandSwiper = new Swiper("#brand-collection .swiper", {
+// Brand Carousel
+var brandSwiper = new Swiper(".brandSwiper", {
   slidesPerView: 2,
   spaceBetween: 20,
+  centeredSlides: true,
+  loop: true,
   autoplay: {
     delay: 2500,
     disableOnInteraction: false,
@@ -30,6 +32,7 @@ var brandSwiper = new Swiper("#brand-collection .swiper", {
     },
     1024: {
       slidesPerView: 5,
+      spaceBetween: 30,
     },
   },
 });
