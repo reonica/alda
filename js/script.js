@@ -17,18 +17,17 @@
   // background color when scroll 
   var initScrollNav = function () {
     var scroll = $(window).scrollTop();
-
+  
     if (scroll >= 200) {
-      $('.navbar.fixed-top').addClass("bg-primary");
+      $('.navbar.fixed-top').addClass("bg-scrolled");
     } else {
-      $('.navbar.fixed-top').removeClass("bg-primary");
+      $('.navbar.fixed-top').removeClass("bg-scrolled");
     }
   }
-
+  
   $(window).scroll(function () {
     initScrollNav();
   });
-
 
   // init Chocolat light box
   var initChocolat = function () {
