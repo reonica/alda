@@ -600,6 +600,45 @@ opacity: 1;
   }
 }
 
+/* Portfolio Carousel Mobile Styles */
+.swiper.portfolioSwiper {
+  padding: 0 15px 30px;
+}
+
+.swiper.portfolioSwiper .swiper-slide {
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.swiper.portfolioSwiper .swiper-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.swiper.portfolioSwiper .swiper-pagination {
+  position: relative;
+  bottom: 0;
+  margin-top: 15px;
+}
+
+.swiper.portfolioSwiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  opacity: 1;
+}
+
+.swiper.portfolioSwiper .swiper-pagination-bullet-active {
+  background-color: #000;
+}
+
+/* Adjust spacing between carousel and button */
+#portfolio .text-center {
+  margin-top: 30px;
+}
+
 /*---- video section style ----*/
 /* color box style */
 div#cboxOverlay {
