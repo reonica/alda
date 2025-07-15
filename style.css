@@ -68,8 +68,13 @@ CSS STRUCTURE:
   --light-color: #fff;
   --grey-color: #dbdbdb;
   --light-grey-color: #fafafa;
-  --primary-color: #CECCFF;
+  --primary-color: #191919;
   --light-primary-color: #eef1f3;
+      --service-dark-bg: #191919;
+  --service-light-bg: #f5f5f5;
+  --service-dark-text: #ededed;
+  --service-light-text: #222222;
+  --service-number-color: #7a7a7a;
 }
 
 /* Fonts */
@@ -412,20 +417,53 @@ iconify-icon.arrow-icon {
 
 /* Our Service Section */
 #service .col-md-4:nth-child(odd) .bg-primary {
-  background-color: #191919 !important;
-  color: #ededed !important;
+  background-color: var(--service-dark-bg) !important;
+  color: var(--service-dark-text) !important;
+}
+
+#service .col-md-4:nth-child(odd) h4,
+#service .col-md-4:nth-child(odd) p {
+  color: var(--service-dark-text) !important;
 }
 
 #service .col-md-4:nth-child(odd) .display-1 {
-  color: #7a7a7a !important;
+  color: var(--service-number-color) !important;
 }
 
 #service .col-md-4:nth-child(even) .bg-light {
-  background-color: #f5f5f5 !important;
+  background-color: var(--service-light-bg) !important;
+}
+
+#service .col-md-4:nth-child(even) h4,
+#service .col-md-4:nth-child(even) p {
+  color: var(--service-light-text) !important;
 }
 
 /* Service Mobile Styles */
 @media (max-width: 767px) {
+  #service .swiper-slide:nth-child(odd) .bg-primary {
+    background-color: var(--service-dark-bg) !important;
+    color: var(--service-dark-text) !important;
+  }
+  
+  #service .swiper-slide:nth-child(odd) h4,
+  #service .swiper-slide:nth-child(odd) p {
+    color: var(--service-dark-text) !important;
+  }
+  
+  #service .swiper-slide:nth-child(odd) .display-1 {
+    color: var(--service-number-color) !important;
+  }
+  
+  #service .swiper-slide:nth-child(even) .bg-light {
+    background-color: var(--service-light-bg) !important;
+  }
+  
+  #service .swiper-slide:nth-child(even) h4,
+  #service .swiper-slide:nth-child(even) p {
+    color: var(--service-light-text) !important;
+  }
+  
   #service .swiper-slide {
     padding: 0 15px 30px;
   }
@@ -436,7 +474,7 @@ iconify-icon.arrow-icon {
   }
   
   #service .swiper-pagination-bullet-active {
-    background: #191919;
+    background: var(--service-dark-bg);
   }
 }
 
