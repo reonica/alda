@@ -115,6 +115,33 @@ var serviceSwiper = new Swiper("#service .swiper", {
       });
     }
 
+// Initialize Portfolio Swiper
+if (document.querySelector('.portfolioSwiper')) {
+  const portfolioSwiper = new Swiper('.portfolioSwiper', {
+    slidesPerView: 1.2,
+    spaceBetween: 15,
+    centeredSlides: true,
+    loop: true,
+    grabCursor: true,
+    pagination: {
+      el: '.portfolioSwiper .swiper-pagination',
+      clickable: true,
+    },
+    breakpoints: {
+      400: {
+        slidesPerView: 1.3
+      },
+      500: {
+        slidesPerView: 1.5
+      },
+      576: {
+        slidesPerView: 1.8,
+        spaceBetween: 20
+      }
+    }
+  });
+}
+    
     // Isotope
     window.addEventListener("load", function () {
       if ($('.entry-container').length) {
