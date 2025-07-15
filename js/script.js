@@ -80,7 +80,22 @@
         swiper: thumbSlider,
       },
     });
-
+// Service Mobile Pagination
+var serviceSwiper = new Swiper("#service .swiper", {
+  slidesPerView: 1,
+  spaceBetween: 20,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  breakpoints: {
+    768: {
+      slidesPerView: 3,
+      spaceBetween: 30,
+      pagination: false
+    }
+  }
+});
     // Brand Swiper - ĐÃ ĐƯA VÀO TRONG READY VÀ THÊM KIỂM TRA TỒN TẠI
     if ($('.brandSwiper').length) {
       var brandSwiper = new Swiper(".brandSwiper", {
