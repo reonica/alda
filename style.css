@@ -604,10 +604,94 @@ div#cboxOverlay {
 }
 
 /*--------------------------------------------------------------
-/** PROCESS SECTION - Tương phản màu số
+/** PROCESS SECTION - Fix contrast issue
 --------------------------------------------------------------*/
 
-/* Số process chung */
+/* Desktop version (xxl and up) */
+@media (min-width: 1400px) {
+  /* Odd items (dark background) */
+  .process-step:nth-child(odd) {
+    background-color: var(--bs-primary); /* Dark background */
+  }
+  
+  /* Text in odd items */
+  .process-step:nth-child(odd) h6,
+  .process-step:nth-child(odd) p {
+    color: white !important; /* Force white text */
+  }
+  
+  /* Process number in odd items */
+  .process-step:nth-child(odd) .process-number {
+    background-color: white;
+    color: var(--bs-primary);
+    border: 2px solid white;
+  }
+  
+  /* Even items (light background) */
+  .process-step:nth-child(even) {
+    background-color: #f9f9f9; /* Light background */
+  }
+  
+  /* Text in even items */
+  .process-step:nth-child(even) h6,
+  .process-step:nth-child(even) p {
+    color: var(--bs-primary) !important; /* Dark text */
+  }
+  
+  /* Process number in even items */
+  .process-step:nth-child(even) .process-number {
+    background-color: var(--bs-primary);
+    color: white;
+    border: 2px solid var(--bs-primary);
+  }
+}
+
+/* Mobile version (below 1400px) */
+@media (max-width: 1399.98px) {
+  .process-step {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  /* Odd items (dark background) */
+  .process-step:nth-child(odd) {
+    background-color: var(--bs-primary); /* Dark background */
+  }
+  
+  /* Text in odd items */
+  .process-step:nth-child(odd) h6,
+  .process-step:nth-child(odd) p {
+    color: white !important; /* Force white text */
+  }
+  
+  /* Process number in odd items */
+  .process-step:nth-child(odd) .process-number {
+    background-color: white;
+    color: var(--bs-primary);
+    border: 2px solid white;
+  }
+  
+  /* Even items (light background) */
+  .process-step:nth-child(even) {
+    background-color: #f9f9f9; /* Light background */
+  }
+  
+  /* Text in even items */
+  .process-step:nth-child(even) h6,
+  .process-step:nth-child(even) p {
+    color: var(--bs-primary) !important; /* Dark text */
+  }
+  
+  /* Process number in even items */
+  .process-step:nth-child(even) .process-number {
+    background-color: var(--bs-primary);
+    color: white;
+    border: 2px solid var(--bs-primary);
+  }
+}
+
+/* Process number common styles */
 .process-number {
   width: 80px;
   height: 80px;
@@ -617,56 +701,13 @@ div#cboxOverlay {
   border-radius: 50%;
   font-weight: bold;
   margin: 0 auto 15px;
+  font-size: 1.5rem;
 }
 
-/* Desktop (xxl) */
 @media (min-width: 1400px) {
   .process-number {
     width: 100px;
     height: 100px;
-    font-size: 1.5rem;
-  }
-}
-
-/* Màu cho các bước */
-.process-step:nth-child(odd) {
-  background: var(--bs-primary);
-  color: white; /* Thêm dòng này để đảm bảo text màu trắng */
-}
-
-.process-step:nth-child(odd) *:not(.process-number) {
-  color: white !important; /* Đảm bảo tất cả text trong ô lẻ màu trắng */
-}
-
-.process-step:nth-child(even) .process-number {
-  background: #f0f0f0;
-  color: var(--bs-primary);
-  border: 2px solid var(--bs-primary);
-}
-
-/* Điều chỉnh cho mobile */
-@media (max-width: 1399.98px) {
-  .process-step {
-    margin-bottom: 30px;
-    padding: 20px; /* Thêm padding để text không dính sát mép */
-  }
-  
-  .process-step:nth-child(even) {
-    background: #f9f9f9;
-  }
-  
-  .process-step:nth-child(odd) {
-    background: var(--bs-primary);
-    color: white;
-  }
-  
-  .process-step:nth-child(odd) * {
-    color: white !important; /* Đảm bảo tất cả text trong ô lẻ màu trắng */
-  }
-  
-  .process-step:nth-child(odd) .process-number {
-    background: white;
-    color: var(--bs-primary);
   }
 }
 
