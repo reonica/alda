@@ -629,14 +629,18 @@ div#cboxOverlay {
 }
 
 /* Màu cho các bước */
-.process-step:nth-child(odd) .process-number {
+.process-step:nth-child(odd) {
   background: var(--bs-primary);
-  color: white;
+  color: white; /* Thêm dòng này để đảm bảo text màu trắng */
+}
+
+.process-step:nth-child(odd) *:not(.process-number) {
+  color: white !important; /* Đảm bảo tất cả text trong ô lẻ màu trắng */
 }
 
 .process-step:nth-child(even) .process-number {
-  background: #f0f0f0; /* Màu nền nhạt */
-  color: var(--bs-primary); /* Màu chữ đậm */
+  background: #f0f0f0;
+  color: var(--bs-primary);
   border: 2px solid var(--bs-primary);
 }
 
@@ -644,6 +648,7 @@ div#cboxOverlay {
 @media (max-width: 1399.98px) {
   .process-step {
     margin-bottom: 30px;
+    padding: 20px; /* Thêm padding để text không dính sát mép */
   }
   
   .process-step:nth-child(even) {
@@ -653,6 +658,10 @@ div#cboxOverlay {
   .process-step:nth-child(odd) {
     background: var(--bs-primary);
     color: white;
+  }
+  
+  .process-step:nth-child(odd) * {
+    color: white !important; /* Đảm bảo tất cả text trong ô lẻ màu trắng */
   }
   
   .process-step:nth-child(odd) .process-number {
