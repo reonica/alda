@@ -771,65 +771,69 @@ Chocolat
 }
 
 /*--------------------------------------------------------------
-/** PROCESS SECTION - Chỉ điều chỉnh tương phản màu chữ
+/** PROCESS SECTION - Fix hoàn toàn vấn đề tương phản
 --------------------------------------------------------------*/
 
-/* Thiết lập màu sắc giống service section */
+/* Thiết lập màu chuẩn */
 :root {
-  --process-dark-bg: #191919;       /* Màu nền tối */
-  --process-dark-text: #ededed;     /* Màu chữ trên nền tối */
-  --process-light-bg: #f5f5f5;      /* Màu nền sáng */ 
-  --process-light-text: #222222;    /* Màu chữ trên nền sáng */
+  --process-dark-bg: #191919;
+  --process-dark-text: #ffffff; /* Màu trắng tinh */
+  --process-light-bg: #f5f5f5; 
+  --process-light-text: #222222;
 }
 
-/* Desktop version (xxl and up) - Giữ nguyên cấu trúc */
+/* Mobile & Tablet (d-xxl-none) */
+.process-step {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0;
+}
+
+/* Ô tối */
+.process-step-dark {
+  background-color: var(--process-dark-bg) !important;
+}
+.process-step-dark .process-text,
+.process-step-dark h6:not(.process-number) {
+  color: var(--process-dark-text) !important;
+}
+
+/* Ô sáng */
+.process-step-light {
+  background-color: var(--process-light-bg) !important;
+}
+.process-step-light .process-text,
+.process-step-light h6:not(.process-number) {
+  color: var(--process-light-text) !important;
+}
+
+/* Desktop (xxl) - nếu cần giữ timeline */
 @media (min-width: 1400px) {
-  /* Ô lẻ - Nền tối */
-  .process-step:nth-child(odd) {
-    background-color: var(--process-dark-bg);
+  .process-step {
+    background-color: transparent !important;
+    padding: 0 !important;
   }
-  .process-step:nth-child(odd) h6,
-  .process-step:nth-child(odd) p {
+  
+  /* Ô tối */
+  .process-step-dark .text-start {
+    background-color: var(--process-dark-bg) !important;
+  }
+  .process-step-dark .process-text,
+  .process-step-dark h6:not(.process-number) {
     color: var(--process-dark-text) !important;
   }
   
-  /* Ô chẵn - Nền sáng */
-  .process-step:nth-child(even) {
-    background-color: var(--process-light-bg);
+  /* Ô sáng */
+  .process-step-light .text-start {
+    background-color: var(--process-light-bg) !important;
   }
-  .process-step:nth-child(even) h6,
-  .process-step:nth-child(even) p {
+  .process-step-light .process-text,
+  .process-step-light h6:not(.process-number) {
     color: var(--process-light-text) !important;
-  }
-  
-  /* Giữ nguyên số process */
-  .process-number {
-    /* Giữ nguyên các thuộc tính hiện có */
   }
 }
 
-/* Mobile version (dưới 1400px) - Giữ nguyên cấu trúc */
-@media (max-width: 1399.98px) {
-  /* Ô lẻ - Nền tối */
-  .process-step:nth-child(odd) {
-    background-color: var(--process-dark-bg);
-  }
-  .process-step:nth-child(odd) h6,
-  .process-step:nth-child(odd) p {
-    color: var(--process-dark-text) !important;
-  }
-  
-  /* Ô chẵn - Nền sáng */
-  .process-step:nth-child(even) {
-    background-color: var(--process-light-bg);
-  }
-  .process-step:nth-child(even) h6, 
-  .process-step:nth-child(even) p {
-    color: var(--process-light-text) !important;
-  }
-  
-  /* Giữ nguyên số process */
-  .process-number {
-    /* Giữ nguyên các thuộc tính hiện có */
-  }
+/* Đảm bảo số process không bị ảnh hưởng */
+.process-number {
+  color: inherit !important; /* Giữ màu gốc của số */
 }
