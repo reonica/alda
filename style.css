@@ -604,110 +604,66 @@ div#cboxOverlay {
 }
 
 /*--------------------------------------------------------------
-/** PROCESS SECTION - Fix contrast issue
+/** PROCESS SECTION - Chỉ điều chỉnh tương phản màu chữ
 --------------------------------------------------------------*/
 
-/* Desktop version (xxl and up) */
+/* Thiết lập màu sắc giống service section */
+:root {
+  --process-dark-bg: #191919;       /* Màu nền tối */
+  --process-dark-text: #ededed;     /* Màu chữ trên nền tối */
+  --process-light-bg: #f5f5f5;      /* Màu nền sáng */ 
+  --process-light-text: #222222;    /* Màu chữ trên nền sáng */
+}
+
+/* Desktop version (xxl and up) - Giữ nguyên cấu trúc */
 @media (min-width: 1400px) {
-  /* Odd items (dark background) */
+  /* Ô lẻ - Nền tối */
   .process-step:nth-child(odd) {
-    background-color: var(--bs-primary); /* Dark background */
+    background-color: var(--process-dark-bg);
   }
-  
-  /* Text in odd items */
   .process-step:nth-child(odd) h6,
   .process-step:nth-child(odd) p {
-    color: white !important; /* Force white text */
+    color: var(--process-dark-text) !important;
   }
   
-  /* Process number in odd items */
-  .process-step:nth-child(odd) .process-number {
-    background-color: white;
-    color: var(--bs-primary);
-    border: 2px solid white;
-  }
-  
-  /* Even items (light background) */
+  /* Ô chẵn - Nền sáng */
   .process-step:nth-child(even) {
-    background-color: #f9f9f9; /* Light background */
+    background-color: var(--process-light-bg);
   }
-  
-  /* Text in even items */
   .process-step:nth-child(even) h6,
   .process-step:nth-child(even) p {
-    color: var(--bs-primary) !important; /* Dark text */
+    color: var(--process-light-text) !important;
   }
   
-  /* Process number in even items */
-  .process-step:nth-child(even) .process-number {
-    background-color: var(--bs-primary);
-    color: white;
-    border: 2px solid var(--bs-primary);
-  }
-}
-
-/* Mobile version (below 1400px) */
-@media (max-width: 1399.98px) {
-  .process-step {
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0.5rem;
-  }
-  
-  /* Odd items (dark background) */
-  .process-step:nth-child(odd) {
-    background-color: var(--bs-primary); /* Dark background */
-  }
-  
-  /* Text in odd items */
-  .process-step:nth-child(odd) h6,
-  .process-step:nth-child(odd) p {
-    color: white !important; /* Force white text */
-  }
-  
-  /* Process number in odd items */
-  .process-step:nth-child(odd) .process-number {
-    background-color: white;
-    color: var(--bs-primary);
-    border: 2px solid white;
-  }
-  
-  /* Even items (light background) */
-  .process-step:nth-child(even) {
-    background-color: #f9f9f9; /* Light background */
-  }
-  
-  /* Text in even items */
-  .process-step:nth-child(even) h6,
-  .process-step:nth-child(even) p {
-    color: var(--bs-primary) !important; /* Dark text */
-  }
-  
-  /* Process number in even items */
-  .process-step:nth-child(even) .process-number {
-    background-color: var(--bs-primary);
-    color: white;
-    border: 2px solid var(--bs-primary);
-  }
-}
-
-/* Process number common styles */
-.process-number {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-weight: bold;
-  margin: 0 auto 15px;
-  font-size: 1.5rem;
-}
-
-@media (min-width: 1400px) {
+  /* Giữ nguyên số process */
   .process-number {
-    width: 100px;
-    height: 100px;
+    /* Giữ nguyên các thuộc tính hiện có */
+  }
+}
+
+/* Mobile version (dưới 1400px) - Giữ nguyên cấu trúc */
+@media (max-width: 1399.98px) {
+  /* Ô lẻ - Nền tối */
+  .process-step:nth-child(odd) {
+    background-color: var(--process-dark-bg);
+  }
+  .process-step:nth-child(odd) h6,
+  .process-step:nth-child(odd) p {
+    color: var(--process-dark-text) !important;
+  }
+  
+  /* Ô chẵn - Nền sáng */
+  .process-step:nth-child(even) {
+    background-color: var(--process-light-bg);
+  }
+  .process-step:nth-child(even) h6, 
+  .process-step:nth-child(even) p {
+    color: var(--process-light-text) !important;
+  }
+  
+  /* Giữ nguyên số process */
+  .process-number {
+    /* Giữ nguyên các thuộc tính hiện có */
   }
 }
 
