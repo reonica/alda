@@ -603,6 +603,63 @@ div#cboxOverlay {
   justify-content: center;
 }
 
+/*--------------------------------------------------------------
+/** PROCESS SECTION - Tương phản màu số
+--------------------------------------------------------------*/
+
+/* Số process chung */
+.process-number {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  margin: 0 auto 15px;
+}
+
+/* Desktop (xxl) */
+@media (min-width: 1400px) {
+  .process-number {
+    width: 100px;
+    height: 100px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Màu cho các bước */
+.process-step:nth-child(odd) .process-number {
+  background: var(--bs-primary);
+  color: white;
+}
+
+.process-step:nth-child(even) .process-number {
+  background: #f0f0f0; /* Màu nền nhạt */
+  color: var(--bs-primary); /* Màu chữ đậm */
+  border: 2px solid var(--bs-primary);
+}
+
+/* Điều chỉnh cho mobile */
+@media (max-width: 1399.98px) {
+  .process-step {
+    margin-bottom: 30px;
+  }
+  
+  .process-step:nth-child(even) {
+    background: #f9f9f9;
+  }
+  
+  .process-step:nth-child(odd) {
+    background: var(--bs-primary);
+    color: white;
+  }
+  
+  .process-step:nth-child(odd) .process-number {
+    background: white;
+    color: var(--bs-primary);
+  }
+}
 
 /* blog section style */
 
