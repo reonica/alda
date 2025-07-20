@@ -603,6 +603,74 @@ div#cboxOverlay {
   justify-content: center;
 }
 
+/*--------------------------------------------------------------
+/** PROCESS SECTION - Fix hoàn toàn vấn đề tương phản
+--------------------------------------------------------------*/
+
+/* Thiết lập màu chuẩn */
+:root {
+  --process-dark-bg: #191919;
+  --process-dark-text: #ffffff; /* Màu trắng tinh */
+  --process-light-bg: #f5f5f5; 
+  --process-light-text: #222222;
+}
+
+/* Mobile & Tablet (d-xxl-none) */
+.process-step {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0;
+}
+
+/* Ô tối */
+.process-step-dark {
+  background-color: var(--process-dark-bg) !important;
+}
+.process-step-dark .process-text,
+.process-step-dark h6:not(.process-number) {
+  color: var(--process-dark-text) !important;
+}
+
+/* Ô sáng */
+.process-step-light {
+  background-color: var(--process-light-bg) !important;
+}
+.process-step-light .process-text,
+.process-step-light h6:not(.process-number) {
+  color: var(--process-light-text) !important;
+}
+
+/* Desktop (xxl) - nếu cần giữ timeline */
+@media (min-width: 1400px) {
+  .process-step {
+    background-color: transparent !important;
+    padding: 0 !important;
+  }
+  
+  /* Ô tối */
+  .process-step-dark .text-start {
+    background-color: var(--process-dark-bg) !important;
+  }
+  .process-step-dark .process-text,
+  .process-step-dark h6:not(.process-number) {
+    color: var(--process-dark-text) !important;
+  }
+  
+  /* Ô sáng */
+  .process-step-light .text-start {
+    background-color: var(--process-light-bg) !important;
+  }
+  .process-step-light .process-text,
+  .process-step-light h6:not(.process-number) {
+    color: var(--process-light-text) !important;
+  }
+}
+
+/* Đảm bảo số process không bị ảnh hưởng */
+.process-number {
+  color: inherit !important; /* Giữ màu gốc của số */
+}
+
 /* blog section style */
 
 /* -Zoom Effect
@@ -770,70 +838,3 @@ Chocolat
   z-index: 9999;
 }
 
-/*--------------------------------------------------------------
-/** PROCESS SECTION - Fix hoàn toàn vấn đề tương phản
---------------------------------------------------------------*/
-
-/* Thiết lập màu chuẩn */
-:root {
-  --process-dark-bg: #191919;
-  --process-dark-text: #ffffff; /* Màu trắng tinh */
-  --process-light-bg: #f5f5f5; 
-  --process-light-text: #222222;
-}
-
-/* Mobile & Tablet (d-xxl-none) */
-.process-step {
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  border-radius: 0;
-}
-
-/* Ô tối */
-.process-step-dark {
-  background-color: var(--process-dark-bg) !important;
-}
-.process-step-dark .process-text,
-.process-step-dark h6:not(.process-number) {
-  color: var(--process-dark-text) !important;
-}
-
-/* Ô sáng */
-.process-step-light {
-  background-color: var(--process-light-bg) !important;
-}
-.process-step-light .process-text,
-.process-step-light h6:not(.process-number) {
-  color: var(--process-light-text) !important;
-}
-
-/* Desktop (xxl) - nếu cần giữ timeline */
-@media (min-width: 1400px) {
-  .process-step {
-    background-color: transparent !important;
-    padding: 0 !important;
-  }
-  
-  /* Ô tối */
-  .process-step-dark .text-start {
-    background-color: var(--process-dark-bg) !important;
-  }
-  .process-step-dark .process-text,
-  .process-step-dark h6:not(.process-number) {
-    color: var(--process-dark-text) !important;
-  }
-  
-  /* Ô sáng */
-  .process-step-light .text-start {
-    background-color: var(--process-light-bg) !important;
-  }
-  .process-step-light .process-text,
-  .process-step-light h6:not(.process-number) {
-    color: var(--process-light-text) !important;
-  }
-}
-
-/* Đảm bảo số process không bị ảnh hưởng */
-.process-number {
-  color: inherit !important; /* Giữ màu gốc của số */
-}
