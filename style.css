@@ -653,6 +653,7 @@ div#cboxOverlay {
   margin: 0 auto 15px;
   /* Các thuộc tính khác giữ nguyên */
 }
+
 /* blog section style */
 
 /* -Zoom Effect
@@ -811,7 +812,46 @@ p.footer-para {
   }
 }
 
-
+/*--------------------------------------------------------------
+/** MILESTONE SECTION - Mobile 2 columns
+--------------------------------------------------------------*/
+@media screen and (max-width: 767px) {
+  #milestone .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  #milestone .col-md-3 {
+    width: 50% !important; /* Chia thành 2 cột */
+    padding: 0 10px;
+    margin-bottom: 20px;
+  }
+  
+  #milestone .col-md-3:nth-child(1),
+  #milestone .col-md-3:nth-child(2) {
+    margin-bottom: 30px; /* Tăng khoảng cách giữa 2 hàng */
+  }
+  
+  #milestone .text-center {
+    padding: 20px;
+    background-color: #f5f5f5; /* Thêm nền cho rõ ràng */
+    height: 100%;
+  }
+  
+  #milestone iconify-icon {
+    font-size: 2.5rem; /* Giảm kích thước icon */
+    padding: 1.5rem !important;
+  }
+  
+  #milestone h2 {
+    font-size: 1.8rem; /* Giảm kích thước số */
+    margin-top: 0.5rem !important;
+  }
+  
+  #milestone p {
+    font-size: 0.9rem; /* Giảm kích thước text */
+  }
+}
 
 /*--------------------------------------------------------------
 Chocolat
