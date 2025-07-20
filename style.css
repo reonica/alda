@@ -1,8 +1,6 @@
 /*
 Theme Name: Codeo
-Theme URI: https://templatesjungle.com/
 Author: TemplatesJungle
-Author URI: https://templatesjungle.com/
 Description: Codeo is specially developed Websites Template for Agencies Websites.
 Version: 1.1
 */
@@ -34,10 +32,12 @@ CSS STRUCTURE:
   6.3 About Us Section
   6.4 Testimonial Section
   6.5 Our Service Section
-  6.6 Brand Section
-  6.7 Video Section
-  6.8 Latest Blogs Section
-  6.9 Footer Section
+  6.6 Process
+  6.7 Brand Section
+  6.8 Video Section
+  6.9 Latest Blogs Section
+  6.10 Footer Section
+  6.11 Milestones
     
 
   
@@ -428,7 +428,7 @@ iconify-icon.arrow-icon {
   z-index: -1;
 }
 
-/* Số lớn - Áp dụng chung */
+/* Large numbers - General style */
 .service-number {
   position: absolute;
   font-size: 150px;
@@ -441,15 +441,15 @@ iconify-icon.arrow-icon {
   user-select: none;
 }
 
-/* Ô màu tối (số lẻ) */
+/* Dark boxes (odd numbers) */
 #service .bg-dark .service-number {
   color: #7a7a7a;
   opacity: 0.15;
 }
 
-/* Ô màu sáng (số chẵn) */
+/* Light boxes (even numbers) */
 #service .bg-light .service-number {
-  color: #8a8a8a; /* Màu tối hơn #b0b0b0 để đảm bảo tương phản */
+  color: #8a8a8a;
   opacity: 0.2;
 }
 
@@ -604,10 +604,10 @@ div#cboxOverlay {
 }
 
 /*--------------------------------------------------------------
-/** PROCESS SECTION - Hoàn chỉnh tương phản màu
+/** PROCESS SECTION - Color contrast optimized
 --------------------------------------------------------------*/
 
-/* Thiết lập màu chuẩn */
+/* Color settings */
 :root {
   --process-dark-bg: #191919;
   --process-dark-text: #ffffff;
@@ -647,11 +647,11 @@ div#cboxOverlay {
   color: var(--process-light-text) !important;
 }
 
-/* Số process - Giữ nguyên kiểu dáng chỉ thay đổi màu */
+/* Process numbers - Keep style, only change colors */
 .process-number {
   font-weight: bold;
   margin: 0 auto 15px;
-  /* Các thuộc tính khác giữ nguyên */
+
 }
 
 /* blog section style */
@@ -830,7 +830,7 @@ p.footer-para {
     flex: 0 0 auto;
   }
   
-  /* Điều chỉnh kích thước các phần tử bên trong */
+  /* Inner elements sizing */
   #milestone .text-center {
     padding: 0;
   }
