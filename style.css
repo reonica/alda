@@ -604,7 +604,7 @@ div#cboxOverlay {
 }
 
 /*--------------------------------------------------------------
-/** PROCESS SECTION - Chỉnh tương phản không làm mất layout
+/** PROCESS SECTION - Hoàn chỉnh tương phản màu
 --------------------------------------------------------------*/
 
 /* Thiết lập màu chuẩn */
@@ -619,30 +619,40 @@ div#cboxOverlay {
 #process .row.d-xxl-none .col.my-4:nth-child(odd) .text-start {
   background-color: var(--process-dark-bg) !important;
 }
-#process .row.d-xxl-none .col.my-4:nth-child(odd) .fw-bold {
+#process .row.d-xxl-none .col.my-4:nth-child(odd) .fw-bold,
+#process .row.d-xxl-none .col.my-4:nth-child(odd) h6.process-number {
   color: var(--process-dark-text) !important;
 }
 
 #process .row.d-xxl-none .col.my-4:nth-child(even) .text-start {
   background-color: var(--process-light-bg) !important;
 }
-#process .row.d-xxl-none .col.my-4:nth-child(even) .fw-bold {
+#process .row.d-xxl-none .col.my-4:nth-child(even) .fw-bold,
+#process .row.d-xxl-none .col.my-4:nth-child(even) h6.process-number {
   color: var(--process-light-text) !important;
 }
 
 /* Desktop version (d-none d-xxl-flex) */
-#process .row.d-none .col:nth-child(odd) .text-start {
+#process .row.d-none.d-xxl-flex .col:nth-child(odd) .text-start {
   color: var(--process-dark-text) !important;
 }
-#process .row.d-none .col:nth-child(even) .text-start {
+#process .row.d-none.d-xxl-flex .col:nth-child(odd) h6.process-number {
+  color: var(--process-dark-text) !important;
+}
+
+#process .row.d-none.d-xxl-flex .col:nth-child(even) .text-start {
+  color: var(--process-light-text) !important;
+}
+#process .row.d-none.d-xxl-flex .col:nth-child(even) h6.process-number {
   color: var(--process-light-text) !important;
 }
 
-/* Đảm bảo số process không bị ảnh hưởng */
+/* Số process - Giữ nguyên kiểu dáng chỉ thay đổi màu */
 .process-number {
-  color: inherit !important;
+  font-weight: bold;
+  margin: 0 auto 15px;
+  /* Các thuộc tính khác giữ nguyên */
 }
-
 /* blog section style */
 
 /* -Zoom Effect
