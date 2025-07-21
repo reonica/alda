@@ -876,15 +876,15 @@ p.footer-para {
 
 /* Add to existing CSS */
 .footer-logo {
-  max-width: 60px; 
-  margin-bottom: 1rem;
-    display: inline-block;
+  max-width: 80px; 
+  margin: 0 auto 1rem;
+  display: block;
 }
 
 .footer-logo img {
   width: 100%;
   height: auto;
-  max-height: 60px; 
+  max-height: 80px; 
   object-fit: contain;
     display: block;
 }
