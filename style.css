@@ -874,6 +874,29 @@ p.footer-para {
   }
 }
 
+/* Add to existing CSS */
+#footer .main-logo img {
+  max-height: 50px; /* Maximum height limit */
+  width: auto; /* Maintain aspect ratio */
+  max-width: 180px; /* Maximum width limit if needed */
+  height: auto; /* Auto-adjust height */
+  object-fit: contain; /* Ensure full logo display */
+}
+
+/* Responsive for different screen sizes */
+@media (max-width: 768px) {
+  #footer .main-logo img {
+    max-height: 40px; /* Smaller on mobile */
+    max-width: 150px;
+  }
+}
+
+/* Ensure logo container doesn't overflow */
+#footer .main-logo {
+  display: inline-block;
+  max-width: 100%;
+}
+
 /*--------------------------------------------------------------
 Chocolat
 --------------------------------------------------------------*/
