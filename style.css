@@ -720,89 +720,6 @@ div#cboxOverlay {
   cursor: pointer;
 }
 
-
-/*---- footer section style ----*/
-#footer {
-  background-color: #f5f5f5;
-    padding: 25px 0;
-}
-
-.footer-menu .menu-list {
-  margin-bottom: 1rem;
-}
-
-.footer-menu .menu-item {
-  margin-bottom: 0.8rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  #footer {
-    padding: 2rem 0;
-  }
-  
-  .footer-menu .menu-item {
-    margin-bottom: 0.6rem;
-  }
-  
-  .footer-menu .menu-list {
-    margin-bottom: 1rem;
-  }
-}
-
-#footer,
-#footer .container,
-#footer .container *:not(.btn) {
-  color: #191919 !important;
-}
-
-.form-control {
-  font-size: 1rem;
-  color: #191919;
-  line-height: normal;
-  letter-spacing: 0.02125rem;
-  text-transform: capitalize;
-  border-radius: 0.25rem;
-  border: 1px solid rgba(25, 25, 25, 0.2);
-  background: #FFF;
-  display: flex;
-  padding: 1.25rem 0rem 1.25rem 1.25rem;
-  align-items: center;
-  gap: 0.375rem;
-  align-self: stretch;
-}
-
-.form-control:focus {
-  border-color: #191919;
-  box-shadow: none;
-}
-
-/* footer style */
-a.footer-link {
-  color: #191919;
-  font-size: 1.0625rem;
-  text-transform: uppercase;
-}
-
-a.footer-link:hover {
-  color: #333333;
-}
-
-.social-icon {
-  color: #191919;
-}
-
-.social-icon:hover {
-  color: #333333;
-}
-
-p.footer-para {
-  color: #191919;
-}
-
-
-@media screen and (max-width: 991px) {
-
   /* offcanvas menu */
   .offcanvas-body .nav-item {
     font-weight: 700;
@@ -874,31 +791,157 @@ p.footer-para {
   }
 }
 
-/* Add to existing CSS */
+/*---- FOOTER SECTION - Modern & Balanced ----*/
+#footer {
+  background-color: #f5f5f5;
+  padding: 60px 0 40px; 
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .footer-logo {
-  max-width: 80px; 
-  margin: 0 auto 1rem;
-  display: block;
+  max-width: 100px;
+  margin-bottom: 1.5rem;
 }
 
 .footer-logo img {
   width: 100%;
   height: auto;
-  max-height: 80px; 
-  object-fit: contain;
-    display: block;
+  transition: transform 0.3s ease;
 }
 
-/* Responsive mobile */
+.footer-logo:hover img {
+  transform: scale(1.05);
+}
+
+.footer-menu {
+  margin-bottom: 1.5rem;
+}
+
+.footer-menu .menu-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--dark-color);
+}
+
+.footer-menu .menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-menu .menu-item {
+  margin-bottom: 0.6rem;
+}
+
+.footer-link {
+  color: #191919;
+  font-size: 0.9rem; 
+  text-transform: capitalize; 
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.footer-link:hover {
+  color: #333333;
+  transform: translateX(3px);
+}
+
+.footer-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: #333333;
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover:after {
+  width: 100%;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+
+.social-icon {
+  color: #191919;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #333333;
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.footer-para {
+  font-size: 0.85rem;
+  color: #555555;
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  #footer {
+    padding: 40px 0 30px;
+  }
+  
+  .footer-menu {
+    margin-bottom: 2rem;
+  }
+  
+  .footer-menu .menu-title {
+    font-size: 1rem;
+  }
+  
+  .footer-link {
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .footer-logo {
-    max-width: 50px;
+  #footer {
+    padding: 30px 0 20px;
   }
-  .footer-logo img {
-    max-height: 50px;
+  
+  .footer-logo {
+    max-width: 80px;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-menu {
+    margin-bottom: 1.5rem;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .footer-bottom {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
   }
 }
-
 /*--------------------------------------------------------------
 Chocolat
 --------------------------------------------------------------*/
