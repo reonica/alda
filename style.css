@@ -791,21 +791,16 @@ div#cboxOverlay {
   }
 }
 
-/*---- MODERN FOOTER STYLES ----*/
+/*---- FOOTER OPTIMIZED STYLES ----*/
 #footer {
   background-color: var(--dark-color);
   color: #fff;
-  padding: 60px 0 30px;
-  position: relative;
+  padding: 50px 0 30px;
 }
 
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
+/* Logo adjustments */
 .footer-logo {
-  max-width: 120px;
+  max-width: 90px; /* Reduced from 120px */
   margin-bottom: 1.5rem;
 }
 
@@ -813,26 +808,38 @@ div#cboxOverlay {
   width: 100%;
   height: auto;
   transition: transform 0.3s ease;
-  filter: brightness(0) invert(1); /* Make logo white */
+  filter: brightness(0) invert(1);
 }
 
-.footer-logo:hover img {
-  transform: scale(1.05);
+/* Text under logo */
+.footer-brand p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: left; /* Ensures proper alignment */
+  margin-top: 1rem;
+}
+
+/* Menu columns layout */
+.footer-menu-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Space between columns */
 }
 
 .footer-menu {
-  margin-bottom: 2rem;
+  flex: 1;
+  min-width: 120px; /* Prevents columns from becoming too narrow */
 }
 
+/* Menu title styling */
 .footer-menu .menu-title {
   font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 1.2rem;
   color: #fff;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
 }
 
 .footer-menu .menu-title:after {
@@ -840,131 +847,66 @@ div#cboxOverlay {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 40px;
+  width: 30px;
   height: 2px;
   background-color: var(--primary-color);
 }
 
-.footer-menu .menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-menu .menu-item {
-  margin-bottom: 0.8rem;
-}
-
-.footer-link {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.9rem;
-  text-transform: capitalize;
-  transition: all 0.3s ease;
-  display: inline-block;
-  position: relative;
-  padding-bottom: 2px;
-}
-
-.footer-link:hover {
-  color: #fff;
-  transform: translateX(5px);
-  text-decoration: none;
-}
-
-.footer-link:after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--primary-color);
-  transition: width 0.3s ease;
-}
-
-.footer-link:hover:after {
-  width: 100%;
-}
-
+/* Get Insights section */
 .footer-newsletter {
   background: rgba(255,255,255,0.05);
   padding: 25px;
   border-radius: 8px;
 }
 
+.footer-newsletter .menu-title {
+  color: var(--primary-color); /* Changed color for better contrast */
+}
+
 .footer-newsletter p {
-  margin-bottom: 1.5rem;
   color: rgba(255,255,255,0.8);
-}
-
-.footer-divider {
-  border-color: rgba(255,255,255,0.1);
-  margin: 30px 0;
-}
-
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.social-links {
-  display: flex;
-  gap: 15px;
-}
-
-.social-icon {
-  color: rgba(255,255,255,0.7);
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.social-icon:hover {
-  color: #fff;
-  transform: translateY(-3px);
-}
-
-.copyright-text {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
-  #footer {
-    padding: 40px 0 20px;
-  }
-  
-  .footer-menu {
-    margin-bottom: 2.5rem;
-  }
-  
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
+  .footer-menu-columns {
     gap: 20px;
   }
   
-  .social-links {
-    justify-content: center;
+  .footer-menu {
+    min-width: calc(50% - 20px); /* Two columns layout */
   }
 }
 
 @media (max-width: 768px) {
   .footer-logo {
-    max-width: 100px;
+    max-width: 80px;
     margin: 0 auto 1.5rem;
-    display: block;
+  }
+  
+  .footer-brand p {
+    text-align: center;
   }
   
   .footer-menu {
-    text-align: center;
+    min-width: calc(50% - 15px); /* Two equal columns */
+    margin-bottom: 1.5rem;
   }
   
   .footer-menu .menu-title:after {
     left: 50%;
     transform: translateX(-50%);
+  }
+  
+  .footer-newsletter {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-menu {
+    min-width: 100%; /* Stack columns on very small screens */
   }
 }
 
