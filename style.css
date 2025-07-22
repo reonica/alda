@@ -679,53 +679,43 @@ opacity: 1;
   }
 }
 
-/* ===== Portfolio Section - Mobile Optimized ===== */
-#portfolio {
-  padding: 4rem 0; /* Maintain section padding */
+/* Portfolio Carousel Mobile Styles */
+.swiper.portfolioSwiper {
+  padding: 0 15px 30px;
 }
 
-/* Desktop styles (keep unchanged) */
-#portfolio .entry-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+.swiper.portfolioSwiper .swiper-slide {
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-/* Mobile styles */
-@media (max-width: 767px) {
-  .swiper.portfolioSwiper {
-    padding: 0 15px;
-    margin-bottom: 2.5rem; /* Bottom spacing equals title bottom spacing */
-  }
+.swiper.portfolioSwiper .swiper-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-  .swiper.portfolioSwiper .swiper-slide {
-    transition: transform 0.3s ease;
-    border-radius: 8px;
-    overflow: hidden;
-    width: 85%; /* Slide width */
-    margin-right: 15px;
-  }
+.swiper.portfolioSwiper .swiper-pagination {
+  position: relative;
+  bottom: 0;
+  margin-top: 15px;
+}
 
-  /* Title alignment */
-  #portfolio .display-5.fw-semibold {
-    margin-bottom: 2.5rem; /* Matches swiper's margin-bottom */
-    font-size: 1.8rem; /* Optimized font size for mobile */
-  }
+.swiper.portfolioSwiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  opacity: 1;
+}
 
-  /* Case Study button */
-  #portfolio .text-center {
-    margin-top: 0; /* Remove default margin-top */
-  }
-  
-  #portfolio .btn-primary {
-    padding: 0.8rem 2rem; /* Mobile-friendly button size */
-    font-size: 0.9rem;
-  }
+.swiper.portfolioSwiper .swiper-pagination-bullet-active {
+  background-color: #000;
+}
 
-  /* Pagination */
-  .swiper.portfolioSwiper .swiper-pagination {
-    margin-top: 1rem;
-  }
+/* Adjust spacing between carousel and button */
+#portfolio .text-center {
+  margin-top: 30px;
 }
 
 /*---- video section style ----*/
