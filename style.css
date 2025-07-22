@@ -683,11 +683,11 @@ opacity: 1;
 @media (max-width: 767px) {
   #portfolio .swiper.portfolioSwiper {
     padding: 0 15px;
-    margin-bottom: 1.5rem; 
+    margin-bottom: 0.5rem; 
   }
 
   #portfolio .display-5.fw-semibold {
-    margin-bottom: 1.5rem; 
+    margin-bottom: 0.5rem; 
   }
 
   #portfolio .text-center {
