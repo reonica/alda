@@ -422,7 +422,7 @@ iconify-icon.arrow-icon {
 }
 
 /* Center all content on mobile */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #talk .row {
     flex-direction: column;
     align-items: center;
@@ -597,14 +597,14 @@ iconify-icon.arrow-icon {
   color: #222222 !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #service .swiper-slide {
     padding: 0 15px 30px;
   }
 }
 
 /* Add to the end of your CSS file */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #milestone .row {
     display: flex;
     flex-wrap: wrap;
@@ -733,7 +733,7 @@ opacity: 1;
 }
 
 /* Responsive */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .portfolioSwiper .swiper-pagination {
     margin-top: 15px;
   }
@@ -885,7 +885,7 @@ div#cboxOverlay {
 /*--------------------------------------------------------------
 /** MILESTONE SECTION - Mobile 2 columns (clean version)
 --------------------------------------------------------------*/
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   #milestone .row {
     display: flex;
     flex-wrap: wrap;
