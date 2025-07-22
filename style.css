@@ -968,6 +968,20 @@ div#cboxOverlay {
   }
 }
 
+/* Footer Logo Adjustments */
+.footer-logo img {
+  max-width: 150px; 
+  height: auto; 
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .footer-logo img {
+    max-width: 120px;
+  }
+}
+
 /*--------------------------------------------------------------
 Chocolat
 --------------------------------------------------------------*/
