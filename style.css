@@ -404,6 +404,46 @@ iconify-icon.arrow-icon {
   }
 }
 
+/* CSS for the "talk" section - Book a 30-Minute Strategy Call */
+#talk {
+  padding: 2rem 0;
+  background-color: #f8f9fa; /* Light background color */
+}
+
+#talk .container {
+  max-width: 100%;
+}
+
+/* Center all content on mobile */
+@media (max-width: 767px) {
+  #talk .row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  #talk .col-md-8 {
+    width: 100%;
+    padding: 0 15px;
+  }
+  
+  #talk .col-md-2 {
+    width: auto;
+    padding: 0;
+  }
+  
+  #talk h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+}
+
+/* Button adjustments */
+#talk .btn-primary {
+  white-space: nowrap; /* Prevent button text from wrapping */
+  min-width: 180px; /* Ensure button has minimum width */
+}
 
 /* about section style */
 .nav-tabs .nav-item {
