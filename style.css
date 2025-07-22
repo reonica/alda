@@ -679,34 +679,52 @@ opacity: 1;
   }
 }
 
-/* Portfolio Carousel Mobile Styles */
+/* ===== Portfolio Section - Mobile Optimized ===== */
+#portfolio {
+  padding: 4rem 0; /* Maintain section padding */
+}
+
+/* Desktop styles (keep unchanged) */
+#portfolio .entry-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* Mobile styles */
 @media (max-width: 767px) {
   .swiper.portfolioSwiper {
     padding: 0 15px;
-    margin-bottom: 2.5rem; /* Replaced padding-bottom with margin-bottom for consistent spacing */
+    margin-bottom: 2.5rem; /* Bottom spacing equals title bottom spacing */
   }
 
-  /* Maintain other swiper styles */
   .swiper.portfolioSwiper .swiper-slide {
     transition: transform 0.3s ease;
     border-radius: 8px;
     overflow: hidden;
+    width: 85%; /* Slide width */
+    margin-right: 15px;
   }
 
-  /* Adjust overall spacing */
+  /* Title alignment */
   #portfolio .display-5.fw-semibold {
-    margin-bottom: 2.5rem; /* Matches spacing below slides */
+    margin-bottom: 2.5rem; /* Matches swiper's margin-bottom */
+    font-size: 1.8rem; /* Optimized font size for mobile */
   }
-  
+
+  /* Case Study button */
   #portfolio .text-center {
-    margin-top: 0; /* Remove button container's margin-top */
+    margin-top: 0; /* Remove default margin-top */
   }
   
-  /* Maintain pagination style */
+  #portfolio .btn-primary {
+    padding: 0.8rem 2rem; /* Mobile-friendly button size */
+    font-size: 0.9rem;
+  }
+
+  /* Pagination */
   .swiper.portfolioSwiper .swiper-pagination {
-    position: relative;
-    bottom: 0;
-    margin-top: 15px;
+    margin-top: 1rem;
   }
 }
 
