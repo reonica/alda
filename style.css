@@ -269,6 +269,13 @@ a {
   }
 }
 
+/* New padding class for services section on mobile */
+@media (max-width: 768px) {
+  #service.padding-medium {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
 
 /*----------------------------------------------*/
 /* 3. SITE STRUCTURE */
