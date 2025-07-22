@@ -197,18 +197,6 @@ body {
   }
 }
 
-/* Add hover effects to buttons */
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-/* Service box hover effect */
-#service .bg-dark:hover, #service .bg-light:hover {
-  transform: translateY(-5px);
-  transition: all 0.3s ease;
-}
-
 body {
   letter-spacing: 0.01625rem;
 }
@@ -416,30 +404,6 @@ iconify-icon.arrow-icon {
   }
 }
 
-/* Current hero has background image and foreground image - could be streamlined */
-#hero {
-  background-size: cover;
-  background-position: center;
-  min-height: 90vh; /* Add minimum height */
-  display: flex;
-  align-items: center;
-}
-
-/* Make the heading more prominent */
-#hero h2.display-1 {
-  font-size: 3.5rem; /* Slightly smaller on mobile */
-  line-height: 1.2;
-}
-
-@media (max-width: 768px) {
-  #hero h2.display-1 {
-    font-size: 2.5rem;
-  }
-  #hero img.img-fluid {
-    max-width: 80%;
-    margin: 2rem auto 0;
-  }
-}
 
 /* about section style */
 .nav-tabs .nav-item {
@@ -712,21 +676,6 @@ div#cboxOverlay {
   font-weight: bold;
   margin: 0 auto 15px;
 
-}
-
-/* Make process steps more visually connected */
-.process-number {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 1199px) {
-  #process .col.my-4 {
-    padding: 2rem;
-    border-radius: 8px;
-  }
 }
 
 /* blog section style */
@@ -1017,19 +966,6 @@ div#cboxOverlay {
     left: 50%;
     transform: translateX(-50%);
   }
-}
-
-/* Ensure color contrast meets WCAG standards */
-:root {
-  --primary-color: #191919; /* Dark enough for contrast */
-  --light-color: #fff;
-  --dark-color: #222;
-}
-
-/* Add focus styles */
-a:focus, button:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 3px;
 }
 
 /*--------------------------------------------------------------
