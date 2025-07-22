@@ -680,42 +680,34 @@ opacity: 1;
 }
 
 /* Portfolio Carousel Mobile Styles */
-.swiper.portfolioSwiper {
-  padding: 0 15px 30px;
-}
+@media (max-width: 767px) {
+  .swiper.portfolioSwiper {
+    padding: 0 15px;
+    margin-bottom: 2.5rem; /* Replaced padding-bottom with margin-bottom for consistent spacing */
+  }
 
-.swiper.portfolioSwiper .swiper-slide {
-  transition: transform 0.3s ease;
-  border-radius: 8px;
-  overflow: hidden;
-}
+  /* Maintain other swiper styles */
+  .swiper.portfolioSwiper .swiper-slide {
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
-.swiper.portfolioSwiper .swiper-slide img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.swiper.portfolioSwiper .swiper-pagination {
-  position: relative;
-  bottom: 0;
-  margin-top: 15px;
-}
-
-.swiper.portfolioSwiper .swiper-pagination-bullet {
-  width: 10px;
-  height: 10px;
-  background-color: #ccc;
-  opacity: 1;
-}
-
-.swiper.portfolioSwiper .swiper-pagination-bullet-active {
-  background-color: #000;
-}
-
-/* Adjust spacing between carousel and button */
-#portfolio .text-center {
-  margin-top: 30px;
+  /* Adjust overall spacing */
+  #portfolio .display-5.fw-semibold {
+    margin-bottom: 2.5rem; /* Matches spacing below slides */
+  }
+  
+  #portfolio .text-center {
+    margin-top: 0; /* Remove button container's margin-top */
+  }
+  
+  /* Maintain pagination style */
+  .swiper.portfolioSwiper .swiper-pagination {
+    position: relative;
+    bottom: 0;
+    margin-top: 15px;
+  }
 }
 
 /*---- video section style ----*/
