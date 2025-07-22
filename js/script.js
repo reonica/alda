@@ -115,30 +115,36 @@ var serviceSwiper = new Swiper("#service .swiper", {
       });
     }
 
-// Initialize Portfolio Swiper
+// Initialize Portfolio Swiper - Fixed Pagination Version
 if (document.querySelector('.portfolioSwiper')) {
   const portfolioSwiper = new Swiper('.portfolioSwiper', {
     slidesPerView: 1.2,
     spaceBetween: 15,
     centeredSlides: true,
-    loop: true,
+    loop: false, // 🔄 Tắt loop để pagination chính xác
     grabCursor: true,
     pagination: {
-      el: '.portfolioSwiper .swiper-pagination',
+      el: '.swiper-pagination',
       clickable: true,
+      dynamicBullets: true, // 💫 Hiệu ứng bullet mượt mà
+      dynamicMainBullets: 3 // 🔢 Chỉ hiển thị 3 bullet quanh active
     },
     breakpoints: {
-      400: {
-        slidesPerView: 1.3
-      },
-      500: {
-        slidesPerView: 1.5
-      },
-      576: {
+      400: { slidesPerView: 1.3 },
+      500: { slidesPerView: 1.5 },
+      576: { 
         slidesPerView: 1.8,
-        spaceBetween: 20
+        spaceBetween: 20 
+      },
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 25,
+        pagination: false // 🖥️ Ẩn pagination trên desktop
       }
-    }
+    },
+    observer: true, // 👀 Tự động cập nhật khi DOM thay đổi
+    observeParents: true,
+    observeSlideChildren: true
   });
 }
     
