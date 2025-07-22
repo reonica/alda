@@ -115,7 +115,7 @@ var serviceSwiper = new Swiper("#service .swiper", {
       });
     }
 
-// Portfolio Swiper
+// Portfolio Swiper No Pagination
 if (document.querySelector('.portfolioSwiper')) {
   const portfolioSwiper = new Swiper('.portfolioSwiper', {
     slidesPerView: 1.2,
