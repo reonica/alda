@@ -445,27 +445,57 @@ iconify-icon.arrow-icon {
   min-width: 180px; /* Ensure button has minimum width */
 }
 
-/* about section style */
-.nav-tabs .nav-item {
-  transition: all 0.1s ease-in;
-  border-color: transparent;
-  border-radius: 0px;
+/* CSS for the About section - Optimized */
+#about-us .nav-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+  white-space: nowrap;
+  margin-bottom: 1.5rem;
+  border-bottom: none;
 }
 
-.nav-tabs .nav-item.show .nav-link,
-.nav-tabs .nav-link.active {
-  background-color: transparent;
-  border-color: transparent;
-  border-bottom: 2px solid var(--accent-color);
-  transition: all 0.1s ease-in;
+#about-us .nav-tabs::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on Chrome/Safari */
 }
 
-.nav-tabs .nav-link:focus,
-.nav-tabs .nav-link:hover {
-  isolation: isolate;
-  border-color: transparent;
-  border-bottom: 2px solid var(--accent-color);
-  transition: all 0.1s ease-in;
+#about-us .nav-tabs .nav-item {
+  flex: 0 0 auto;
+  border-bottom: 2px solid transparent;
+  margin-right: 1.5rem;
+  transition: all 0.1s ease-in; /* Giữ hiệu ứng transition */
+}
+
+#about-us .nav-tabs .nav-link {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #555;
+  border: none;
+  transition: all 0.1s ease-in; /* Thêm transition */
+}
+
+#about-us .nav-tabs .nav-link.active,
+#about-us .nav-tabs .nav-link:hover {
+  border-bottom: 2px solid var(--accent-color); /* Sử dụng biến màu */
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Justify text alignment for content */
+#about-us .tab-content p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  #about-us .nav-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
 }
 
 
