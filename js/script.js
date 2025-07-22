@@ -121,16 +121,16 @@ if (document.querySelector('.portfolioSwiper')) {
     slidesPerView: 1.2,
     spaceBetween: 15,
     centeredSlides: true,
-    loop: false, // Phải tắt loop để pagination chính xác
+    loop: false, // BẮT BUỘC phải tắt loop
     grabCursor: true,
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
-      type: 'bullets', // Chắc chắn sử dụng dạng bullet
-      bulletElement: 'span', // Sử dụng thẻ span cho từng bullet
+      type: 'bullets',
       renderBullet: function (index, className) {
-        return '<span class="' + className + '"></span>'; // Cấu trúc HTML giống service section
-      }
+        return '<span class="' + className + '"></span>'; // Cấu trúc HTML giống services
+      },
+      dynamicBullets: false // TẮT dynamic bullets để giống services
     },
     breakpoints: {
       400: { slidesPerView: 1.3 },
@@ -142,13 +142,9 @@ if (document.querySelector('.portfolioSwiper')) {
       768: {
         slidesPerView: 2,
         spaceBetween: 25,
-        pagination: false // Ẩn pagination trên desktop giống service section
+        pagination: false // Ẩn pagination trên desktop
       }
-    },
-    // Thêm observer để đồng bộ với service section
-    observer: true,
-    observeParents: true,
-    observeSlideChildren: true
+    }
   });
 }
     
