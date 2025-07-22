@@ -642,40 +642,62 @@ img.brand:hover{
 opacity: 1;
 }
 
-/* Brand Collection/Partners Section */
+/* --- Partners Section - Infinite Scroll --- */
 #brand-collection {
   background-color: #f9f9f9;
-    padding: 25px 0;
+  padding: 60px 0;
+  overflow: hidden;
 }
 
-.brandSwiper {
-  padding: 10px 0;
-}
-
-.brandSwiper .swiper-slide {
+.partners-carousel-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 40px;
+  position: relative;
 }
 
-#brand-collection .brand {
-  max-width: 120px;
-  width: 100%;
-  height: auto;
+.partners-inner {
+  display: flex;
+  align-items: center;
+  animation: scroll-left 30s linear infinite;
+  will-change: transform; /* Tối ưu hiệu suất animation */
+}
+
+.partners-inner img {
+  max-height: 80px;
+  width: auto;
+  flex-shrink: 0;
+  margin-right: 60px;
   filter: grayscale(100%);
   opacity: 0.7;
   transition: all 0.3s ease;
-    padding: 0 15px; 
 }
 
-#brand-collection .brand:hover {
-  filter: grayscale(0);
+.partners-inner img:hover {
+  filter: grayscale(0%);
   opacity: 1;
+  transform: scale(1.05);
 }
 
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Di chuyển 50% chiều dài của content */
+  }
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  #brand-collection .brand {
-    max-width: 80px;
+  .partners-inner img {
+    max-height: 50px;
+    margin-right: 30px;
+  }
+  
+  #brand-collection h3 {
+    font-size: 1.8rem;
   }
 }
 
