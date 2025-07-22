@@ -679,58 +679,31 @@ opacity: 1;
   }
 }
 
-/* ===== Portfolio Mobile Fixes - Updated Version ===== */
+/* === Portfolio Pagination - Match Service Section Style === */
+.swiper.portfolioSwiper .swiper-pagination {
+  position: relative;
+  margin-top: 1.5rem;
+  bottom: auto !important; /* Ghi đè vị trí mặc định */
+}
+
+.swiper.portfolioSwiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: #d1d1d1;
+  opacity: 1;
+  margin: 0 5px !important;
+  transition: all 0.3s ease;
+}
+
+.swiper.portfolioSwiper .swiper-pagination-bullet-active {
+  background: #191919;
+  transform: scale(1.2);
+}
+
+/* Responsive adjustments */
 @media (max-width: 767px) {
-  #portfolio .swiper.portfolioSwiper {
-    padding: 0 15px;
-    margin-bottom: 0.5rem; 
-  }
-
-  #portfolio .display-5.fw-semibold {
-    margin-bottom: 0.5rem; 
-  }
-
-  #portfolio .text-center {
-    margin-top: 0 !important;
-  }
-
-  /* Fix pagination dot */
   .swiper.portfolioSwiper .swiper-pagination {
-    bottom: -5px !important;
-    margin-top: 1rem; 
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .swiper.portfolioSwiper .swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
-    background: rgba(0,0,0,0.2);
-    margin: 0 4px !important; 
-    opacity: 1;
-    transition: all 0.3s ease;
-  }
-
-  .swiper.portfolioSwiper .swiper-pagination-bullet-active {
-    background: var(--accent-color);
-    transform: scale(1.2);
-    width: 12px;
-    height: 12px;
-  }
-
-  .swiper.portfolioSwiper .swiper-slide {
-    padding-bottom: 15px; 
-  }
-  
-  .swiper.portfolioSwiper .swiper-pagination-bullets-dynamic {
-    overflow: visible;
-  }
-  
-  #portfolio .btn-outline-primary {
-    margin-top: 0.5rem; 
+    margin-top: 1rem;
   }
 }
 
