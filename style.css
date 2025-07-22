@@ -996,7 +996,34 @@ div#cboxOverlay {
   margin-top: 1rem; 
   padding: 0 10px; 
 }
-
+/* Add to the end of your CSS file */
+@media (max-width: 768px) {
+  #footer .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  #footer .col-lg-2.col-md-6 {
+    width: 50%; /* Display 2 columns side by side */
+    flex: 0 0 auto;
+  }
+  
+  #footer .footer-menu {
+    text-align: center; /* Center align content */
+    padding: 0 15px; /* Add spacing between columns */
+  }
+  
+  #footer .menu-title:after {
+    left: 50%;
+    transform: translateX(-50%); /* Center underline for title */
+  }
+  
+  /* Ensure newsletter takes full width */
+  #footer .col-lg-4.col-md-6 {
+    width: 100%;
+    margin-top: 30px; /* Add spacing above the newsletter section */
+  }
+}
 /*--------------------------------------------------------------
 Chocolat
 --------------------------------------------------------------*/
