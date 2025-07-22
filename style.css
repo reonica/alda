@@ -526,6 +526,44 @@ iconify-icon.arrow-icon {
   }
 }
 
+/* Add to the end of your CSS file */
+@media (max-width: 767px) {
+  #milestone .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  
+  #milestone .col-md-3 {
+    width: 50%;
+    padding: 0 10px;
+    margin-bottom: 30px;
+    flex: 0 0 auto;
+  }
+  
+  /* Center content in each column */
+  #milestone .text-center {
+    padding: 0 15px;
+  }
+  
+  /* Adjust icon size */
+  #milestone iconify-icon {
+    font-size: 2.5rem;
+    padding: 1.5rem !important;
+  }
+  
+  /* Adjust text size */
+  #milestone h2 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem !important;
+  }
+  
+  #milestone p {
+    font-size: 0.9rem;
+  }
+}
+
 /* brand section style */
 img.brand{
 opacity: 0.5;
