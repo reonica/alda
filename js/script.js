@@ -115,19 +115,22 @@ var serviceSwiper = new Swiper("#service .swiper", {
       });
     }
 
-// Initialize Portfolio Swiper - Fixed Pagination Version
+// Initialize Portfolio Swiper - Sync with Service section style
 if (document.querySelector('.portfolioSwiper')) {
   const portfolioSwiper = new Swiper('.portfolioSwiper', {
     slidesPerView: 1.2,
     spaceBetween: 15,
     centeredSlides: true,
-    loop: false, // 🔄 Tắt loop để pagination chính xác
+    loop: false, // Phải tắt loop để pagination chính xác
     grabCursor: true,
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
-      dynamicBullets: true, // 💫 Hiệu ứng bullet mượt mà
-      dynamicMainBullets: 3 // 🔢 Chỉ hiển thị 3 bullet quanh active
+      type: 'bullets', // Chắc chắn sử dụng dạng bullet
+      bulletElement: 'span', // Sử dụng thẻ span cho từng bullet
+      renderBullet: function (index, className) {
+        return '<span class="' + className + '"></span>'; // Cấu trúc HTML giống service section
+      }
     },
     breakpoints: {
       400: { slidesPerView: 1.3 },
@@ -139,10 +142,11 @@ if (document.querySelector('.portfolioSwiper')) {
       768: {
         slidesPerView: 2,
         spaceBetween: 25,
-        pagination: false // 🖥️ Ẩn pagination trên desktop
+        pagination: false // Ẩn pagination trên desktop giống service section
       }
     },
-    observer: true, // 👀 Tự động cập nhật khi DOM thay đổi
+    // Thêm observer để đồng bộ với service section
+    observer: true,
     observeParents: true,
     observeSlideChildren: true
   });
