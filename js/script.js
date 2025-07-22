@@ -31,6 +31,16 @@
     })
   }
 
+// Add scroll behavior
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+  
   // Xử lý số lượng sản phẩm
   var initProductQty = function () {
     $('.product-qty').each(function () {
@@ -141,6 +151,19 @@ if (document.querySelector('.portfolioSwiper')) {
     }
   });
 }
+
+// Initialize with better autoplay settings
+const testimonialSwiper = new Swiper('.testimonial-swiper', {
+  autoplay: {
+    delay: 8000,
+    disableOnInteraction: false,
+  },
+  loop: true,
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
+});
     
     // Isotope
     window.addEventListener("load", function () {
