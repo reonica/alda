@@ -237,53 +237,45 @@ a {
   font-weight: 300;
 }
 
-.padding-large {
-  padding-top: 9rem;
-  padding-bottom: 9rem;
+/* ======================
+   SECTION PADDING SYSTEM 
+   ====================== */
+/* Base padding for all sections */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
-.padding-medium {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+/* Compact version */
+.section-padding-compact {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
-.padding-medium-2 {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+/* Hero section */
+.section-padding-hero {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
 }
 
-/* Service Section Specific Padding */
-#service {
-  padding-top: 4rem;
-}
-
-/* Responsive Adjustments */
-@media only screen and (max-width: 768px) {
-  .padding-large {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-
-  .padding-medium {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  .padding-medium-2 {
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-padding {
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
   
-  /* Service section adjustments */
-  #service {
-    padding-top: 3rem;
-  }
-  
-  #service.padding-medium {
+  .section-padding-compact {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
+  
+  .section-padding-hero {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
 }
+
 /*----------------------------------------------*/
 /* 3. SITE STRUCTURE */
 /*----------------------------------------------*/
