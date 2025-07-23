@@ -737,6 +737,21 @@ opacity: 1;
     margin-top: 15px;
   }
 }
+/* Overlay text */
+
+#portfolio .position-relative {
+  position: relative;
+}
+
+#portfolio .position-absolute {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: rgba(0,0,0,0.8);
+  color: white !important;
+}
 
 /*---- video section style ----*/
 /* color box style */
