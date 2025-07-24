@@ -1,7 +1,7 @@
 (function ($) {
   "use strict";
 
-  // Khởi tạo Preloader
+  // Initialize Preloader
   var initPreloader = function () {
     $(document).ready(function ($) {
       var Body = $('body');
@@ -13,7 +13,7 @@
     });
   }
 
-  // Màu nền khi scroll
+  // Background color on scroll
   var initScrollNav = function () {
     var scroll = $(window).scrollTop();
     if (scroll >= 200) {
@@ -23,7 +23,7 @@
     }
   }
 
-  // Khởi tạo lightbox
+  // Initialize Lightbox
   var initChocolat = function () {
     Chocolat(document.querySelectorAll('.image-link'), {
       imageSize: 'contain',
@@ -31,7 +31,7 @@
     })
   }
 
-  // Xử lý số lượng sản phẩm
+  // Product quantity handling
   var initProductQty = function () {
     $('.product-qty').each(function () {
       var $el_product = $(this);
@@ -47,6 +47,35 @@
           $el_product.find('#quantity').val(quantity - 1);
         }
       });
+    });
+  }
+
+  // Back to Top & Social Buttons Functionality
+  var initScrollButtons = function() {
+    const backToTopButton = $('.back-to-top');
+    
+    $(window).on('scroll', function() {
+      if ($(window).scrollTop() > 300) {
+        backToTopButton.addClass('visible');
+      } else {
+        backToTopButton.removeClass('visible');
+      }
+    });
+    
+    backToTopButton.on('click', function(e) {
+      e.preventDefault();
+      $('html, body').animate({ scrollTop: 0 }, 'smooth');
+    });
+    
+    // Smooth scroll for all anchor links
+    $('a[href^="#"]').on('click', function(e) {
+      e.preventDefault();
+      const target = $(this.getAttribute('href'));
+      if (target.length) {
+        $('html, body').animate({
+          scrollTop: target.offset().top
+        }, 'smooth');
+      }
     });
   }
 
@@ -80,23 +109,25 @@
         swiper: thumbSlider,
       },
     });
-// Service Mobile Pagination
-var serviceSwiper = new Swiper("#service .swiper", {
-  slidesPerView: 1,
-  spaceBetween: 20,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  breakpoints: {
-    768: {
-      slidesPerView: 3,
-      spaceBetween: 30,
-      pagination: false
-    }
-  }
-});
-    // Brand Swiper - ĐÃ ĐƯA VÀO TRONG READY VÀ THÊM KIỂM TRA TỒN TẠI
+
+    // Service Mobile Pagination
+    var serviceSwiper = new Swiper("#service .swiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+          pagination: false
+        }
+      }
+    });
+
+    // Brand Swiper
     if ($('.brandSwiper').length) {
       var brandSwiper = new Swiper(".brandSwiper", {
         slidesPerView: 2,
@@ -115,24 +146,24 @@ var serviceSwiper = new Swiper("#service .swiper", {
       });
     }
 
-// Portfolio Swiper No Pagination
-if (document.querySelector('.portfolioSwiper')) {
-  const portfolioSwiper = new Swiper('.portfolioSwiper', {
-    slidesPerView: 1.2,
-    spaceBetween: 15,
-    centeredSlides: true,
-    loop: true,
-    grabCursor: true,
-    breakpoints: {
-      400: { slidesPerView: 1.3 },
-      500: { slidesPerView: 1.5 },
-      576: { 
-        slidesPerView: 1.8,
-        spaceBetween: 20 
-      }
+    // Portfolio Swiper No Pagination
+    if (document.querySelector('.portfolioSwiper')) {
+      const portfolioSwiper = new Swiper('.portfolioSwiper', {
+        slidesPerView: 1.2,
+        spaceBetween: 15,
+        centeredSlides: true,
+        loop: true,
+        grabCursor: true,
+        breakpoints: {
+          400: { slidesPerView: 1.3 },
+          500: { slidesPerView: 1.5 },
+          576: { 
+            slidesPerView: 1.8,
+            spaceBetween: 20 
+          }
+        }
+      });
     }
-  });
-}
     
     // Isotope
     window.addEventListener("load", function () {
@@ -156,6 +187,7 @@ if (document.querySelector('.portfolioSwiper')) {
     initPreloader();
     initChocolat();
     initProductQty();
+    initScrollButtons(); 
     $(window).scroll(initScrollNav);
   });
 
