@@ -45,21 +45,23 @@ var initScrollButtons = function() {
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
 
-  // Desktop only - social dropdown
+  // Social buttons handling
+  $('.social-main').on('click', function(e) {
+    e.preventDefault();
+    $('.social-dropdown').toggleClass('expanded');
+    $(this).toggleClass('active'); // Add active class for rotation effect
+  });
+
+  // Close dropdown when clicking outside (desktop only)
   if (!isMobile) {
-    $('.social-main').on('click', function(e) {
-      e.preventDefault();
-      $('.social-dropdown').toggleClass('expanded');
-    });
-    
     $(document).on('click', function(e) {
       if (!$(e.target).closest('.social-buttons-container').length) {
         $('.social-dropdown').removeClass('expanded');
+        $('.social-main').removeClass('active');
       }
     });
   }
 };
-
   
   // Document ready
   $(document).ready(function () {
