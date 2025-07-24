@@ -39,7 +39,8 @@ var initScrollButtons = function() {
   const $socialMain = $('.social-main');
   const $socialDropdown = $('.social-dropdown');
   let isMobile = window.matchMedia("(max-width: 768px)").matches;
-  console.log('Is mobile:', isMobile);
+  let isScrolling = false;
+  let scrollTimeout;
 
   // Btn always display
   $socialContainer.css({
@@ -48,7 +49,7 @@ var initScrollButtons = function() {
     'visibility': 'visible'
   });
 
-/ On mobile, only show WhatsApp and back-to-top buttons
+  // On mobile, only show WhatsApp and back-to-top buttons
   if (isMobile) {
     // Hide main social button and other social buttons
     $socialMain.hide();
@@ -58,7 +59,7 @@ var initScrollButtons = function() {
     $('.whatsapp').show().css({
       'position': 'fixed',
       'right': '20px',
-      'bottom': '80px', // Position above back-to-top button
+      'bottom': '80px',
       'z-index': '9999'
     });
     
@@ -68,65 +69,36 @@ var initScrollButtons = function() {
       'bottom': '20px',
       'z-index': '9999'
     });
+  } else {
+    // Desktop functionality
+    $socialMain.on('click touchstart', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $socialDropdown.toggleClass('expanded');
+      $socialMain.toggleClass('active');
+    });
+
+    $(document).on('click touchstart', function(e) {
+      if (!$(e.target).closest('.social-buttons-container').length) {
+        $socialDropdown.removeClass('expanded');
+        $socialMain.removeClass('active');
+      }
+    });
+
+    $socialDropdown.on('click touchstart', function(e) {
+      e.stopPropagation();
+    });
   }
   
-  // Back to top behavior
+  // Back to top behavior (works for both mobile and desktop)
   $(window).on('scroll', function() {
     $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
-    
-    // Close on scroll - Mobile only
-    if (isMobile && $socialDropdown.hasClass('expanded')) {
-      isScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(function() {
-        if (isScrolling) {
-          $socialDropdown.removeClass('expanded');
-          $socialMain.removeClass('active');
-        }
-      }, 300);
-    }
   });
   
   $('.back-to-top').on('click', function(e) {
     e.preventDefault();
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
-
-  // Social buttons toggle
-  $socialMain.on('click touchstart', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $socialDropdown.toggleClass('expanded');
-    $socialMain.toggleClass('active');
-  });
-
-  // Close when clicking outside
-  $(document).on('click touchstart', function(e) {
-    if (!$(e.target).closest('.social-buttons-container').length) {
-      $socialDropdown.removeClass('expanded');
-      $socialMain.removeClass('active');
-    }
-  });
-
-  // Prevent closing when clicking inside dropdown
-  $socialDropdown.on('click touchstart', function(e) {
-    e.stopPropagation();
-  });
-
-  // Reset scroll flag
-  $(window).on('scrollend', function() {
-    isScrolling = false;
-  });
-  
-  // Mobile optimization
-  if (isMobile) {
-    $socialMain.css('cursor', 'pointer');
-    $socialDropdown.on('touchmove', function(e) {
-      if ($socialDropdown.hasClass('expanded')) {
-        e.preventDefault();
-      }
-    });
-  }
 };
 
   
