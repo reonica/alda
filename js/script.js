@@ -31,25 +31,6 @@
     })
   }
 
-  // Product quantity handling
-  var initProductQty = function () {
-    $('.product-qty').each(function () {
-      var $el_product = $(this);
-      $el_product.find('.quantity-right-plus').click(function (e) {
-        e.preventDefault();
-        var quantity = parseInt($el_product.find('#quantity').val());
-        $el_product.find('#quantity').val(quantity + 1);
-      });
-      $el_product.find('.quantity-left-minus').click(function (e) {
-        e.preventDefault();
-        var quantity = parseInt($el_product.find('#quantity').val());
-        if (quantity > 0) {
-          $el_product.find('#quantity').val(quantity - 1);
-        }
-      });
-    });
-  }
-
 // Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
 var initScrollButtons = function() {
   console.log('Initializing social buttons...');
@@ -236,7 +217,6 @@ var initScrollButtons = function() {
 
     initPreloader();
     initChocolat();
-    initProductQty();
     initScrollButtons(); 
     $(window).scroll(initScrollNav);
   });
