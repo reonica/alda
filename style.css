@@ -1158,6 +1158,85 @@ div#cboxOverlay {
   margin-top: 1rem; 
   padding: 0 10px; 
 }
+
+/* =============================================
+   SOCIAL MEDIA & BACK-TO-TOP BUTTONS
+   ============================================= */
+
+.social-buttons-container {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 999;
+}
+
+.social-button, .back-to-top {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.social-button:hover, .back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual button colors */
+.whatsapp {
+  background-color: #25D366;
+}
+
+.facebook {
+  background-color: #1877F2;
+}
+
+.twitter {
+  background-color: #000000;
+}
+
+.linkedin {
+  background-color: #0A66C2;
+}
+
+.back-to-top {
+  background-color: var(--primary-color);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .social-buttons-container {
+    right: 15px;
+    bottom: 15px;
+    gap: 10px;
+  }
+  
+  .social-button, .back-to-top {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+}
+
 /* Add to the end of your CSS file */
 @media (max-width: 768px) {
   #footer .row {
