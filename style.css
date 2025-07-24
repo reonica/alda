@@ -1199,6 +1199,11 @@ div#cboxOverlay {
   order: 2;
 }
 
+/* WhatsApp button (desktop) */
+.social-button.whatsapp {
+  order: 0;
+}
+
 /* Dropdown menu */
 .social-dropdown {
   display: none;
