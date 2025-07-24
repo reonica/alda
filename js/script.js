@@ -129,24 +129,24 @@ var initScrollButtons = function() {
       });
     }
 
-    // Portfolio Swiper No Pagination
-    if (document.querySelector('.portfolioSwiper')) {
-      const portfolioSwiper = new Swiper('.portfolioSwiper', {
-        slidesPerView: 1.2,
-        spaceBetween: 15,
-        centeredSlides: true,
-        loop: true,
-        grabCursor: true,
-        breakpoints: {
-          400: { slidesPerView: 1.3 },
-          500: { slidesPerView: 1.5 },
-          576: { 
-            slidesPerView: 1.8,
-            spaceBetween: 20 
-          }
-        }
-      });
+    // Portfolio Swiper with Pagination
+if (document.querySelector('.portfolioSwiper')) {
+  const portfolioSwiper = new Swiper('.portfolioSwiper', {
+    slidesPerView: 1.2,
+    spaceBetween: 20,
+    centeredSlides: true,
+    loop: true,
+    pagination: {
+      el: '.portfolioSwiper .swiper-pagination',
+      clickable: true,
+    },
+    breakpoints: {
+      576: {
+        slidesPerView: 1.5,
+      }
     }
+  });
+}
     
     // Isotope
     window.addEventListener("load", function () {
