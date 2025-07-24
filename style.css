@@ -707,43 +707,13 @@ opacity: 1;
   }
 }
 
-/* === Portfolio Pagination - Match Service Section Style === */
-.portfolioSwiper .swiper-pagination {
-  position: relative !important;
-  bottom: auto !important;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.portfolioSwiper .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background: #d1d1d1;
-  opacity: 1 !important;
-  margin: 0 !important;
-  transition: all 0.3s ease;
-}
-
-.portfolioSwiper .swiper-pagination-bullet-active {
-  background: #191919 !important;
-  transform: scale(1.2);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .portfolioSwiper .swiper-pagination {
-    margin-top: 15px;
-  }
-}
 /* ===== PORTFOLIO SECTION - OPTIMIZED ===== */
 #portfolio {
   position: relative;
 }
 
 #portfolio .entry-container.text-center {
-  margin-bottom: 3rem; 
+  margin-bottom: 9rem; 
 }
 
 #portfolio .entry-container.mt-5.g-3 {
@@ -815,7 +785,7 @@ opacity: 1;
 }
 
 /* Mobile adjustments for grid (if any) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #portfolio .entry-container {
     gap: 1.5rem !important;
   }
@@ -835,7 +805,11 @@ opacity: 1;
 }
 
 /* Mobile Swiper adjustments */
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
+      #portfolio .portfolioSwiper {
+    margin-top: 6rem;
+  }
+    
   #portfolio .portfolioSwiper .portfolio-caption {
     padding: 10px 15px;
     color: white;
@@ -850,6 +824,37 @@ opacity: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+/* Portfolio Pagination - Match Service Section Style */
+#portfolio .portfolioSwiper .swiper-pagination {
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+#portfolio .portfolioSwiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: #d1d1d1;
+  opacity: 1 !important;
+  margin: 0 !important;
+  transition: all 0.3s ease;
+}
+
+#portfolio .portfolioSwiper .swiper-pagination-bullet-active {
+  background: #191919 !important;
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #portfolio .portfolioSwiper .swiper-pagination {
+    margin-top: 15px;
   }
 }
 
