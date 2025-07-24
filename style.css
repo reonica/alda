@@ -1268,6 +1268,85 @@ div#cboxOverlay {
   }
 }
 
+/* MOBILE SOCIAL BUTTONS - OPTIMIZED VERSION */
+@media (max-width: 768px) {
+  .social-buttons-container {
+    right: 15px;
+    bottom: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .social-main {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: none;
+    transition: transform 0.2s ease;
+  }
+
+  .social-main.active {
+    transform: rotate(135deg); 
+  }
+
+  .social-dropdown {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+
+  .social-dropdown.expanded {
+    display: flex;
+    animation: slideUp 0.3s ease forwards;
+  }
+
+  .social-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  .social-dropdown.expanded .social-button {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered animation */
+  .social-dropdown.expanded .social-button:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .social-dropdown.expanded .social-button:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  .social-dropdown.expanded .social-button:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
 /* Add to the end of your CSS file */
 @media (max-width: 768px) {
   #footer .row {
