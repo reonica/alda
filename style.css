@@ -742,6 +742,14 @@ opacity: 1;
   position: relative;
 }
 
+#portfolio .entry-container.text-center {
+  margin-bottom: 3rem; 
+}
+
+#portfolio .entry-container.mt-5.g-3 {
+  row-gap: 1.5rem;
+}
+
 #portfolio .entry-item {
   margin-bottom: 2rem;
   position: relative;
@@ -806,7 +814,7 @@ opacity: 1;
   }
 }
 
-/* Mobile adjustments */
+/* Mobile adjustments for grid (if any) */
 @media (max-width: 767px) {
   #portfolio .entry-container {
     gap: 1.5rem !important;
@@ -823,6 +831,25 @@ opacity: 1;
   
   #portfolio .entry-item {
     margin-bottom: 1.5rem;
+  }
+}
+
+/* Mobile Swiper adjustments */
+@media (max-width: 767.98px) {
+  #portfolio .portfolioSwiper .portfolio-caption {
+    padding: 10px 15px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); 
+    position: static; 
+    width: 100%;
+  }
+  
+  #portfolio .swiper-slide .position-relative {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
