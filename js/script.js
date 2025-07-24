@@ -50,12 +50,14 @@
     });
   }
 
-  // Back to Top & Social Buttons Functionality
-  var initScrollButtons = function() {
-    const backToTopButton = $('.back-to-top');
-    
+ // Back to Top & Social Buttons Functionality
+var initScrollButtons = function() {
+  const backToTopButton = $('.back-to-top');
+  
   $(window).on('scroll', function() {
     backToTopButton.toggleClass('visible', $(this).scrollTop() > 300);
+
+    $('.social-dropdown').removeClass('expanded');
   });
   
   backToTopButton.on('click', function(e) {
@@ -63,12 +65,20 @@
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
 
-  // Social Dropdown - Simple Toggle
+  // Social Dropdown - Toggle when clicking
   $('.social-main').on('click', function(e) {
-    e.stopPropagation();
     e.preventDefault();
+    e.stopPropagation(); // Ngăn sự kiện lan ra document
     
     $(this).siblings('.social-dropdown').toggleClass('expanded');
+  });
+  
+  $(document).on('click', function() {
+    $('.social-dropdown').removeClass('expanded');
+  });
+  
+  $('.social-dropdown').on('click', function(e) {
+    e.stopPropagation();
   });
 }
   
