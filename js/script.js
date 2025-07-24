@@ -54,30 +54,26 @@
   var initScrollButtons = function() {
     const backToTopButton = $('.back-to-top');
     
-    $(window).on('scroll', function() {
-      if ($(window).scrollTop() > 300) {
-        backToTopButton.addClass('visible');
-      } else {
-        backToTopButton.removeClass('visible');
-      }
-    });
-    
-    backToTopButton.on('click', function(e) {
-      e.preventDefault();
-      $('html, body').animate({ scrollTop: 0 }, 'smooth');
-    });
-    
-    // Smooth scroll for all anchor links
-    $('a[href^="#"]').on('click', function(e) {
-      e.preventDefault();
-      const target = $(this.getAttribute('href'));
-      if (target.length) {
-        $('html, body').animate({
-          scrollTop: target.offset().top
-        }, 'smooth');
-      }
-    });
-  }
+  $(window).on('scroll', function() {
+    $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
+  });
+  
+  $('.back-to-top').on('click', function(e) {
+    e.preventDefault();
+    $('html, body').animate({ scrollTop: 0 }, 'smooth');
+  });
+
+  // Social Dropdown Toggle
+  $('.social-main').on('click', function(e) {
+    e.stopPropagation();
+    $('.social-dropdown').toggleClass('expanded');
+  });
+
+  // Close dropdown when clicking outside.
+  $(document).on('click', function() {
+    $('.social-dropdown').removeClass('expanded');
+  });
+}
 
   // Document ready
   $(document).ready(function () {
