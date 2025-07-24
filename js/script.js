@@ -54,33 +54,23 @@
   var initScrollButtons = function() {
     const backToTopButton = $('.back-to-top');
     
-    $(window).on('scroll', function() {
-      $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
-    });
+  $(window).on('scroll', function() {
+    backToTopButton.toggleClass('visible', $(this).scrollTop() > 300);
+  });
+  
+  backToTopButton.on('click', function(e) {
+    e.preventDefault();
+    $('html, body').animate({ scrollTop: 0 }, 'smooth');
+  });
+
+  // Social Dropdown - Simple Toggle
+  $('.social-main').on('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
     
-    $('.back-to-top').on('click', function(e) {
-      e.preventDefault();
-      $('html, body').animate({ scrollTop: 0 }, 'smooth');
-    });
-
-    // Social Dropdown Toggle
-    $('.social-main').on('click tap', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      
-      $('.social-dropdown').toggleClass('expanded');
-      
-      $('.social-dropdown').not($(this).closest('.social-buttons-container').find('.social-dropdown'))
-                           .removeClass('expanded');
-    });
-
-    // Close dropdown when clicking outside
-    $(document).on('click tap', function(e) {
-      if (!$(e.target).closest('.social-buttons-container').length) {
-        $('.social-dropdown').removeClass('expanded');
-      }
-    });
-  }
+    $(this).siblings('.social-dropdown').toggleClass('expanded');
+  });
+}
   
   // Document ready
   $(document).ready(function () {
