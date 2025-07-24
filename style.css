@@ -1160,9 +1160,8 @@ div#cboxOverlay {
 }
 
 /* =============================================
-   SOCIAL MEDIA & BACK-TO-TOP BUTTONS
+   SOCIAL MEDIA & BACK-TO-TOP BUTTONS (NEW VERSION)
    ============================================= */
-
 .social-buttons-container {
   position: fixed;
   right: 20px;
@@ -1171,6 +1170,7 @@ div#cboxOverlay {
   flex-direction: column;
   gap: 15px;
   z-index: 999;
+  align-items: flex-end;
 }
 
 .social-button, .back-to-top {
@@ -1193,24 +1193,37 @@ div#cboxOverlay {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Individual button colors */
-.whatsapp {
-  background-color: #25D366;
+/* Main button */
+.social-main {
+  background: var(--primary-color) !important;
+  order: 2;
 }
 
-.facebook {
-  background-color: #1877F2;
+/* Dropdown menu */
+.social-dropdown {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.4s ease;
 }
 
-.twitter {
-  background-color: #000000;
+.social-buttons-container:hover .social-dropdown,
+.social-dropdown.expanded {
+  display: flex;
+  animation: fadeInUp 0.3s ease;
 }
 
-.linkedin {
-  background-color: #0A66C2;
-}
+/* Button colors */
+.whatsapp { background-color: #25D366; }
+.facebook { background-color: #1877F2; }
+.twitter { background-color: #000000; }
+.linkedin { background-color: #0A66C2; }
+.tiktok { background-color: #000000; }
+.zalo { background-color: #0180C7; }
 
+/* Back to top button */
 .back-to-top {
+  order: 1;
   background-color: var(--primary-color);
   opacity: 0;
   visibility: hidden;
@@ -1222,7 +1235,13 @@ div#cboxOverlay {
   visibility: visible;
 }
 
-/* Responsive adjustments */
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Optimization */
 @media (max-width: 768px) {
   .social-buttons-container {
     right: 15px;
@@ -1230,10 +1249,22 @@ div#cboxOverlay {
     gap: 10px;
   }
   
-  .social-button, .back-to-top {
+  .social-button, 
+  .back-to-top,
+  .social-main {
     width: 45px;
     height: 45px;
     font-size: 1.3rem;
+  }
+  
+  /* Disable hover on mobile */
+  .social-buttons-container:hover .social-dropdown {
+    display: none;
+  }
+  
+  /* Only show dropdown when expanded class is present */
+  .social-dropdown.expanded {
+    display: flex;
   }
 }
 
