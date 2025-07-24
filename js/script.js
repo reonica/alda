@@ -38,8 +38,6 @@ var initScrollButtons = function() {
   const $socialContainer = $('.social-buttons-container');
   const $socialMain = $('.social-main');
   const $socialDropdown = $('.social-dropdown');
-  let isScrolling = false;
-  let scrollTimeout;
   let isMobile = window.matchMedia("(max-width: 768px)").matches;
   console.log('Is mobile:', isMobile);
 
@@ -49,6 +47,28 @@ var initScrollButtons = function() {
     'opacity': '1',
     'visibility': 'visible'
   });
+
+/ On mobile, only show WhatsApp and back-to-top buttons
+  if (isMobile) {
+    // Hide main social button and other social buttons
+    $socialMain.hide();
+    $socialDropdown.hide();
+    
+    // Only show WhatsApp button and back-to-top
+    $('.whatsapp').show().css({
+      'position': 'fixed',
+      'right': '20px',
+      'bottom': '80px', // Position above back-to-top button
+      'z-index': '9999'
+    });
+    
+    $('.back-to-top').css({
+      'position': 'fixed',
+      'right': '20px',
+      'bottom': '20px',
+      'z-index': '9999'
+    });
+  }
   
   // Back to top behavior
   $(window).on('scroll', function() {
