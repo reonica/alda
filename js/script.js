@@ -33,64 +33,9 @@
 
 // Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
 var initScrollButtons = function() {
-  console.log('Initializing social buttons...');
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   
-  const $socialContainer = $('.social-buttons-container');
-  const $socialMain = $('.social-main');
-  const $socialDropdown = $('.social-dropdown');
-  let isMobile = window.matchMedia("(max-width: 768px)").matches;
-  let isScrolling = false;
-  let scrollTimeout;
-
-  // Btn always display
-  $socialContainer.css({
-    'display': 'flex',
-    'opacity': '1',
-    'visibility': 'visible'
-  });
-
-  // On mobile, only show WhatsApp and back-to-top buttons
-  if (isMobile) {
-    // Hide main social button and other social buttons
-    $socialMain.hide();
-    $socialDropdown.hide();
-    
-    // Only show WhatsApp button and back-to-top
-    $('.whatsapp').show().css({
-      'position': 'fixed',
-      'right': '20px',
-      'bottom': '80px',
-      'z-index': '9999'
-    });
-    
-    $('.back-to-top').css({
-      'position': 'fixed',
-      'right': '20px',
-      'bottom': '20px',
-      'z-index': '9999'
-    });
-  } else {
-    // Desktop functionality
-    $socialMain.on('click touchstart', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      $socialDropdown.toggleClass('expanded');
-      $socialMain.toggleClass('active');
-    });
-
-    $(document).on('click touchstart', function(e) {
-      if (!$(e.target).closest('.social-buttons-container').length) {
-        $socialDropdown.removeClass('expanded');
-        $socialMain.removeClass('active');
-      }
-    });
-
-    $socialDropdown.on('click touchstart', function(e) {
-      e.stopPropagation();
-    });
-  }
-  
-  // Back to top behavior (works for both mobile and desktop)
+  // Back to top
   $(window).on('scroll', function() {
     $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
   });
@@ -99,6 +44,20 @@ var initScrollButtons = function() {
     e.preventDefault();
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
+
+  // Desktop only - social dropdown
+  if (!isMobile) {
+    $('.social-main').on('click', function(e) {
+      e.preventDefault();
+      $('.social-dropdown').toggleClass('expanded');
+    });
+    
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.social-buttons-container').length) {
+        $('.social-dropdown').removeClass('expanded');
+      }
+    });
+  }
 };
 
   
