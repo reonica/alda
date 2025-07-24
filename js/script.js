@@ -50,15 +50,25 @@
     });
   }
 
-  // Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
+// Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
 var initScrollButtons = function() {
+  console.log('Initializing social buttons...');
+  
   const $socialContainer = $('.social-buttons-container');
   const $socialMain = $('.social-main');
   const $socialDropdown = $('.social-dropdown');
   let isScrolling = false;
   let scrollTimeout;
   let isMobile = window.matchMedia("(max-width: 768px)").matches;
+  console.log('Is mobile:', isMobile);
 
+  // Btn always display
+  $socialContainer.css({
+    'display': 'flex',
+    'opacity': '1',
+    'visibility': 'visible'
+  });
+  
   // Back to top behavior
   $(window).on('scroll', function() {
     $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
@@ -84,7 +94,7 @@ var initScrollButtons = function() {
   // Social buttons toggle
   $socialMain.on('click touchstart', function(e) {
     e.stopPropagation();
-    e.preventDefault(); // Prevent double tap on mobile
+    e.preventDefault();
     $socialDropdown.toggleClass('expanded');
     $socialMain.toggleClass('active');
   });
@@ -106,7 +116,18 @@ var initScrollButtons = function() {
   $(window).on('scrollend', function() {
     isScrolling = false;
   });
+  
+  // Mobile optimization
+  if (isMobile) {
+    $socialMain.css('cursor', 'pointer');
+    $socialDropdown.on('touchmove', function(e) {
+      if ($socialDropdown.hasClass('expanded')) {
+        e.preventDefault();
+      }
+    });
+  }
 };
+
   
   // Document ready
   $(document).ready(function () {
