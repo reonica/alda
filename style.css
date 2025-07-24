@@ -1188,8 +1188,9 @@ div#cboxOverlay {
   border: none;
 }
 
-.social-buttons-container:hover .social-dropdown {
-  display: none !important;
+.social-button:hover, .back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Main button */
@@ -1203,6 +1204,7 @@ div#cboxOverlay {
   display: none;
   flex-direction: column;
   gap: 10px;
+  transition: all 0.4s ease;
 }
 
 .social-buttons-container:hover .social-dropdown,
