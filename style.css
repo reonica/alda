@@ -1235,14 +1235,6 @@ div#cboxOverlay {
   visibility: visible;
 }
 
-@media (max-width: 768px) {
-  .social-buttons-container {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-}
-
 /* Animations */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
