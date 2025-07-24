@@ -50,12 +50,30 @@
     });
   }
 
-  // Back to Top & Social Buttons Functionality
-  var initScrollButtons = function() {
-    const backToTopButton = $('.back-to-top');
-    
+  // Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
+var initScrollButtons = function() {
+  const $socialContainer = $('.social-buttons-container');
+  const $socialMain = $('.social-main');
+  const $socialDropdown = $('.social-dropdown');
+  let isScrolling = false;
+  let scrollTimeout;
+  let isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  // Back to top behavior
   $(window).on('scroll', function() {
     $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
+    
+    // Close on scroll - Mobile only
+    if (isMobile && $socialDropdown.hasClass('expanded')) {
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        if (isScrolling) {
+          $socialDropdown.removeClass('expanded');
+          $socialMain.removeClass('active');
+        }
+      }, 300);
+    }
   });
   
   $('.back-to-top').on('click', function(e) {
@@ -63,18 +81,33 @@
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
 
-  // Social Dropdown Toggle
-  $('.social-main').on('click', function(e) {
+  // Social buttons toggle
+  $socialMain.on('click touchstart', function(e) {
     e.stopPropagation();
-    $('.social-dropdown').toggleClass('expanded');
+    e.preventDefault(); // Prevent double tap on mobile
+    $socialDropdown.toggleClass('expanded');
+    $socialMain.toggleClass('active');
   });
 
-  // Close dropdown when clicking outside.
-  $(document).on('click', function() {
-    $('.social-dropdown').removeClass('expanded');
+  // Close when clicking outside
+  $(document).on('click touchstart', function(e) {
+    if (!$(e.target).closest('.social-buttons-container').length) {
+      $socialDropdown.removeClass('expanded');
+      $socialMain.removeClass('active');
+    }
   });
-}
 
+  // Prevent closing when clicking inside dropdown
+  $socialDropdown.on('click touchstart', function(e) {
+    e.stopPropagation();
+  });
+
+  // Reset scroll flag
+  $(window).on('scrollend', function() {
+    isScrolling = false;
+  });
+};
+  
   // Document ready
   $(document).ready(function () {
     // Testimonial Swiper
