@@ -45,15 +45,14 @@ var initScrollButtons = function() {
     $('html, body').animate({ scrollTop: 0 }, 'smooth');
   });
 
-  // Social buttons handling
-  $('.social-main').on('click', function(e) {
-    e.preventDefault();
-    $('.social-dropdown').toggleClass('expanded');
-    $(this).toggleClass('active'); // Add active class for rotation effect
-  });
-
-  // Close dropdown when clicking outside (desktop only)
+  // Social buttons handling (only for desktop)
   if (!isMobile) {
+    $('.social-main').on('click', function(e) {
+      e.preventDefault();
+      $('.social-dropdown').toggleClass('expanded');
+      $(this).toggleClass('active');
+    });
+
     $(document).on('click', function(e) {
       if (!$(e.target).closest('.social-buttons-container').length) {
         $('.social-dropdown').removeClass('expanded');
