@@ -1241,33 +1241,6 @@ div#cboxOverlay {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Optimization */
-@media (max-width: 768px) {
-  .social-buttons-container {
-    right: 15px;
-    bottom: 15px;
-    gap: 10px;
-  }
-  
-  .social-button, 
-  .back-to-top,
-  .social-main {
-    width: 45px;
-    height: 45px;
-    font-size: 1.3rem;
-  }
-  
-  /* Disable hover on mobile */
-  .social-buttons-container:hover .social-dropdown {
-    display: none;
-  }
-  
-  /* Only show dropdown when expanded class is present */
-  .social-dropdown.expanded {
-    display: flex;
-  }
-}
-
 /* MOBILE SOCIAL BUTTONS - OPTIMIZED VERSION */
 @media (max-width: 768px) {
   .social-buttons-container {
@@ -1280,59 +1253,33 @@ div#cboxOverlay {
     gap: 10px;
   }
 
-  .social-main {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    border: none;
-    transition: transform 0.2s ease;
-  }
-
-  .social-main.active {
-    transform: rotate(135deg); 
-  }
-
+  .social-main,
   .social-dropdown {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    padding-bottom: 10px;
+    display: none !important;
   }
 
-  .social-dropdown.expanded {
-    display: flex;
-    animation: slideUp 0.3s ease forwards;
-  }
-
- .social-dropdown .social-button {
-    display: none;
-  }
-    
-  .social-dropdown .social-button.whatsapp {
+ .social-button.whatsapp {
     display: flex;
     width: 48px;
     height: 48px;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
+    background-color: #25D366;
     color: white;
     font-size: 1.3rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
-  .social-dropdown.expanded .social-button.whatsapp {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.1s;
+  .social-button.whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Hide other social medias */
+  .social-button:not(.whatsapp) {
+    display: none !important;
   }
 
   .back-to-top {
@@ -1354,11 +1301,6 @@ div#cboxOverlay {
   .back-to-top.visible {
     opacity: 1;
     visibility: visible;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
   }
 }
 
