@@ -1196,12 +1196,12 @@ div#cboxOverlay {
 /* Main button */
 .social-main {
   background: var(--primary-color) !important;
-  order: 2;
+  order: 0;
 }
 
 /* WhatsApp button (desktop) */
 .social-button.whatsapp {
-  order: 0;
+  order: 1;
 }
 
 /* Dropdown menu */
@@ -1228,7 +1228,7 @@ div#cboxOverlay {
 
 /* Back to top button */
 .back-to-top {
-  order: 1;
+  order: 2;
   background-color: var(--primary-color);
   opacity: 0;
   visibility: hidden;
