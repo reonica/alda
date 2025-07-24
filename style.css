@@ -713,7 +713,7 @@ opacity: 1;
 }
 
 #portfolio .entry-container.text-center {
-  margin-bottom: 9rem; 
+  margin-bottom: 6rem; 
 }
 
 #portfolio .entry-container.mt-5.g-3 {
@@ -807,7 +807,7 @@ opacity: 1;
 /* Mobile Swiper adjustments */
 @media (max-width: 768px) {
       #portfolio .portfolioSwiper {
-    margin-top: 6rem;
+    margin-top: 4rem;
   }
     
   #portfolio .portfolioSwiper .portfolio-caption {
