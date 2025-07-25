@@ -808,6 +808,8 @@ opacity: 1;
 @media (max-width: 768px) {
       #portfolio .portfolioSwiper {
     margin-top: 4rem;
+    padding-bottom: 40px;
+    overflow: visible !important;
   }
     
   #portfolio .portfolioSwiper .portfolio-caption {
