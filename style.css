@@ -245,27 +245,9 @@ a {
   padding-bottom: 8rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .section-padding {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  
-  .section-padding-compact {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  
-  .section-padding-hero {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-}
-
 /* SECTION PADDING MOBILE */
 :root {
-  --section-padding-mobile: 9rem;
+  --section-padding-mobile: 3rem;
 }
 
 @media (max-width: 768px) {
@@ -273,7 +255,8 @@ a {
   .section-padding-hero,
   .section-padding-compact,
   #talk,
-  #brand-collection {
+  #brand-collection,
+  #footer {
     padding-top: var(--section-padding-mobile);
     padding-bottom: var(--section-padding-mobile);
   }
