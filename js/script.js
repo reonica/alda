@@ -74,25 +74,6 @@ var initScrollButtons = function() {
       },
     });
 
-    // Product Swipers
-    var thumbSlider = new Swiper(".product-thumbnail-slider", {
-      loop: true,
-      slidesPerView: 3,
-      autoplay: true,
-      direction: "vertical",
-      spaceBetween: 30,
-    });
-
-    var largeSlider = new Swiper(".product-large-slider", {
-      loop: true,
-      slidesPerView: 1,
-      autoplay: true,
-      effect: 'fade',
-      thumbs: {
-        swiper: thumbSlider,
-      },
-    });
-
     // Service Mobile Pagination
     var serviceSwiper = new Swiper("#service .swiper", {
       slidesPerView: 1,
