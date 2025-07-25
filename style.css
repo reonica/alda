@@ -1425,6 +1425,72 @@ div#cboxOverlay {
     margin-top: 30px; /* Add spacing above the newsletter section */
   }
 }
+/* FIX OVERFLOW ISSUES - CORRECTED VERSION */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Fix container padding */
+.container, 
+.container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+    max-width: 100%;
+}
+
+/* DON'T modify .row margins - it breaks Bootstrap grid */
+/* Instead, target specific problematic rows */
+#brand-collection .row,
+#portfolio .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Enhanced partners carousel fix */
+.partners-carousel-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.partners-inner {
+    width: max-content; /* Better than auto */
+    padding: 0 30px;
+}
+
+/* More specific absolute positioning fix */
+#service .position-absolute.z-n1,
+#process .position-absolute {
+    right: 0;
+    left: auto;
+    max-width: 100%;
+}
+
+/* Additional overflow fixes for common elements */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 767px) {
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    .container, 
+    .container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
 /*--------------------------------------------------------------
 Chocolat
 --------------------------------------------------------------*/
