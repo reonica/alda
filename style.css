@@ -265,7 +265,7 @@ a {
 
 /* SECTION PADDING MOBILE */
 :root {
-  --section-padding-mobile: 3rem;
+  --section-padding-mobile: 9rem;
 }
 
 @media (max-width: 768px) {
