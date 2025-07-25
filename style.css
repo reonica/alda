@@ -774,7 +774,7 @@ opacity: 1;
 /* Mobile adjustments for grid (if any) */
 @media (max-width: 768px) {
   #portfolio .entry-container {
-    gap: 1.5rem !important;
+    gap: 1.0rem !important;
   }
   
   #portfolio .portfolio-caption {
