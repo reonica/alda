@@ -112,9 +112,6 @@ body {
 
   --bs-secondary-rgb: 230, 243, 251;
 
-  --bs-success-rgb: 238, 245, 228;
-  --bs-danger-rgb: 249, 235, 231;
-  --bs-warning-rgb: 255, 249, 235;
   --bs-info-rgb: 230, 243, 250;
 }
 
@@ -223,18 +220,8 @@ a {
   text-decoration: none;
 }
 
-.breadcrumb.text-white {
-  --bs-breadcrumb-divider-color: #fff;
-  --bs-breadcrumb-item-active-color: var(--bs-primary);
-}
-
 .dropdown-menu {
   --bs-dropdown-link-active-bg: var(--bs-primary);
-}
-
-.secondary-font {
-  font-family: var(--secondary-font);
-  font-weight: 300;
 }
 
 /* ======================
@@ -974,14 +961,6 @@ div#cboxOverlay {
   .offcanvas-body .nav-item {
     font-weight: 700;
     border-bottom: 1px solid #d1d1d1;
-  }
-
-  .offcanvas-body .filter-categories {
-    width: 100%;
-    margin-bottom: 20px !important;
-    border: 1px solid #d1d1d1 !important;
-    padding: 14px;
-    border-radius: 8px;
   }
 
   /* dropdown-menu */
