@@ -132,7 +132,7 @@ var initScrollButtons = function() {
     // Portfolio Swiper with Pagination
 if (document.querySelector('.portfolioSwiper')) {
   const portfolioSwiper = new Swiper('.portfolioSwiper', {
-    slidesPerView: 1.2,
+    slidesPerView: 1,
     spaceBetween: 20,
     centeredSlides: true,
     loop: true,
