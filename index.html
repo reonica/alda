@@ -804,16 +804,20 @@
       </div>
       
       <div class="col-lg-4 col-md-6">
-        <div class="footer-newsletter">
-          <h4 class="menu-title  text-light">Get Insights</h4>
-          <p>Subscribe to our newsletter for data-driven marketing tips.</p>
-          <form class="newsletter-form">
-            <div class="input-group mb-3">
-              <input type="email" class="form-control" placeholder="Your email" required>
-              <button class="btn btn-primary" type="submit">Subscribe</button>
-            </div>
-          </form>
-        </div>
+<div class="footer-newsletter">
+  <h4 class="menu-title text-light">Get Insights</h4>
+  <p>Subscribe to our newsletter for data-driven marketing tips.</p>
+  <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
+    <input type="hidden" name="form-name" value="newsletter" />
+    <p class="hidden">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+    <div class="input-group mb-3">
+      <input type="email" name="email" class="form-control" placeholder="Your email" required>
+      <button class="btn btn-primary" type="submit">Subscribe</button>
+    </div>
+  </form>
+</div>
       </div>
     </div>
     
