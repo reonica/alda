@@ -547,7 +547,7 @@ iconify-icon.arrow-icon {
 
 /* Mobile Swiper Styles */
 #service .serviceSwiper {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
 }
 
 #service .serviceSwiper .swiper-slide {
@@ -556,7 +556,7 @@ iconify-icon.arrow-icon {
 
 #service .serviceSwiper .swiper-pagination {
   position: relative;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 #service .serviceSwiper .swiper-pagination-bullet {
