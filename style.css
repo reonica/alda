@@ -263,6 +263,22 @@ a {
   }
 }
 
+/* SECTION PADDING MOBILE */
+:root {
+  --section-padding-mobile: 3rem;
+}
+
+@media (max-width: 768px) {
+  .section-padding,
+  .section-padding-hero,
+  .section-padding-compact,
+  #talk,
+  #brand-collection {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+}
+
 /*----------------------------------------------*/
 /* 3. SITE STRUCTURE */
 /*----------------------------------------------*/
