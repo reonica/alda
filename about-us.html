@@ -65,44 +65,8 @@
     <div class="preloader"></div>
   </div>
 
-  <!-- Navbar (Copied from Homepage, Updated href) -->
-  <nav class="main-menu d-flex navbar fixed-top navbar-expand-lg py-4">
-    <div class="container-fluid px-md-5">
-      <div class="main-logo">
-        <a href="/index.html">
-          <img src="images/alda/alda-logo.png" alt="Alda Hub logo" class="img-fluid">
-        </a>
-      </div>
-      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header justify-content-center">
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body justify-content-between">
-          <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 ps-lg-5 mb-0">
-            <li class="nav-item">
-              <a href="/index.html" class="nav-link mx-3">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="/about-us" class="nav-link mx-3 active">About us</a>
-            </li>
-            <li class="nav-item">
-              <a href="/services" class="nav-link mx-3">Services</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://datalchimie.blogspot.com/" class="nav-link mx-3 text-decoration-underline" target="_blank">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a href="/contact-us" class="nav-link mx-3">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav>
+  <!-- Navbar Merged from Netlify -->
+  {% include "_includes/navbar.html" %}
 
   <!-- About Us Section (Blog-Style, Single Long Post with CTAs) -->
   <section id="about-us" class="section-padding">
@@ -162,72 +126,8 @@
     </div>
   </section>
 
-  <!-- Footer (Copied from Homepage, Updated href) -->
-  <footer id="footer">
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-brand">
-            <a href="/index.html" class="footer-logo">
-              <img src="images/alda/alda-logo.png" alt="Alda Hub">
-            </a>
-            <p class="text-white mt-3">Data-Driven Digital Marketing. Turning insight into impact for performance-focused brands.</p>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6">
-          <div class="footer-menu">
-            <h4 class="menu-title">Menu</h4>
-            <ul class="menu-list">
-              <li class="menu-item"><a href="/index.html" class="footer-link">Home</a></li>
-              <li class="menu-item"><a href="/about-us" class="footer-link">About</a></li>
-              <li class="menu-item"><a href="/services" class="footer-link">Services</a></li>
-              <li class="menu-item"><a href="#portfolio" class="footer-link">Portfolio</a></li>
-              <li class="menu-item"><a href="/contact-us" class="footer-link">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6">
-          <div class="footer-menu">
-            <h4 class="menu-title">Partners</h4>
-            <ul class="menu-list">
-              <li class="menu-item"><a href="https://datalchimie.blogspot.com/" class="footer-link">Blog Marketing</a></li>
-              <li class="menu-item"><a href="https://avecjo.wordpress.com/" class="footer-link">Guide Francophone</a></li>
-              <li class="menu-item"><a href="https://civeg.wordpress.com/" class="footer-link">Carnet de Voyage</a></li>
-              <li class="menu-item"><a href="https://seonomie.com/" class="footer-link">Seo Service</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-newsletter">
-            <h4 class="menu-title text-light">Get Insights</h4>
-            <p>Subscribe to our newsletter for data-driven marketing tips.</p>
-            <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" class="newsletter-form">
-              <input type="hidden" name="form-name" value="newsletter" />
-              <p class="hidden">
-                <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-              </p>
-              <div class="input-group mb-3">
-                <input type="email" name="email" class="form-control" placeholder="Your email" required>
-                <button class="btn btn-primary" type="submit">Subscribe</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <hr class="footer-divider">
-      <div class="footer-bottom">
-        <div class="social-links">
-          <a href="#" aria-label="Facebook"><iconify-icon icon="ri:facebook-fill" class="social-icon"></iconify-icon></a>
-          <a href="#" aria-label="Twitter"><iconify-icon icon="ri:twitter-fill" class="social-icon"></iconify-icon></a>
-          <a href="https://www.linkedin.com/in/haianh27/" aria-label="LinkedIn" target="_blank">
-            <iconify-icon icon="ri:linkedin-fill" class="social-icon"></iconify-icon>
-          </a>
-          <a href="#" aria-label="Instagram"><iconify-icon icon="ri:instagram-fill" class="social-icon"></iconify-icon></a>
-        </div>
-        <p class="copyright-text">© 2025 Alda Hub. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+  <!-- Footer Merged from Netlify -->
+{% include "_includes/footer.html" %}
 
   <!-- Social Media & Back-to-Top Buttons (Copied from Homepage) -->
   <div class="social-buttons-container">
