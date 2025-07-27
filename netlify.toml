@@ -1,37 +1,27 @@
-[functions]
+[build]
+  command = "echo 'Building with Netlify Includes'"
+  publish = "./"
+  functions = "emails"  # Thư mục chứa functions email
 
-  [functions.emails]
+[build.environment]
+  NETLIFY_BUILD_USE_INCLUDES = "true"
+
+# Cấu hình functions cho mọi môi trường
+[functions]
   included_files = [
-    "./emails/**"
+    "./emails/**/*.js",  # Chỉ include file JS để tối ưu
+    "./emails/**/*.json" # Các file hỗ trợ nếu có
   ]
 
-[context]
+# Redirect rules (giữ nguyên của bạn)
+[[redirects]]
+  from = "/success"
+  to = "/success.html"
+  status = 200
 
-  [context.production]
-
-    [context.production.functions]
-
-      [context.production.functions.emails]
-      included_files = [
-        "./emails/**"
-      ]
-
-  [context.main]
-
-    [context.main.functions]
-
-      [context.main.functions.emails]
-      included_files = [
-        "./emails/**"
-      ]
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
   force = true
   conditions = { Method = ["GET"] }
-
-[[redirects]]
-  from = "/success"
-  to = "/success.html"
-  status = 200
