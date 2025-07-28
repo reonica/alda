@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aldahub.netlify.app/sitemap.xml
