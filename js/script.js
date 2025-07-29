@@ -31,69 +31,87 @@
     })
   }
 
-// Back to Top & Social Buttons Functionality - OPTIMIZED VERSION
-var initScrollButtons = function() {
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  
-  // Back to top
-  $(window).on('scroll', function() {
-    $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
-  });
-  
-  $('.back-to-top').on('click', function(e) {
-    e.preventDefault();
-    $('html, body').animate({ scrollTop: 0 }, 'smooth');
-  });
+  // Back to Top & Social Buttons Functionality
+  var initScrollButtons = function () {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  // Social buttons handling (only for desktop)
-  if (!isMobile) {
-    $('.social-main').on('click', function(e) {
+    // Back to top
+    $(window).on('scroll', function () {
+      $('.back-to-top').toggleClass('visible', $(this).scrollTop() > 300);
+    });
+
+    $('.back-to-top').on('click', function (e) {
       e.preventDefault();
-      $('.social-dropdown').toggleClass('expanded');
-      $(this).toggleClass('active');
+      $('html, body').animate({ scrollTop: 0 }, 'smooth');
     });
 
-    $(document).on('click', function(e) {
-      if (!$(e.target).closest('.social-buttons-container').length) {
-        $('.social-dropdown').removeClass('expanded');
-        $('.social-main').removeClass('active');
-      }
-    });
-  }
-};
-  
-  // Document ready
-  $(document).ready(function () {
-    // Testimonial Swiper
-    var testimonialSwiper = new Swiper(".testimonial-swiper", {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-    });
+    // Social buttons handling (only for desktop)
+    if (!isMobile) {
+      $('.social-main').on('click', function (e) {
+        e.preventDefault();
+        $('.social-dropdown').toggleClass('expanded');
+        $(this).toggleClass('active');
+      });
 
-    // Service Mobile Pagination
-    var serviceSwiper = new Swiper("#service .swiper", {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      breakpoints: {
-        768: {
-          slidesPerView: 3,
-          spaceBetween: 30,
-          pagination: false
+      $(document).on('click', function (e) {
+        if (!$(e.target).closest('.social-buttons-container').length) {
+          $('.social-dropdown').removeClass('expanded');
+          $('.social-main').removeClass('active');
         }
-      }
-    });
+      });
+    }
+  };
+
+  // Swiper Initializations
+  $(document).ready(function () {
+    // Service Swiper (Mobile only)
+    if (document.querySelector('.serviceSwiper')) {
+      new Swiper('.serviceSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+    }
+
+    // Portfolio Swiper (Mobile only)
+    if (document.querySelector('.portfolioSwiper')) {
+      new Swiper('.portfolioSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          576: {
+            slidesPerView: 1.5,
+            centeredSlides: true,
+          },
+        },
+      });
+    }
+
+    // Testimonial Swiper
+    if (document.querySelector('.testimonial-swiper')) {
+      new Swiper('.testimonial-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+    }
 
     // Brand Swiper
     if ($('.brandSwiper').length) {
-      var brandSwiper = new Swiper(".brandSwiper", {
+      new Swiper('.brandSwiper', {
         slidesPerView: 2,
         spaceBetween: 20,
         centeredSlides: true,
@@ -105,78 +123,31 @@ var initScrollButtons = function() {
         breakpoints: {
           640: { slidesPerView: 3 },
           768: { slidesPerView: 4 },
-          1024: { slidesPerView: 5, spaceBetween: 30 }
-        }
+          1024: { slidesPerView: 5, spaceBetween: 30 },
+        },
       });
     }
 
-    // Portfolio Swiper with Pagination
-if (document.querySelector('.portfolioSwiper')) {
-  const portfolioSwiper = new Swiper('.portfolioSwiper', {
-    slidesPerView: 1,
-    spaceBetween: 20,
-    centeredSlides: true,
-    loop: true,
-    pagination: {
-      el: '.portfolioSwiper .swiper-pagination',
-      clickable: true,
-    },
-    breakpoints: {
-      576: {
-        slidesPerView: 1.5,
-      }
-    }
-  });
-}
-    const serviceSwiper = new Swiper('.serviceSwiper', {
-  slidesPerView: 1,
-  spaceBetween: 10,
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-});
-
-const portfolioSwiper = new Swiper('.portfolioSwiper', {
-  slidesPerView: 1,
-  spaceBetween: 10,
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-});
-
-const testimonialSwiper = new Swiper('.testimonial-swiper', {
-  slidesPerView: 1,
-  spaceBetween: 10,
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-});
     // Isotope
-    window.addEventListener("load", function () {
-      if ($('.entry-container').length) {
-        var $grid = $('.entry-container').isotope({
-          itemSelector: '.entry-item',
-          layoutMode: 'masonry'
-        });
-      }
-    });
+    if ($('.entry-container').length) {
+      var $grid = $('.entry-container').isotope({
+        itemSelector: '.entry-item',
+        layoutMode: 'masonry',
+      });
+    }
 
     // Colorbox
-    if ($(".youtube").length) {
-      $(".youtube").colorbox({
+    if ($('.youtube').length) {
+      $('.youtube').colorbox({
         iframe: true,
         innerWidth: 960,
-        innerHeight: 585
+        innerHeight: 585,
       });
     }
 
     initPreloader();
     initChocolat();
-    initScrollButtons(); 
+    initScrollButtons();
     $(window).scroll(initScrollNav);
   });
-
 })(jQuery);
