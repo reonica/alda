@@ -5,21 +5,63 @@ Description: Codeo is specially developed Websites Template for Agencies Website
 Version: 1.1
 */
 
-/* ======================
-   TABLE OF CONTENTS
-   ======================
-   1. VARIABLES
-   2. GENERAL STYLES
-   3. LAYOUT COMPONENTS
-   4. SITE SECTIONS
-   5. RESPONSIVE STYLES
-*/
+/*--------------------------------------------------------------
+This is main CSS file that contains custom style rules used in this template
+--------------------------------------------------------------*/
 
-/* ======================
-   1. VARIABLES
-   ====================== */
+/*------------------------------------*\
+    Table of contents
+\*------------------------------------*/
+
+/*------------------------------------------------
+
+CSS STRUCTURE:
+
+1. VARIABLES
+
+2. GENERAL TYPOGRAPHY
+  2.1 General Styles
+  2.2 Button
+  2.3 Section Paddings
+
+3. SITE STRUCTURE
+  6.1 Header
+    - Pre Loader
+    - Nav Sidebar
+  6.2 Hero
+  6.3 About Us Section
+  6.4 Testimonial Section
+  6.5 Our Service Section
+  6.6 Process
+  6.7 Brand Section
+  6.8 Video Section
+  6.9 Latest Blogs Section
+  6.10 Footer Section
+  6.11 Milestones
+    
+
+  
+/*--------------------------------------------------------------
+/** 1. VARIABLES
+--------------------------------------------------------------*/
 :root {
-  /* Colors */
+  /* widths for rows and containers
+     */
+  --header-height: 160px;
+  --header-height-min: 80px;
+}
+
+/* on mobile devices below 600px
+ */
+@media screen and (max-width: 600px) {
+  :root {
+    --header-height: 100px;
+    --header-height-min: 80px;
+  }
+}
+
+/* Theme Colors */
+:root {
   --accent-color: #191919;
   --dark-color: #222222;
   --light-dark-color: #727272;
@@ -28,33 +70,139 @@ Version: 1.1
   --light-grey-color: #fafafa;
   --primary-color: #191919;
   --light-primary-color: #eef1f3;
-  --service-dark-bg: #191919;
+      --service-dark-bg: #191919;
   --service-light-bg: #f5f5f5;
   --service-dark-text: #ededed;
   --service-light-text: #222222;
   --service-number-color: #7a7a7a;
-
-  /* Fonts */
-  --body-font: 'Roboto', sans-serif;
-  
-  /* Spacing */
-  --header-height: 160px;
-  --header-height-min: 80px;
 }
 
-/* ======================
-   2. GENERAL STYLES
-   ====================== */
+/* Fonts */
+:root {
+  --body-font: 'Roboto', sans-serif;
+}
+
+
+/*--------------------------------------------------------------
+/** 2. GENERAL TYPOGRAPHY
+--------------------------------------------------------------*/
+
+
 body {
-  --bs-body-font-family: var(--body-font);
+  --bs-link-color: #333;
+  --bs-link-hover-color: #333;
+
+  --bs-link-color-rgb: 40, 40, 40;
+  --bs-link-hover-color-rgb: 0, 0, 0;
+
+  --bs-light-rgb: 248, 248, 248;
+
+  --bs-font-sans-serif: 'Roboto', sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 2;
   --bs-body-color: #222222;
+
+  --bs-primary: #191919;
+  --bs-primary-rgb: 25, 25, 25;
+
+  --bs-primary-bg-subtle: #FFF9EB;
+  --bs-border-color: #F7F7F7;
+
+  --bs-secondary-rgb: 230, 243, 251;
+
+  --bs-info-rgb: 230, 243, 250;
+}
+
+.btn {
+  border-radius: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* BUTTONS */
+.btn-primary {
+  padding: 1.2rem 3rem;
+  transition: all 0.3s ease-in;
+  --bs-btn-color: #ededed;
+  --bs-btn-bg: #191919;
+  --bs-btn-border-color: #191919;
+  --bs-btn-hover-color: #ededed;
+  --bs-btn-hover-bg: #333333;
+  --bs-btn-hover-border-color: #333333;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #ededed;
+  --bs-btn-active-bg: #191919;
+  --bs-btn-active-border-color: #191919;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #ededed;
+  --bs-btn-disabled-bg: #191919;
+  --bs-btn-disabled-border-color: #191919;
+}
+
+.btn-outline-primary {
+  transition: all 0.3s ease-in;
+  padding: 1.2rem 3rem;
+  letter-spacing: 0.02375rem;
+  --bs-btn-color: #191919;
+  --bs-btn-border-color: #191919;
+  --bs-btn-hover-color: #ededed;
+  --bs-btn-hover-bg: #191919;
+  --bs-btn-hover-border-color: #191919;
+  --bs-btn-focus-shadow-rgb: 13, 110, 253;
+  --bs-btn-active-color: #ededed;
+  --bs-btn-active-bg: #191919;
+  --bs-btn-active-border-color: #191919;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #191919;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #191919;
+  --bs-gradient: none;
+}
+
+.btn-dark {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  padding: 1.2rem 3rem;
+  transition: all 0.3s ease-in;
+  text-transform: uppercase;
+  --bs-btn-color: #ededed;
+  --bs-btn-bg: #191919;
+  --bs-btn-border-color: #191919;
+  --bs-btn-hover-color: #ededed;
+  --bs-btn-hover-bg: #333333;
+  --bs-btn-hover-border-color: #333333;
+  --bs-btn-focus-shadow-rgb: 66, 70, 73;
+  --bs-btn-active-color: #ededed;
+  --bs-btn-active-bg: #191919;
+  --bs-btn-active-border-color: #191919;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #ededed;
+  --bs-btn-disabled-bg: #191919;
+  --bs-btn-disabled-border-color: #191919;
+}
+
+@media screen and (max-width:991px) {
+  .btn-primary,
+  .btn-outline-primary,
+  .btn-outline-dark,
+  .btn-dark {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+body {
   letter-spacing: 0.01625rem;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5{
   color: #222222;
   font-weight: 600;
   text-transform: capitalize;
@@ -72,73 +220,59 @@ a {
   text-decoration: none;
 }
 
+.dropdown-menu {
+  --bs-dropdown-link-active-bg: var(--bs-primary);
+}
+
 /* ======================
-   3. LAYOUT COMPONENTS
+   SECTION PADDING SYSTEM 
    ====================== */
-/* Buttons */
-.btn {
-  border-radius: 0;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.btn-primary {
-  padding: 1.2rem 3rem;
-  transition: all 0.3s ease-in;
-  --bs-btn-color: #ededed;
-  --bs-btn-bg: #191919;
-  --bs-btn-border-color: #191919;
-  --bs-btn-hover-color: #ededed;
-  --bs-btn-hover-bg: #333333;
-  --bs-btn-hover-border-color: #333333;
-}
-
-.btn-outline-primary {
-  transition: all 0.3s ease-in;
-  padding: 1.2rem 3rem;
-  letter-spacing: 0.02375rem;
-  --bs-btn-color: #191919;
-  --bs-btn-border-color: #191919;
-  --bs-btn-hover-color: #ededed;
-  --bs-btn-hover-bg: #191919;
-  --bs-btn-hover-border-color: #191919;
-}
-
-.btn-dark {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.06rem;
-  padding: 1.2rem 3rem;
-  transition: all 0.3s ease-in;
-  text-transform: uppercase;
-  --bs-btn-color: #ededed;
-  --bs-btn-bg: #191919;
-  --bs-btn-border-color: #191919;
-  --bs-btn-hover-color: #ededed;
-  --bs-btn-hover-bg: #333333;
-  --bs-btn-hover-border-color: #333333;
-}
-
-/* Section Paddings */
+/* Base padding for all sections */
 .section-padding {
   padding-top: 5rem;
   padding-bottom: 5rem;
 }
 
+/* Compact version */
 .section-padding-compact {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
 
+/* Hero section */
 .section-padding-hero {
   padding-top: 8rem;
   padding-bottom: 8rem;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+  
+  .section-padding-compact {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .section-padding-hero {
+    padding-top: 8rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/*----------------------------------------------*/
+/* 3. SITE STRUCTURE */
+/*----------------------------------------------*/
+/* 3.1 Header
+--------------------------------------------------------------*/
 /* Preloader */
 .preloader-wrapper {
   width: 100%;
   height: 100vh;
+  margin: 0 auto;
   position: absolute;
   top: 0;
   left: 0;
@@ -146,10 +280,66 @@ a {
   background: #fff;
 }
 
-/* ======================
-   4. SITE SECTIONS
-   ====================== */
-/* Header */
+.preloader-wrapper .preloader {
+  margin: 20% auto 0;
+  transform: translateZ(0);
+}
+
+.preloader:before,
+.preloader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+
+.preloader:before,
+.preloader:after,
+.preloader {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  animation: animation 1.2s infinite ease-in-out;
+}
+
+.preloader {
+  animation-delay: -0.16s;
+}
+
+.preloader:before {
+  left: -3.5em;
+  animation-delay: -0.32s;
+}
+
+.preloader:after {
+  left: 3.5em;
+}
+
+@keyframes animation {
+
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2em 0 -1em var(--accent-color);
+  }
+
+  40% {
+    box-shadow: 0 2em 0 0 var(--accent-color);
+  }
+}
+
+
+
+/* offcanvas cross button style  */
+.btn-close:focus {
+  box-shadow: none;
+}
+
+
+/* nav bar style  */
+.main-menu {
+  background-color: transparent;
+}
+
 .navbar.fixed-top {
   transition: all 0.3s ease;
 }
@@ -159,14 +349,162 @@ a {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Hero */
+.nav-link {
+  color: #191919 !important;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* Add to existing CSS */
+.main-logo img {
+  max-height: 60px; /* Maximum logo height limit */
+  width: auto; /* Maintain aspect ratio */
+  transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 991px) {
+  .main-logo img {
+    max-height: 50px; /* Slightly smaller on mobile */
+  }
+}
+
+/* Ensure navbar has sufficient height for logo */
+.main-menu.navbar {
+  min-height: 80px;
+}
+
+/* When navbar is scrolled */
+.navbar.fixed-top.bg-scrolled .main-logo img {
+  max-height: 50px; /* Smaller logo when scrolled */
+}
+
+/* hero section style */
 .banner-text {
   font-size: 7rem;
   letter-spacing: 0.9rem;
   line-height: 6rem;
 }
 
-/* Service Section */
+iconify-icon.arrow-icon {
+  font-size: 1.3rem;
+}
+
+@media screen and (max-width: 991px) {
+  .banner-text {
+    font-size: 5rem;
+  }
+}
+
+/* CSS for the "talk" section - Book a 30-Minute Strategy Call */
+#talk {
+  padding: 2rem 0;
+  background-color: #f8f9fa; /* Light background color */
+}
+
+#talk .container {
+  max-width: 100%;
+}
+
+/* Center all content on mobile */
+@media (max-width: 768px) {
+  #talk .row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  #talk .col-md-8 {
+    width: 100%;
+    padding: 0 15px;
+  }
+  
+  #talk .col-md-2 {
+    width: auto;
+    padding: 0;
+  }
+  
+  #talk h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+}
+
+/* Button adjustments */
+#talk .btn-primary {
+  white-space: nowrap; /* Prevent button text from wrapping */
+  min-width: 180px; /* Ensure button has minimum width */
+}
+
+/* CSS for the About section - Optimized */
+#about-us .nav-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+  white-space: nowrap;
+  margin-bottom: 1.5rem;
+  border-bottom: none;
+}
+
+#about-us .nav-tabs::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on Chrome/Safari */
+}
+
+#about-us .nav-tabs .nav-item {
+  flex: 0 0 auto;
+  border-bottom: 2px solid transparent;
+  margin-right: 1.5rem;
+  transition: all 0.1s ease-in; /* Giữ hiệu ứng transition */
+}
+
+#about-us .nav-tabs .nav-link {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #555;
+  border: none;
+  transition: all 0.1s ease-in; /* Thêm transition */
+}
+
+#about-us .nav-tabs .nav-link.active,
+#about-us .nav-tabs .nav-link:hover {
+  border-bottom: 2px solid var(--accent-color); /* Sử dụng biến màu */
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Justify text alignment for content */
+#about-us .tab-content p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  #about-us .nav-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+/*--------------------------------------------------------------
+/** SERVICE SECTION
+--------------------------------------------------------------*/
+
+#service {
+  position: relative;
+  overflow: hidden;
+}
+
+#service .position-absolute.z-n1 {
+  z-index: -1;
+}
+
+/* Large numbers - General style */
 .service-number {
   position: absolute;
   font-size: 150px;
@@ -175,53 +513,967 @@ a {
   right: 0;
   z-index: -1;
   line-height: 1;
+  pointer-events: none;
+  user-select: none;
 }
 
-/* Portfolio Section */
-.portfolio-caption {
-  background: #191919;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+/* Dark boxes (odd numbers) */
+#service .bg-dark .service-number {
+  color: #7a7a7a;
+  opacity: 0.15;
 }
 
-/* Footer */
-#footer {
-  background-color: var(--dark-color);
-  color: #fff;
-  padding: 60px 0 30px;
+/* Light boxes (even numbers) */
+#service .bg-light .service-number {
+  color: #8a8a8a;
+  opacity: 0.2;
 }
 
-/* ======================
-   5. RESPONSIVE STYLES
-   ====================== */
-@media screen and (max-width: 600px) {
-  :root {
-    --header-height: 100px;
-    --header-height-min: 80px;
-  }
+/* Desktop Grid Styles */
+#service .row.g-lg-5 {
+  row-gap: 2rem;
 }
 
-@media (max-width: 991px) {
-  .btn-primary,
-  .btn-outline-primary,
-  .btn-dark {
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
-  }
+/* Mobile Swiper Styles */
+#service .serviceSwiper {
+  padding-bottom: 5px;
+}
+
+#service .serviceSwiper .swiper-slide {
+  height: auto;
+}
+
+/* Text Color Adjustments */
+#service .bg-dark h4,
+#service .bg-dark p,
+#service .bg-dark h6 {
+  color: #ededed !important;
+}
+
+#service .bg-light h4,
+#service .bg-light p,
+#service .bg-light h6 {
+  color: #222222 !important;
 }
 
 @media (max-width: 768px) {
-  .section-padding {
-    padding-top: 2rem;
-    padding-bottom: 1rem;
+  #service .swiper-slide {
+    padding: 0 15px 30px;
   }
-  
-  .banner-text {
-    font-size: 5rem;
+}
+
+/* Add to the end of your CSS file */
+@media (max-width: 768px) {
+  #milestone .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
   }
   
   #milestone .col-md-3 {
     width: 50%;
+    padding: 0 10px;
+    margin-bottom: 30px;
+    flex: 0 0 auto;
   }
+  
+  /* Center content in each column */
+  #milestone .text-center {
+    padding: 0 15px;
+  }
+  
+  /* Adjust icon size */
+  #milestone iconify-icon {
+    font-size: 2.5rem;
+    padding: 1.5rem !important;
+  }
+  
+  /* Adjust text size */
+  #milestone h2 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem !important;
+  }
+  
+  #milestone p {
+    font-size: 0.9rem;
+  }
+}
+
+/* brand section style */
+img.brand{
+opacity: 0.5;
+}
+img.brand:hover{
+opacity: 1;
+}
+
+/* --- Partners Section - Infinite Scroll --- */
+#brand-collection {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.partners-carousel-container {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 40px;
+  position: relative;
+}
+
+.partners-inner {
+  display: flex;
+  align-items: center;
+  animation: scroll-left 30s linear infinite;
+  will-change: transform; /* Tối ưu hiệu suất animation */
+}
+
+.partners-inner img {
+  max-height: 80px;
+  width: auto;
+  flex-shrink: 0;
+  margin-right: 60px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.partners-inner img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Di chuyển 50% chiều dài của content */
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .partners-inner img {
+    max-height: 50px;
+    margin-right: 30px;
+  }
+  
+  #brand-collection h3 {
+    font-size: 1.8rem;
+  }
+}
+
+/* ===== PORTFOLIO SECTION - OPTIMIZED ===== */
+#portfolio {
+  position: relative;
+}
+
+#portfolio .entry-container.text-center {
+  margin-bottom: 6rem; 
+}
+
+#portfolio .entry-container.mt-5.g-3 {
+  row-gap: 1.5rem;
+}
+
+#portfolio .entry-item {
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#portfolio .post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+#portfolio .portfolio-caption {
+  background: #191919;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+}
+
+#portfolio .portfolio-caption p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Desktop hover effect */
+@media (min-width: 992px) {
+  #portfolio .portfolio-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(25, 25, 25, 0.9);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  #portfolio .entry-item:hover .portfolio-caption {
+    transform: translateY(0);
+  }
+  
+  #portfolio .entry-item:hover .post-image {
+    transform: scale(1.03);
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 991px) and (min-width: 768px) {
+  #portfolio .entry-container {
+    gap: 1rem !important;
+  }
+  
+  #portfolio .portfolio-caption p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile adjustments for grid (if any) */
+@media (max-width: 768px) {
+  #portfolio .entry-container {
+    gap: 1.0rem !important;
+  }
+  
+  #portfolio .portfolio-caption {
+    padding: 0.8rem;
+  }
+  
+  #portfolio .portfolio-caption p {
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  
+  #portfolio .entry-item {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Mobile Swiper adjustments */
+@media (max-width: 768px) {
+      #portfolio .portfolioSwiper {
+    margin-top: 4rem;
+    padding-bottom: 40px;
+    overflow: visible !important;
+  }
+    
+  #portfolio .portfolioSwiper .portfolio-caption {
+    padding: 10px 15px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); 
+    position: static; 
+    width: 100%;
+  }
+  
+  #portfolio .swiper-slide .position-relative {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #portfolio .portfolioSwiper .swiper-pagination {
+    margin-top: 15px;
+  }
+}
+
+/*---- video section style ----*/
+/* color box style */
+div#cboxOverlay {
+  opacity: 0.8 !important;
+}
+
+.video .video-player {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*--------------------------------------------------------------
+/** PROCESS SECTION - Color contrast optimized
+--------------------------------------------------------------*/
+
+/* Color settings */
+:root {
+  --process-dark-bg: #191919;
+  --process-dark-text: #ffffff;
+  --process-light-bg: #f5f5f5;
+  --process-light-text: #222222;
+}
+
+/* Mobile version (d-xxl-none) */
+#process .row.d-xxl-none .col.my-4:nth-child(odd) .text-start {
+  background-color: var(--process-dark-bg) !important;
+}
+#process .row.d-xxl-none .col.my-4:nth-child(odd) .fw-bold,
+#process .row.d-xxl-none .col.my-4:nth-child(odd) h6.process-number {
+  color: var(--process-dark-text) !important;
+}
+
+#process .row.d-xxl-none .col.my-4:nth-child(even) .text-start {
+  background-color: var(--process-light-bg) !important;
+}
+#process .row.d-xxl-none .col.my-4:nth-child(even) .fw-bold,
+#process .row.d-xxl-none .col.my-4:nth-child(even) h6.process-number {
+  color: var(--process-light-text) !important;
+}
+
+/* Desktop version (d-none d-xxl-flex) */
+#process .row.d-none.d-xxl-flex .col:nth-child(odd) .text-start {
+  color: var(--process-dark-text) !important;
+}
+#process .row.d-none.d-xxl-flex .col:nth-child(odd) h6.process-number {
+  color: var(--process-dark-text) !important;
+}
+
+#process .row.d-none.d-xxl-flex .col:nth-child(even) .text-start {
+  color: var(--process-light-text) !important;
+}
+#process .row.d-none.d-xxl-flex .col:nth-child(even) h6.process-number {
+  color: var(--process-light-text) !important;
+}
+
+/* Process numbers - Keep style, only change colors */
+.process-number {
+  font-weight: bold;
+  margin: 0 auto 15px;
+
+}
+/* Optimized Navigation Arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 10;
+  --swiper-navigation-size: 20px; /* Smaller arrow icon size */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1); /* Slight scale on hover */
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}
+
+/* Disabled state for arrows */
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 40px;
+    height: 40px;
+    --swiper-navigation-size: 16px; /* Smaller arrows on mobile */
+  }
+  .swiper-button-prev {
+    left: 5px;
+  }
+  .swiper-button-next {
+    right: 5px;
+  }
+}
+
+/* blog section style */
+
+/* -Zoom Effect
+------------------------------------------*/
+.zoom-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.zoom-effect img {
+  max-width: 100%;
+  -webkit-transition: 0.6s ease-out;
+  -moz-transition: 0.6s ease-out;
+  transition: 0.6s ease-out;
+}
+
+.zoom-effect:hover img {
+  -webkit-transform: scale(1.1, 1.1);
+  -moz-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+}
+
+.zoom-effect:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  -moz-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+}
+
+.zoom-effect:hover:before {
+  opacity: 1;
+  cursor: pointer;
+}
+
+  /* offcanvas menu */
+  .offcanvas-body .nav-item {
+    font-weight: 700;
+    border-bottom: 1px solid #d1d1d1;
+  }
+
+  /* dropdown-menu */
+  .dropdown-menu {
+    padding: 0;
+    border: none;
+    line-height: 1.4;
+    font-size: 0.9em;
+  }
+
+  .dropdown-menu a {
+    padding-left: 0;
+  }
+
+  .dropdown-toggle::after {
+    position: absolute;
+    right: 0;
+    top: 21px;
+  }
+}
+
+/*--------------------------------------------------------------
+/** MILESTONE SECTION - Mobile 2 columns (clean version)
+--------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+  #milestone .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  
+  #milestone .col-md-3 {
+    width: 50%;
+    padding: 0 10px;
+    margin-bottom: 30px;
+    flex: 0 0 auto;
+  }
+  
+  /* Inner elements sizing */
+  #milestone .text-center {
+    padding: 0;
+  }
+  
+  #milestone iconify-icon {
+    font-size: 2.5rem;
+    padding: 1.5rem !important;
+  }
+  
+  #milestone h2 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem !important;
+  }
+  
+  #milestone p {
+    font-size: 0.9rem;
+  }
+}
+
+/*---- MODERN FOOTER STYLES ----*/
+#footer {
+  background-color: var(--dark-color);
+  color: #fff;
+  padding: 60px 0 30px;
+  position: relative;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  max-width: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.footer-logo img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1); /* Make logo white */
+}
+
+.footer-logo:hover img {
+  transform: scale(1.05);
+}
+
+.footer-menu {
+  margin-bottom: 2rem;
+}
+
+.footer-menu .menu-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-menu .menu-title:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.footer-menu .menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-menu .menu-item {
+  margin-bottom: 0.8rem;
+}
+
+.footer-link {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.footer-link:hover {
+  color: #fff;
+  transform: translateX(5px);
+  text-decoration: none;
+}
+
+.footer-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover:after {
+  width: 100%;
+}
+
+.footer-newsletter {
+  background: rgba(255,255,255,0.05);
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.footer-newsletter p {
+  margin-bottom: 1.5rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.footer-divider {
+  border-color: rgba(255,255,255,0.1);
+  margin: 30px 0;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  color: rgba(255,255,255,0.7);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.copyright-text {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  #footer {
+    padding: 40px 0 20px;
+  }
+  
+  .footer-menu {
+    margin-bottom: 2.5rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-logo {
+    max-width: 100px;
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+  
+  .footer-menu {
+    text-align: center;
+  }
+  
+  .footer-menu .menu-title:after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Footer Logo Adjustments */
+.footer-logo img {
+  max-width: 150px; 
+  height: auto; 
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .footer-logo img {
+    max-width: 120px;
+  }
+}
+
+/* Footer Brand Adjustments */
+.footer-brand {
+  text-align: center; 
+  max-width: 300px; 
+  margin: 0 auto; 
+}
+
+.footer-brand p {
+  text-align: justify; 
+  text-justify: inter-word; 
+  hyphens: auto;
+  margin-top: 1rem; 
+  padding: 0 10px; 
+}
+
+/* =============================================
+   SOCIAL MEDIA & BACK-TO-TOP BUTTONS (NEW VERSION)
+   ============================================= */
+.social-buttons-container {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 999;
+  align-items: flex-end;
+}
+
+.social-button, .back-to-top {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.social-button:hover, .back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Main button */
+.social-main {
+  background: var(--primary-color) !important;
+  order: 0;
+}
+
+/* WhatsApp button (desktop) */
+.social-button.whatsapp {
+  order: 1;
+}
+
+/* Dropdown menu */
+.social-dropdown {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.4s ease;
+}
+
+.social-buttons-container:hover .social-dropdown,
+.social-dropdown.expanded {
+  display: flex;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* Button colors */
+.whatsapp { background-color: #25D366; }
+.facebook { background-color: #1877F2; }
+.twitter { background-color: #000000; }
+.linkedin { background-color: #0A66C2; }
+.tiktok { background-color: #000000; }
+.zalo { background-color: #0180C7; }
+
+/* Back to top button */
+.back-to-top {
+  order: 2;
+  background-color: var(--primary-color);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE SOCIAL BUTTONS - OPTIMIZED VERSION */
+@media (max-width: 768px) {
+  .social-buttons-container {
+    right: 15px;
+    bottom: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .social-main,
+  .social-dropdown {
+    display: none !important;
+  }
+
+ .social-button.whatsapp {
+    display: flex  !important;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background-color: #25D366;
+    color: white;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+  }
+
+  .social-button.whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Hide other social medias */
+  .social-button:not(.whatsapp) {
+    display: none !important;
+  }
+
+  .back-to-top {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background-color: var(--primary-color);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Add to the end of your CSS file */
+@media (max-width: 768px) {
+  #footer .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  #footer .col-lg-2.col-md-6 {
+    width: 50%; /* Display 2 columns side by side */
+    flex: 0 0 auto;
+  }
+  
+  #footer .footer-menu {
+    text-align: center; /* Center align content */
+    padding: 0 15px; /* Add spacing between columns */
+  }
+  
+  #footer .menu-title:after {
+    left: 50%;
+    transform: translateX(-50%); /* Center underline for title */
+  }
+  
+  /* Ensure newsletter takes full width */
+  #footer .col-lg-4.col-md-6 {
+    width: 100%;
+    margin-top: 30px; /* Add spacing above the newsletter section */
+  }
+}
+/* FIX OVERFLOW ISSUES - CORRECTED VERSION */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Fix container padding */
+.container, 
+.container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+    max-width: 100%;
+}
+
+/* DON'T modify .row margins - it breaks Bootstrap grid */
+/* Instead, target specific problematic rows */
+#brand-collection .row,
+#portfolio .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Enhanced partners carousel fix */
+.partners-carousel-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.partners-inner {
+    width: max-content; /* Better than auto */
+    padding: 0 30px;
+}
+
+/* More specific absolute positioning fix */
+#service .position-absolute.z-n1,
+#process .position-absolute {
+    right: 0;
+    left: auto;
+    max-width: 100%;
+}
+
+/* Additional overflow fixes for common elements */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 767px) {
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    .container, 
+    .container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+/*--------------------------------------------------------------
+Chocolat
+--------------------------------------------------------------*/
+.chocolat-wrapper {
+  z-index: 9999;
 }
