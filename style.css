@@ -913,6 +913,32 @@ div#cboxOverlay {
   margin: 0 auto 15px;
 
 }
+/* CSS for button-prev & next */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #fff; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Hình tròn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Hover effect */
+}
+
+.swiper-button-prev {
+  left: 10px; 
+}
+
+.swiper-button-next {
+  right: 10px; 
+}
 
 /* blog section style */
 
