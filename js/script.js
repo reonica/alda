@@ -128,7 +128,32 @@ if (document.querySelector('.portfolioSwiper')) {
     }
   });
 }
-    
+    const serviceSwiper = new Swiper('.serviceSwiper', {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+});
+
+const portfolioSwiper = new Swiper('.portfolioSwiper', {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+});
+
+const testimonialSwiper = new Swiper('.testimonial-swiper', {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+});
     // Isotope
     window.addEventListener("load", function () {
       if ($('.entry-container').length) {
