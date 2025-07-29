@@ -1,11 +1,12 @@
 (function ($) {
   "use strict";
 
-  // Initialize Preloader
-  var initPreloader = function () {
+  /* ======================
+     INITIALIZATION FUNCTIONS
+     ====================== */
+  function initPreloader() {
     $(document).ready(function ($) {
-      var Body = $('body');
-      Body.addClass('preloader-site');
+      $('body').addClass('preloader-site');
     });
     $(window).on('load', function () {
       $('.preloader-wrapper').fadeOut();
@@ -13,26 +14,19 @@
     });
   }
 
-  // Background color on scroll
-  var initScrollNav = function () {
+  function initScrollNav() {
     var scroll = $(window).scrollTop();
-    if (scroll >= 200) {
-      $('.navbar.fixed-top').addClass("bg-scrolled");
-    } else {
-      $('.navbar.fixed-top').removeClass("bg-scrolled");
-    }
+    $('.navbar.fixed-top').toggleClass("bg-scrolled", scroll >= 200);
   }
 
-  // Initialize Lightbox
-  var initChocolat = function () {
+  function initChocolat() {
     Chocolat(document.querySelectorAll('.image-link'), {
       imageSize: 'contain',
       loop: true,
-    })
+    });
   }
 
-  // Back to Top & Social Buttons Functionality
-  var initScrollButtons = function () {
+  function initScrollButtons() {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
     // Back to top
@@ -45,7 +39,7 @@
       $('html, body').animate({ scrollTop: 0 }, 'smooth');
     });
 
-    // Social buttons handling (only for desktop)
+    // Social buttons (desktop only)
     if (!isMobile) {
       $('.social-main').on('click', function (e) {
         e.preventDefault();
@@ -60,11 +54,13 @@
         }
       });
     }
-  };
+  }
 
-  // Swiper Initializations
-  $(document).ready(function () {
-    // Service Swiper (Mobile only)
+  /* ======================
+     SWIPER INITIALIZATIONS
+     ====================== */
+  function initSwipers() {
+    // Service Swiper
     if (document.querySelector('.serviceSwiper')) {
       new Swiper('.serviceSwiper', {
         slidesPerView: 1,
@@ -77,7 +73,7 @@
       });
     }
 
-    // Portfolio Swiper (Mobile only)
+    // Portfolio Swiper
     if (document.querySelector('.portfolioSwiper')) {
       new Swiper('.portfolioSwiper', {
         slidesPerView: 1,
@@ -127,10 +123,15 @@
         },
       });
     }
+  }
 
+  /* ======================
+     OTHER PLUGIN INITIALIZATIONS
+     ====================== */
+  function initPlugins() {
     // Isotope
     if ($('.entry-container').length) {
-      var $grid = $('.entry-container').isotope({
+      $('.entry-container').isotope({
         itemSelector: '.entry-item',
         layoutMode: 'masonry',
       });
@@ -144,10 +145,18 @@
         innerHeight: 585,
       });
     }
+  }
 
+  /* ======================
+     DOCUMENT READY
+     ====================== */
+  $(document).ready(function () {
+    initSwipers();
+    initPlugins();
     initPreloader();
     initChocolat();
     initScrollButtons();
     $(window).scroll(initScrollNav);
   });
+
 })(jQuery);
