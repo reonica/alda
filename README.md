@@ -1,2 +1,2 @@
 # aldahub
-Project created by haianh27
+Project created by Seo Nomie
