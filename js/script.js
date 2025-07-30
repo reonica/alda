@@ -16,7 +16,7 @@
 
   function initScrollNav() {
     var scroll = $(window).scrollTop();
-    $('.navbar.fixed-top').toggleClass("bg-scrolled", scroll >= 200);
+    $('.navbar.fixed-top').toggleClass("bg-scrolled", scroll >= 50);
   }
 
   function initChocolat() {
