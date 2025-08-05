@@ -1,4 +1,4 @@
-  [build]
+[build]
   publish = "./"
   command = "echo 'Building with Netlify Includes'"
 
