@@ -1,0 +1,5 @@
+"scripts": {
+  "build": "node scripts/generate-posts-json.js && npm run build:main",
+  "build:main": "your-main-build-command",
+  "generate-posts": "node scripts/generate-posts-json.js"
+}
