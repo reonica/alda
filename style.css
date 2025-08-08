@@ -1477,3 +1477,93 @@ Chocolat
 .chocolat-wrapper {
   z-index: 9999;
 }
+/*--------------------------------------------------------------
+/** Blog Page Styles
+--------------------------------------------------------------*/
+#blog.section-padding {
+  padding: 60px 0;
+}
+
+.blogSwiper .swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blogSwiper .image-holder {
+  width: 100%;
+  overflow: hidden;
+}
+
+.blogSwiper .post-image {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.blogSwiper .image-holder:hover .post-image {
+  transform: scale(1.05);
+}
+
+#blog-posts-desktop .image-holder {
+  overflow: hidden;
+}
+
+#blog-posts-desktop .post-image {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  object-fit: cover; 
+}
+
+#blog-posts-desktop .image-holder:hover .post-image {
+  transform: scale(1.05);
+}
+
+#blog-posts-desktop .post-title {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+}
+
+#blog-posts-desktop .post-title:hover {
+  color: #007bff;
+}
+
+#blog-posts-desktop .post-date {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+#load-more {
+  padding: 10px 30px;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  #blog-posts-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  #blog-posts-mobile {
+    display: none;
+  }
+}
+
+.post-image[src=""], .post-image:not([src]) {
+  background-color: #f0f0f0;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 0.875rem;
+  text-align: center;
+}
