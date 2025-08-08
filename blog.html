@@ -210,6 +210,51 @@
       });
     }
   </script>
+  <!-- Dynamic SEO for individual posts -->
+<script type="application/ld+json" id="post-structured-data">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Blog Post Title",
+  "description": "Post excerpt",
+  "datePublished": "2023-01-01",
+  "author": {
+    "@type": "Organization",
+    "name": "Alda Hub"
+  }
+}
+</script>
+
+<script>
+// Update SEO meta tags for individual posts
+if (window.location.pathname.includes('/blog/')) {
+  const postSlug = window.location.pathname.split('/').pop();
+  fetch('/.netlify/functions/get-posts')
+    .then(res => res.json())
+    .then(posts => {
+      const post = posts.find(p => p.slug === postSlug);
+      if (post) {
+        // Update meta tags
+        document.title = `${post.title} | Alda Hub Blog`;
+        document.querySelector('meta[name="description"]').content = post.excerpt;
+        
+        // Update structured data
+        const sd = document.getElementById('post-structured-data');
+        sd.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.excerpt,
+          "datePublished": post.date,
+          "author": {
+            "@type": "Organization",
+            "name": "Alda Hub"
+          }
+        });
+      }
+    });
+}
+</script>
 </body>
 
 </html>
