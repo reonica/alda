@@ -1,3 +1,4 @@
+// src/scripts/blog.js
 document.addEventListener('DOMContentLoaded', () => {
   const postsPerPage = 6;
   let currentPage = 1;
@@ -5,68 +6,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchPosts() {
     try {
-      const response = await fetch('/posts.json');
+      const response = await fetch('/.netlify/functions/get-posts');
       allPosts = await response.json();
       renderPosts();
     } catch (error) {
-      console.error('Lỗi khi lấy bài viết:', error);
+      console.error('Error loading posts:', error);
+      // Fallback to local posts.json
+      const backupResponse = await fetch('/posts.json');
+      if (backupResponse.ok) {
+        allPosts = await backupResponse.json();
+        renderPosts();
+      }
     }
   }
 
   function renderPosts() {
-    const mobileContainer = document.getElementById('blog-posts-mobile');
-    const desktopContainer = document.getElementById('blog-posts-desktop');
     const start = (currentPage - 1) * postsPerPage;
     const end = start + postsPerPage;
     const postsToShow = allPosts.slice(0, end);
 
-    mobileContainer.innerHTML = '';
-    desktopContainer.innerHTML = '';
-
-    postsToShow.forEach(post => {
-      const slide = `
-        <div class="swiper-slide">
-          <div class="image-holder zoom-effect">
-            <a href="/posts/${post.slug}">
-              <img src="/images/alda/blog/${post.image}" class="post-image img-fluid" alt="${post.title}">
-            </a>
-          </div>
-          <a href="/posts/${post.slug}">
-            <h5 class="mt-4">${post.title}</h5>
+    // Cập nhật đường dẫn chuẩn
+    const renderPostHTML = (post) => `
+      <div class="swiper-slide">
+        <div class="image-holder zoom-effect">
+          <a href="/blog/${post.slug}">
+            <img src="${post.image}" class="post-image img-fluid" alt="${post.title}">
           </a>
-          <p class="post-date">${new Date(post.date).toLocaleDateString()}</p>
         </div>
-      `;
-      mobileContainer.insertAdjacentHTML('beforeend', slide);
+        <a href="/blog/${post.slug}">
+          <h5 class="mt-4">${post.title}</h5>
+        </a>
+        <p class="post-date">${new Date(post.date).toLocaleDateString()}</p>
+      </div>
+    `;
 
-      const gridItem = `
+    // Render cho mobile và desktop
+    document.getElementById('blog-posts-mobile').innerHTML = 
+      postsToShow.map(renderPostHTML).join('');
+    
+    document.getElementById('blog-posts-desktop').innerHTML = 
+      postsToShow.map(post => `
         <div class="col-md-6 my-3">
-          <div class="image-holder zoom-effect">
-            <a href="/posts/${post.slug}">
-              <img src="/images/alda/blog/${post.image}" class="post-image img-fluid" alt="${post.title}">
-            </a>
-          </div>
-          <a href="/posts/${post.slug}" class="post-title">
-            <h5 class="mt-4">${post.title}</h5>
-          </a>
-          <p class="post-date">${new Date(post.date).toLocaleDateString()}</p>
+          ${renderPostHTML(post).replace('swiper-slide', '')}
         </div>
-      `;
-      desktopContainer.insertAdjacentHTML('beforeend', gridItem);
-    });
+      `).join('');
 
-    new Swiper('.blogSwiper', {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-
-    if (end >= allPosts.length) {
-      document.getElementById('load-more').style.display = 'none';
-    }
+    // Ẩn nút load more nếu đã hiển thị hết
+    document.getElementById('load-more').style.display = 
+      end >= allPosts.length ? 'none' : 'block';
   }
 
   document.getElementById('load-more').addEventListener('click', () => {
