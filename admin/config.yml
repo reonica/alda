@@ -6,21 +6,50 @@ media_folder: "static/uploads"  # Thư mục lưu ảnh/media
 public_folder: "/uploads"      # Đường dẫn public
 
 collections:
-  - name: "blog"               # Quản lý blog posts
+  # Collection quản lý blog posts
+  - name: "blog"
     label: "Blog Posts"
     folder: "src/posts"        # Thư mục lưu file Markdown
-    create: true
+    create: true               # Cho phép tạo bài viết mới
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Tự động tạo slug từ ngày + tiêu đề
     fields:
       - { name: "title", label: "Title", widget: "string" }
-      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { name: "thumbnail", label: "Thumbnail", widget: "image", required: false }
+      - { name: "excerpt", label: "Excerpt", widget: "text", required: false }
       - { name: "body", label: "Content", widget: "markdown" }
-      - { name: "thumbnail", label: "Thumbnail", widget: "image" }
 
-  - name: "pages"              # Quản lý trang tĩnh (About, Contact)
+  # Collection quản lý trang tĩnh
+  - name: "pages"
     label: "Pages"
+    create: true               # Cho phép tạo trang mới
     files:
-      - file: "src/pages/about.md"
-        label: "About"
+      - name: "about"          # Tên duy nhất cho trang About (bắt buộc)
+        file: "src/pages/about.md"
+        label: "About Page"
         fields:
           - { name: "title", label: "Title", widget: "string" }
+          - { name: "seo_title", label: "SEO Title", widget: "string", required: false }
           - { name: "content", label: "Content", widget: "markdown" }
+          - { name: "image", label: "Featured Image", widget: "image", required: false }
+
+      - name: "contact"        # Thêm trang Contact
+        file: "src/pages/contact.md"
+        label: "Contact Page"
+        fields:
+          - { name: "title", label: "Title", widget: "string" }
+          - { name: "email", label: "Email", widget: "string" }
+          - { name: "phone", label: "Phone", widget: "string", required: false }
+          - { name: "address", label: "Address", widget: "text", required: false }
+          - { name: "content", label: "Content", widget: "markdown" }
+
+# Tùy chọn: Thêm collection cho metadata toàn site (ví dụ: SEO)
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "general"
+        file: "src/data/settings.json"
+        label: "General Settings"
+        fields:
+          - { name: "site_name", label: "Site Name", widget: "string" }
+          - { name: "description", label: "Site Description", widget: "text" }
