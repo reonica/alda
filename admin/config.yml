@@ -1,49 +1,41 @@
 backend:
   name: git-gateway
-  branch: main  # Nhánh GitHub mặc định
+  branch: main
 
-media_folder: "static/uploads"  # Thư mục lưu ảnh/media
-public_folder: "/uploads"      # Đường dẫn public
+media_folder: "static/uploads"
+public_folder: "/uploads"
 
 collections:
-  # Collection quản lý blog posts
   - name: "blog"
     label: "Blog Posts"
-    folder: "src/posts"        # Thư mục lưu file Markdown
-    create: true               # Cho phép tạo bài viết mới
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Tự động tạo slug từ ngày + tiêu đề
+    folder: "src/posts"
+    extension: html  # <-- Quan trọng: Tạo file .html thay vì .md
+    format: html     # <-- Định dạng nội dung là HTML
+    slug: "{{slug}}"  # URL sẽ là /test.html (không cần thêm .html ở đây)
+    create: true
     fields:
       - { name: "title", label: "Title", widget: "string" }
-      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD" }
-      - { name: "thumbnail", label: "Thumbnail", widget: "image", required: false }
-      - { name: "excerpt", label: "Excerpt", widget: "text", required: false }
-      - { name: "body", label: "Content", widget: "markdown" }
+      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "body", label: "Content", widget: "markdown" }  # Vẫn dùng Markdown để nhập liệu
 
-  # Collection quản lý trang tĩnh
   - name: "pages"
     label: "Pages"
-    create: true               # Cho phép tạo trang mới
+    create: true
     files:
-      - name: "about"          # Tên duy nhất cho trang About (bắt buộc)
-        file: "src/pages/about.md"
+      - name: "about"
+        file: "src/pages/about.html"  # <-- Đổi thành .html
         label: "About Page"
         fields:
           - { name: "title", label: "Title", widget: "string" }
-          - { name: "seo_title", label: "SEO Title", widget: "string", required: false }
           - { name: "content", label: "Content", widget: "markdown" }
-          - { name: "image", label: "Featured Image", widget: "image", required: false }
 
-      - name: "contact"        # Thêm trang Contact
-        file: "src/pages/contact.md"
+      - name: "contact"
+        file: "src/pages/contact.html"  # <-- Đổi thành .html
         label: "Contact Page"
         fields:
           - { name: "title", label: "Title", widget: "string" }
           - { name: "email", label: "Email", widget: "string" }
-          - { name: "phone", label: "Phone", widget: "string", required: false }
-          - { name: "address", label: "Address", widget: "text", required: false }
-          - { name: "content", label: "Content", widget: "markdown" }
 
-# Tùy chọn: Thêm collection cho metadata toàn site (ví dụ: SEO)
   - name: "settings"
     label: "Site Settings"
     files:
@@ -52,4 +44,3 @@ collections:
         label: "General Settings"
         fields:
           - { name: "site_name", label: "Site Name", widget: "string" }
-          - { name: "description", label: "Site Description", widget: "text" }
