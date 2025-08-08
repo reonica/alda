@@ -1488,40 +1488,43 @@ Chocolat
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.blogSwiper .image-holder {
+.image-holder {
   width: 100%;
   overflow: hidden;
+  border-radius: 8px;
 }
 
-.blogSwiper .post-image {
+.post-image {
   width: 100%;
   height: auto;
-  transition: transform 0.3s ease;
   object-fit: cover;
-}
-
-.blogSwiper .image-holder:hover .post-image {
-  transform: scale(1.05);
-}
-
-#blog-posts-desktop .image-holder {
-  overflow: hidden;
-}
-
-#blog-posts-desktop .post-image {
-  width: 100%;
-  height: auto;
   transition: transform 0.3s ease;
-  object-fit: cover; 
 }
 
-#blog-posts-desktop .image-holder:hover .post-image {
+.image-holder:hover .post-image {
   transform: scale(1.05);
 }
 
-#blog-posts-desktop .post-title {
+.post-image[src=""], .post-image:not([src]) {
+  background-color: #f0f0f0;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 0.875rem;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.post-image[src=""]::after, .post-image:not([src])::after {
+  content: 'Hình ảnh không khả dụng';
+}
+
+.post-title {
   margin-top: 1.5rem;
   font-size: 1.25rem;
   font-weight: 500;
@@ -1529,11 +1532,11 @@ Chocolat
   text-decoration: none;
 }
 
-#blog-posts-desktop .post-title:hover {
+.post-title:hover {
   color: #007bff;
 }
 
-#blog-posts-desktop .post-date {
+.post-date {
   font-size: 0.875rem;
   color: #6c757d;
   margin-top: 0.5rem;
@@ -1543,6 +1546,15 @@ Chocolat
   padding: 10px 30px;
   font-size: 1rem;
   text-transform: uppercase;
+}
+
+.swiper-pagination-bullet {
+  background: #191919;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
 }
 
 @media (max-width: 767px) {
@@ -1555,15 +1567,4 @@ Chocolat
   #blog-posts-mobile {
     display: none;
   }
-}
-
-.post-image[src=""], .post-image:not([src]) {
-  background-color: #f0f0f0;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-  font-size: 0.875rem;
-  text-align: center;
 }
