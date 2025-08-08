@@ -1,0 +1,26 @@
+backend:
+  name: git-gateway
+  branch: main  # Nhánh GitHub mặc định
+
+media_folder: "static/uploads"  # Thư mục lưu ảnh/media
+public_folder: "/uploads"      # Đường dẫn public
+
+collections:
+  - name: "blog"               # Quản lý blog posts
+    label: "Blog Posts"
+    folder: "src/posts"        # Thư mục lưu file Markdown
+    create: true
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "body", label: "Content", widget: "markdown" }
+      - { name: "thumbnail", label: "Thumbnail", widget: "image" }
+
+  - name: "pages"              # Quản lý trang tĩnh (About, Contact)
+    label: "Pages"
+    files:
+      - file: "src/pages/about.md"
+        label: "About"
+        fields:
+          - { name: "title", label: "Title", widget: "string" }
+          - { name: "content", label: "Content", widget: "markdown" }
