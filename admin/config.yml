@@ -9,16 +9,14 @@ collections:
   - name: "blog"
     label: "Blog Posts"
     folder: "src/posts"
-    extension: html
-    format: html
-    slug: "{{slug}}"
     create: true
+    slug: "{{slug}}"
     fields:
       - { name: "title", label: "Title", widget: "string" }
-      - { name: "description", label: "Description", widget: "text" }
-      - { name: "slug", label: "Slug", widget: "string" }
       - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "slug", label: "URL Slug", widget: "string" }
       - { name: "image", label: "Featured Image", widget: "image" }
+      - { name: "excerpt", label: "Excerpt", widget: "text" }
       - { name: "body", label: "Content", widget: "markdown" }
 
   - name: "pages"
