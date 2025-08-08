@@ -2,35 +2,38 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"
-public_folder: "/uploads"
+media_folder: "static/images/alda/blog" # Thư mục lưu trữ hình ảnh
+public_folder: "/images/alda/blog" # Đường dẫn công khai cho hình ảnh
 
 collections:
   - name: "blog"
     label: "Blog Posts"
     folder: "src/posts"
-    extension: html  # <-- Quan trọng: Tạo file .html thay vì .md
-    format: html     # <-- Định dạng nội dung là HTML
-    slug: "{{slug}}"  # URL sẽ là /test.html (không cần thêm .html ở đây)
+    extension: html
+    format: html
+    slug: "{{slug}}"
     create: true
     fields:
       - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "slug", label: "Slug", widget: "string" }
       - { name: "date", label: "Date", widget: "datetime" }
-      - { name: "body", label: "Content", widget: "markdown" }  # Vẫn dùng Markdown để nhập liệu
+      - { name: "image", label: "Featured Image", widget: "image" }
+      - { name: "body", label: "Content", widget: "markdown" }
 
   - name: "pages"
     label: "Pages"
     create: true
     files:
       - name: "about"
-        file: "src/pages/about.html"  # <-- Đổi thành .html
+        file: "src/pages/about.html"
         label: "About Page"
         fields:
           - { name: "title", label: "Title", widget: "string" }
           - { name: "content", label: "Content", widget: "markdown" }
 
       - name: "contact"
-        file: "src/pages/contact.html"  # <-- Đổi thành .html
+        file: "src/pages/contact.html"
         label: "Contact Page"
         fields:
           - { name: "title", label: "Title", widget: "string" }
