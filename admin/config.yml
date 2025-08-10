@@ -2,17 +2,17 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"    # Nơi lưu ảnh trong repo
-public_folder: "/uploads"         # Đường dẫn công khai của ảnh
+media_folder: "static/uploads"
+public_folder: "/uploads"
 
 collections:
-  - name: "posts"                 # Tên collection (không dấu cách)
-    label: "Blog Posts"            # Nhãn hiển thị trong CMS
-    folder: "content/posts"        # Nơi lưu bài viết Hugo
-    create: true                   # Cho phép tạo bài viết mới
-    slug: "{{slug}}"               # Định dạng tên file
-    format: "frontmatter"          # Hugo dùng front matter YAML/TOML/JSON
-    extension: "md"                # Lưu bài viết dưới dạng Markdown
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    extension: "md"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
