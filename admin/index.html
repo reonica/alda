@@ -2,8 +2,24 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <title>Content Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
   </head>
-  <body></body>
+  <body>
+    <!-- Load Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+
+    <script>
+      // Nếu muốn load config.yml ở thư mục admin
+      CMS.init({
+        config: {
+          load_config_file: true,
+          config_path: 'config.yml'
+        }
+      });
+    </script>
+  </body>
 </html>
