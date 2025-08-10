@@ -1,9 +1,11 @@
 [build]
-  publish = "./"
-  command = "echo 'Building with Netlify Includes'"
+  publish = "public"
+  command = "hugo"
 
 [build.environment]
-  NETLIFY_BUILD_USE_INCLUDES = "true"
+  HUGO_VERSION = "0.125.0" # hoặc bản mới nhất
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
   
   [functions.emails]
   included_files = [
