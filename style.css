@@ -336,19 +336,9 @@ a {
 
 
 /* nav bar style  */
-.main-menu {
-  background-color: transparent;
-}
-
-.navbar.fixed-top {
-  transition: all 0.3s ease;
-}
-
-.navbar.fixed-top.bg-scrolled {
-  background-color: #ededed !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
+.main-menu { background-color: transparent; }
+.navbar.fixed-top { transition: all 0.3s ease; }
+.navbar.fixed-top.bg-scrolled { background-color: #ededed !important; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
 .nav-link {
   color: #191919 !important;
   font-size: 0.875rem;
@@ -358,27 +348,21 @@ a {
 
 /* Add to existing CSS */
 .main-logo img {
-  max-height: 60px; /* Maximum logo height limit */
-  width: auto; /* Maintain aspect ratio */
-  transition: all 0.3s ease; /* Smooth transition effect */
+  max-height: 60px;
+  width: auto;
+  transition: all 0.3s ease;
 }
 
 /* Mobile adjustments */
 @media screen and (max-width: 991px) {
   .main-logo img {
-    max-height: 50px; /* Slightly smaller on mobile */
+    max-height: 50px;
   }
 }
 
-/* Ensure navbar has sufficient height for logo */
-.main-menu.navbar {
-  min-height: 80px;
-}
+.main-menu.navbar { min-height: 80px; }
 
-/* When navbar is scrolled */
-.navbar.fixed-top.bg-scrolled .main-logo img {
-  max-height: 50px; /* Smaller logo when scrolled */
-}
+.navbar.fixed-top.bg-scrolled .main-logo img { max-height: 50px; }
 
 /* hero section style */
 .banner-text {
@@ -387,9 +371,7 @@ a {
   line-height: 6rem;
 }
 
-iconify-icon.arrow-icon {
-  font-size: 1.3rem;
-}
+iconify-icon.arrow-icon { font-size: 1.3rem; }
 
 @media screen and (max-width: 991px) {
   .banner-text {
@@ -400,7 +382,7 @@ iconify-icon.arrow-icon {
 /* CSS for the "talk" section - Book a 30-Minute Strategy Call */
 #talk {
   padding: 2rem 0;
-  background-color: #f8f9fa; /* Light background color */
+  background-color: #f8f9fa;
 }
 
 #talk .container {
@@ -433,10 +415,7 @@ iconify-icon.arrow-icon {
 }
 
 /* Button adjustments */
-#talk .btn-primary {
-  white-space: nowrap; /* Prevent button text from wrapping */
-  min-width: 180px; /* Ensure button has minimum width */
-}
+#talk .btn-primary { white-space: nowrap; min-width: 180px; }
 
 /* CSS for the About section - Optimized */
 #about-us .nav-tabs {
@@ -444,21 +423,19 @@ iconify-icon.arrow-icon {
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Hide scrollbar on Firefox */
+  scrollbar-width: none;
   white-space: nowrap;
   margin-bottom: 1.5rem;
   border-bottom: none;
 }
 
-#about-us .nav-tabs::-webkit-scrollbar {
-  display: none; /* Hide scrollbar on Chrome/Safari */
-}
+#about-us .nav-tabs::-webkit-scrollbar { display: none; }
 
 #about-us .nav-tabs .nav-item {
   flex: 0 0 auto;
   border-bottom: 2px solid transparent;
   margin-right: 1.5rem;
-  transition: all 0.1s ease-in; /* Giữ hiệu ứng transition */
+  transition: all 0.1s ease-in;
 }
 
 #about-us .nav-tabs .nav-link {
@@ -466,12 +443,12 @@ iconify-icon.arrow-icon {
   font-size: 0.9rem;
   color: #555;
   border: none;
-  transition: all 0.1s ease-in; /* Thêm transition */
+  transition: all 0.1s ease-in;
 }
 
 #about-us .nav-tabs .nav-link.active,
 #about-us .nav-tabs .nav-link:hover {
-  border-bottom: 2px solid var(--accent-color); /* Sử dụng biến màu */
+  border-bottom: 2px solid var(--accent-color);
   color: var(--accent-color);
   font-weight: 600;
 }
@@ -500,9 +477,7 @@ iconify-icon.arrow-icon {
   overflow: hidden;
 }
 
-#service .position-absolute.z-n1 {
-  z-index: -1;
-}
+#service .position-absolute.z-n1 { z-index: -1; }
 
 /* Large numbers - General style */
 .service-number {
@@ -627,7 +602,7 @@ opacity: 1;
   display: flex;
   align-items: center;
   animation: scroll-left 30s linear infinite;
-  will-change: transform; /* Tối ưu hiệu suất animation */
+  will-change: transform;
 }
 
 .partners-inner img {
@@ -651,7 +626,7 @@ opacity: 1;
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%); /* Di chuyển 50% chiều dài của content */
+    transform: translateX(-50%);
   }
 }
 
@@ -797,7 +772,6 @@ opacity: 1;
 }
 
 /*---- video section style ----*/
-/* color box style */
 div#cboxOverlay {
   opacity: 0.8 !important;
 }
@@ -876,13 +850,13 @@ div#cboxOverlay {
   justify-content: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
   z-index: 10;
-  --swiper-navigation-size: 20px; /* Smaller arrow icon size */
+  --swiper-navigation-size: 20px;
 }
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
   background-color: rgba(0, 0, 0, 0.8);
-  transform: scale(1.1); /* Slight scale on hover */
+  transform: scale(1.1);
 }
 
 .swiper-button-prev {
@@ -906,7 +880,7 @@ div#cboxOverlay {
   .swiper-button-next {
     width: 40px;
     height: 40px;
-    --swiper-navigation-size: 16px; /* Smaller arrows on mobile */
+    --swiper-navigation-size: 16px;
   }
   .swiper-button-prev {
     left: 5px;
@@ -917,9 +891,6 @@ div#cboxOverlay {
 }
 
 /* blog section style */
-
-/* -Zoom Effect
-------------------------------------------*/
 .zoom-effect {
   position: relative;
   overflow: hidden;
@@ -1043,7 +1014,7 @@ div#cboxOverlay {
   width: 100%;
   height: auto;
   transition: transform 0.3s ease;
-  filter: brightness(0) invert(1); /* Make logo white */
+  filter: brightness(0) invert(1);
 }
 
 .footer-logo:hover img {
@@ -1385,24 +1356,24 @@ div#cboxOverlay {
   }
   
   #footer .col-lg-2.col-md-6 {
-    width: 50%; /* Display 2 columns side by side */
+    width: 50%;
     flex: 0 0 auto;
   }
   
   #footer .footer-menu {
-    text-align: center; /* Center align content */
-    padding: 0 15px; /* Add spacing between columns */
+    text-align: center;
+    padding: 0 15px;
   }
   
   #footer .menu-title:after {
     left: 50%;
-    transform: translateX(-50%); /* Center underline for title */
+    transform: translateX(-50%);
   }
   
   /* Ensure newsletter takes full width */
   #footer .col-lg-4.col-md-6 {
     width: 100%;
-    margin-top: 30px; /* Add spacing above the newsletter section */
+    margin-top: 30px;
   }
 }
 /* FIX OVERFLOW ISSUES - CORRECTED VERSION */
@@ -1439,7 +1410,7 @@ html, body {
 }
 
 .partners-inner {
-    width: max-content; /* Better than auto */
+    width: max-content;
     padding: 0 30px;
 }
 
@@ -1521,7 +1492,7 @@ Chocolat
 }
 
 .post-image[src=""]::after, .post-image:not([src])::after {
-  content: 'Hình ảnh không khả dụng';
+  content: 'Image not available';
 }
 
 .post-title {
@@ -1568,3 +1539,4 @@ Chocolat
     display: none;
   }
 }
+
