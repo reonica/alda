@@ -11,11 +11,18 @@ class BlogLoader {
     constructor() {
         this.blogContainer = document.getElementById('blog-posts');
         this.postContainer = document.getElementById('blog-post');
-        this.githubConfig = {
+        
+        this.githubConfig = window.BLOG_CONFIG?.github || {
             owner: 'reonica',
-            repo: 'alda', 
+            repo: 'alda',
             token: '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',
-            blogPath: 'blog'
+            blogPath: 'blog',
+            branch: 'main'
+        };
+        
+        this.siteConfig = window.BLOG_CONFIG?.site || {
+            name: 'Alda Hub',
+            defaultAuthor: 'Alda Hub Team'
         };
     }
 
@@ -130,7 +137,7 @@ class BlogLoader {
                 `;
             }
 
-            const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/main/${this.githubConfig.blogPath}/${slug}.md`;
+            const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/${this.githubConfig.branch}/${this.githubConfig.blogPath}/${slug}.md`;
             
             const response = await fetch(fileUrl);
             
