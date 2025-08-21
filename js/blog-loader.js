@@ -6,41 +6,139 @@ class BlogLoader {
         this.blogFolder = '/blog/';
     }
 
+// Blog Loader for Static HTML Website with GitHub API
+class BlogLoader {
+    constructor() {
+        this.blogContainer = document.getElementById('blog-posts');
+        this.postContainer = document.getElementById('blog-post');
+        this.githubConfig = {
+            owner: 'reonica',
+            repo: 'alda', 
+            token: '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',
+            blogPath: 'blog'
+        };
+    }
+
+    async fetchBlogIndex() {
+        try {
+            const apiUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
+            
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json'
+            };
+            
+            if (this.githubConfig.token) {
+                headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
+            }
+
+            const response = await fetch(apiUrl, { headers });
+            
+            if (!response.ok) {
+                throw new Error(`GitHub API error: ${response.status}`);
+            }
+
+            const files = await response.json();
+            
+            const markdownFiles = files.filter(file => 
+                file.name.endsWith('.md') && file.type === 'file'
+            );
+
+            const posts = await Promise.all(
+                markdownFiles.map(async (file) => {
+                    try {
+                        const fileResponse = await fetch(file.download_url);
+                        const content = await fileResponse.text();
+                        const post = this.parseFrontmatter(content);
+                        
+                        return {
+                            ...post,
+                            slug: file.name.replace('.md', ''),
+                            filename: file.name
+                        };
+                    } catch (error) {
+                        console.error(`Error loading ${file.name}:`, error);
+                        return null;
+                    }
+                })
+            );
+
+            return posts
+                .filter(post => post !== null)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        } catch (error) {
+            console.error('Error fetching blog index:', error);
+            
+            return this.getFallbackPosts();
+        }
+    }
+
+    getFallbackPosts() {
+        return [
+            {
+                title: "Welcome to Alda Hub Blog",
+                slug: "welcome-to-alda-hub-blog",
+                date: "2024-08-21T10:00:00Z",
+                author: "Alda Hub Team",
+                description: "Welcome to our data-driven marketing blog. Stay tuned for insights and strategies.",
+                tags: ["welcome", "introduction"],
+                body: "# Welcome to Alda Hub Blog\n\nThis is our first blog post. More content coming soon!"
+            }
+        ];
+    }
+
     async loadBlogPosts() {
         try {
-            // Fetch từ GitHub API hoặc tạo index file
+            // Show loading state
+            if (this.blogContainer) {
+                this.blogContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading blog posts...</p>
+                    </div>
+                `;
+            }
+
             const posts = await this.fetchBlogIndex();
             this.renderBlogPosts(posts);
         } catch (error) {
             console.error('Error loading blog posts:', error);
             if (this.blogContainer) {
-                this.blogContainer.innerHTML = '<p>Unable to load blog posts at this time.</p>';
+                this.blogContainer.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <h5>No posts available yet</h5>
+                        <p>Check back soon for new content!</p>
+                    </div>
+                `;
             }
         }
     }
 
-    async fetchBlogIndex() {
-        // Bạn cần tạo file index.json hoặc fetch từ GitHub API
-        // Tạm thời return mock data để test
-        return [
-            {
-                title: "Test Blog Post",
-                slug: "test",
-                date: "2024-01-15T10:00:00Z",
-                author: "Aldahub",
-                description: "This is a test blog post description",
-                tags: ["test", "example"]
-            }
-        ];
-    }
-
     async loadSinglePost(slug) {
         try {
-            // Fetch markdown file trực tiếp
-            const response = await fetch(`/blog/${slug}.md`);
-            const markdownContent = await response.text();
+            // Show loading state
+            if (this.postContainer) {
+                this.postContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading post...</p>
+                    </div>
+                `;
+            }
+
+            const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/main/${this.githubConfig.blogPath}/${slug}.md`;
             
-            // Parse frontmatter và content
+            const response = await fetch(fileUrl);
+            
+            if (!response.ok) {
+                throw new Error(`Post not found: ${response.status}`);
+            }
+
+            const markdownContent = await response.text();
             const post = this.parseFrontmatter(markdownContent);
             post.slug = slug;
             
@@ -48,7 +146,13 @@ class BlogLoader {
         } catch (error) {
             console.error('Error loading blog post:', error);
             if (this.postContainer) {
-                this.postContainer.innerHTML = '<p>Post not found.</p>';
+                this.postContainer.innerHTML = `
+                    <div class="alert alert-danger text-center">
+                        <h5>Post not found</h5>
+                        <p>The requested blog post could not be loaded.</p>
+                        <a href="/blog.html" class="btn btn-primary">← Back to Blog</a>
+                    </div>
+                `;
             }
         }
     }
@@ -122,7 +226,6 @@ class BlogLoader {
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
-        // Update page title và breadcrumb
         document.title = `${post.title} - Alda Hub`;
         
         const titleEl = document.getElementById('post-title');
@@ -133,7 +236,6 @@ class BlogLoader {
         if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
         if (breadcrumbEl) breadcrumbEl.textContent = post.title;
 
-        // Convert markdown to HTML
         const htmlContent = marked.parse(post.body || '');
 
         this.postContainer.innerHTML = `
