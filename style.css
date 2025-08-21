@@ -1617,3 +1617,28 @@ Chocolat
 #blog-posts article {
     animation: fadeIn 0.6s ease-out;
 }
+/* Bootstrap Pagination */
+.pagination .page-link {
+    color: var(--primary-color, #191919);
+    background-color: transparent;
+    border: 1px solid var(--grey-color, #dbdbdb);
+}
+
+.pagination .page-item.active .page-link {
+    color: var(--light-color, #fff);
+    background-color: var(--primary-color, #191919);
+    border-color: var(--primary-color, #191919);
+}
+
+.pagination .page-link:hover {
+    color: var(--light-color, #fff);
+    background-color: var(--dark-color, #222222);
+    border-color: var(--grey-color, #dbdbdb);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--light-dark-color, #727272);
+    background-color: transparent;
+    border-color: var(--grey-color, #dbdbdb);
+    pointer-events: none;
+}
