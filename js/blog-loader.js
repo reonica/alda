@@ -16,6 +16,8 @@ class BlogLoader {
             name: 'Alda Hub',
             defaultAuthor: 'Alda Hub Team'
         };
+
+        this.isMobile = window.innerWidth <= 768;
     }
 
     async fetchBlogIndex() {
@@ -36,6 +38,7 @@ class BlogLoader {
             
             if (!response.ok) {
                 console.error('GitHub API response not OK:', response.status, response.statusText);
+                // Trả về bài viết mẫu nếu không kết nối được
                 return this.getFallbackPosts();
             }
 
@@ -137,6 +140,48 @@ class BlogLoader {
         }
     }
 
+    async loadSinglePost(slug) {
+        try {
+            if (this.postContainer) {
+                this.postContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading post...</p>
+                    </div>
+                `;
+            }
+
+            const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/${this.githubConfig.branch}/${this.githubConfig.blogPath}/${slug}.md`;
+            
+            console.log('Loading post from:', fileUrl);
+
+            const response = await fetch(fileUrl);
+            
+            if (!response.ok) {
+                throw new Error(`Post not found: ${response.status}`);
+            }
+
+            const markdownContent = await response.text();
+            const post = this.parseFrontmatter(markdownContent);
+            post.slug = slug;
+            
+            this.renderSinglePost(post);
+        } catch (error) {
+            console.error('Error loading blog post:', error);
+            if (this.postContainer) {
+                this.postContainer.innerHTML = `
+                    <div class="alert alert-danger text-center">
+                        <h5>Post not found</h5>
+                        <p>The requested blog post could not be loaded.</p>
+                        <a href="/blog.html" class="btn btn-primary">← Back to Blog</a>
+                    </div>
+                `;
+            }
+        }
+    }
+
     parseFrontmatter(content) {
         const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
         const match = content.match(frontmatterRegex);
@@ -226,39 +271,79 @@ class BlogLoader {
         `).join('');
 
         this.blogContainer.innerHTML = postsHTML;
-        
-        // Gọi hàm xử lý riêng cho iOS sau khi render
-        if (this.isIOS()) {
-            this.applyIOSFixes();
-        }
     }
 
-    isIOS() {
-        return [
-            'iPad Simulator',
-            'iPhone Simulator',
-            'iPod Simulator',
-            'iPad',
-            'iPhone',
-            'iPod'
-        ].includes(navigator.platform) || 
-        (navigator.userAgent.includes("Mac") && "ontouchend" in document);
-    }
+    renderSinglePost(post) {
+        if (!this.postContainer) return;
 
-    applyIOSFixes() {
-        console.log("Applying iOS-specific fixes");
+        document.title = `${post.title || 'Untitled'} - ${this.siteConfig.name}`;
         
-        // Đảm bảo các phần tử hiển thị đúng cách trên iOS
-        const blogPosts = document.getElementById('blog-posts');
-        if (blogPosts) {
-            blogPosts.style.display = 'none';
-            // Kích hoạt reflow
-            void blogPosts.offsetHeight;
-            blogPosts.style.display = 'block';
-        }
+        const titleEl = document.getElementById('post-title');
+        const descriptionEl = document.getElementById('post-description');
+        const breadcrumbEl = document.getElementById('breadcrumb-title');
         
-        // Thêm lớp CSS cho iOS
-        document.documentElement.classList.add('ios-device');
+        if (titleEl) titleEl.textContent = post.title || 'Untitled';
+        if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
+        if (breadcrumbEl) breadcrumbEl.textContent = post.title || 'Untitled';
+
+        const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
+
+        this.postContainer.innerHTML = `
+            <div class="mb-4">
+                ${post.featured_image ? `
+                <div class="mb-4">
+                    <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid w-100 rounded shadow">
+                </div>` : ''}
+                
+                <div class="mb-4">
+                    <h1 class="display-4 fw-bold text-dark mb-3">${post.title || 'Untitled'}</h1>
+                    <div class="d-flex align-items-center text-muted mb-4">
+                        <small class="me-4">
+                            <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
+                            ${this.formatDate(post.date || '1970-01-01')}
+                        </small>
+                        <small class="me-4">
+                            <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
+                            ${post.author || this.siteConfig.defaultAuthor}
+                        </small>
+                        ${post.tags && post.tags.length ? `<small>
+                            <iconify-icon icon="bi:tags" class="me-1"></iconify-icon>
+                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).slice(0, 2).join(', ')}
+                        </small>` : ''}
+                    </div>
+                </div>
+                
+                <div class="post-content fs-5 lh-lg">
+                    ${htmlContent}
+                </div>
+                
+                ${post.tags && post.tags.length ? `
+                <div class="mt-5 pt-4 border-top">
+                    <h6 class="text-muted mb-3">Tags:</h6>
+                    <div>
+                        ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `
+                        <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">
+                            ${tag}
+                        </a>`).join('')}
+                    </div>
+                </div>` : ''}
+                
+                <div class="mt-5 pt-4 border-top">
+                    <h6 class="text-muted mb-3">Share this post:</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <iconify-icon icon="bi:facebook"></iconify-icon> Facebook
+                        </a>
+                        <a href="#" class="btn btn-outline-info btn-sm">
+                            <iconify-icon icon="bi:twitter"></iconify-icon> Twitter
+                        </a>
+                        <a href="#" class="btn btn-outline-success btn-sm">
+                            <iconify-icon icon="bi:whatsapp"></iconify-icon> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     formatDate(dateString) {
