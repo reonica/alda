@@ -1658,22 +1658,3 @@ Chocolat
   height: 50px;
   width: 200px;
 }
-
-/* iOS-specific fixes */
-.ios-device #blog-posts {
-    -webkit-overflow-scrolling: touch;
-}
-
-.ios-device .card {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-}
-
-.ios-device .sidebar-widget {
-    margin-bottom: 2rem;
-}
-
-.ios-device .card-img-top {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
