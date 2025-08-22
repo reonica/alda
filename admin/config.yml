@@ -21,7 +21,7 @@ collections:
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
       - {label: "Tags", name: "tags", widget: "list"}
       - {label: "Body", name: "body", widget: "markdown"}
-
+  
   - name: "pages"
     label: "Pages"
     files:
@@ -36,5 +36,5 @@ collections:
 # Cấu hình giao diện
 locale: 'en'
 show_preview_links: false
-display_url: https://aldahub.com
-logo_url: https://aldahub.com/images/logo.png
+display_url: "https://aldahub.com"
+logo_url: "https://aldahub.com/images/logo.png"
