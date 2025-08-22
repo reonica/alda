@@ -3,7 +3,7 @@ window.BLOG_CONFIG = {
     github: {
         owner: 'reonica',
         repo: 'alda',
-        token: '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',
+        token: '',
         blogPath: 'blog',
         branch: 'main'
     },
