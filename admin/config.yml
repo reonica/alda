@@ -8,7 +8,7 @@ public_folder: "/images/blog"
 
 # Cấu hình collections
 collections:
-  - name: "blog" 
+  - name: "blog"
     label: "Blog Posts"
     folder: "blog"
     create: true
