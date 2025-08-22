@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager - Aldahub</title>
   <link rel="icon" type="image/png" href="/images/alda/alda-logo.png">
-  <link rel="stylesheet" href="/style.css">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Identity widget styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-identity-widget@latest/build/netlify-identity-widget.css" />
 </head>
 <body>
-  <!-- Decap CMS Script -->
+  <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
