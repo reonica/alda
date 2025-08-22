@@ -15,12 +15,11 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Slug", name: "slug", widget: "string"}
-      - {label: "Date", name: "date", widget: "datetime", default: ""}
+      - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Author", name: "author", widget: "string", default: "Aldahub"}
       - {label: "Description", name: "description", widget: "text"}
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
-      - {label: "Tags", name: "tags", widget: "list", default: []}
+      - {label: "Tags", name: "tags", widget: "list"}
       - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "pages"
