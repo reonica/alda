@@ -1642,3 +1642,19 @@ Chocolat
     border-color: var(--grey-color, #dbdbdb);
     pointer-events: none;
 }
+
+/*--------------------------------------------------------------
+/** CUSTOM ADMIN LOGIN LOGO - Replace Decap CMS default logo
+--------------------------------------------------------------*/
+.nc-authenticationPage-logo img {
+  display: none;
+}
+
+.nc-authenticationPage-logo {
+  background-image: url('/images/alda/alda-logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 200px;
+}
