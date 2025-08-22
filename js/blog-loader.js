@@ -140,49 +140,47 @@ class BlogLoader {
         }
     }
 
-async loadSinglePost(slug) {
-    try {
-        if (this.postContainer) {
-            this.postContainer.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+    async loadSinglePost(slug) {
+        try {
+            if (this.postContainer) {
+                this.postContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading post...</p>
                     </div>
-                    <p class="mt-3">Loading post...</p>
-                </div>
-            `;
-        }
+                `;
+            }
 
-        // Đảm bảo slug không chứa dấu / ở đầu hoặc cuối
-        const cleanSlug = slug.replace(/^\/|\/$/g, '');
-        const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/${this.githubConfig.branch}/${this.githubConfig.blogPath}/${cleanSlug}.md`;
-        
-        console.log('Loading post from:', fileUrl);
+            const fileUrl = `https://raw.githubusercontent.com/${this.githubConfig.owner}/${this.githubConfig.repo}/${this.githubConfig.branch}/${this.githubConfig.blogPath}/${slug}.md`;
+            
+            console.log('Loading post from:', fileUrl);
 
-        const response = await fetch(fileUrl);
-        
-        if (!response.ok) {
-            throw new Error(`Post not found: ${response.status}`);
-        }
+            const response = await fetch(fileUrl);
+            
+            if (!response.ok) {
+                throw new Error(`Post not found: ${response.status}`);
+            }
 
-        const markdownContent = await response.text();
-        const post = this.parseFrontmatter(markdownContent);
-        post.slug = cleanSlug;
-        
-        this.renderSinglePost(post);
-    } catch (error) {
-        console.error('Error loading blog post:', error);
-        if (this.postContainer) {
-            this.postContainer.innerHTML = `
-                <div class="alert alert-danger text-center">
-                    <h5>Post not found</h5>
-                    <p>The requested blog post could not be loaded.</p>
-                    <a href="/blog.html" class="btn btn-primary">← Back to Blog</a>
-                </div>
-            `;
+            const markdownContent = await response.text();
+            const post = this.parseFrontmatter(markdownContent);
+            post.slug = slug;
+            
+            this.renderSinglePost(post);
+        } catch (error) {
+            console.error('Error loading blog post:', error);
+            if (this.postContainer) {
+                this.postContainer.innerHTML = `
+                    <div class="alert alert-danger text-center">
+                        <h5>Post not found</h5>
+                        <p>The requested blog post could not be loaded.</p>
+                        <a href="/blog.html" class="btn btn-primary">← Back to Blog</a>
+                    </div>
+                `;
+            }
         }
     }
-}
 
     parseFrontmatter(content) {
         const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
@@ -229,7 +227,7 @@ async loadSinglePost(slug) {
 
     renderBlogPosts(posts) {
         if (!this.blogContainer) return;
-    
+
         if (posts.length === 0) {
             this.blogContainer.innerHTML = `
                 <div class="alert alert-info text-center">
@@ -239,7 +237,7 @@ async loadSinglePost(slug) {
             `;
             return;
         }
-    
+
         const postsHTML = posts.map(post => `
             <article class="card mb-4 border-0 shadow-sm">
                 ${post.featured_image ? `
@@ -258,22 +256,23 @@ async loadSinglePost(slug) {
                         </small>
                     </div>
                     <h3 class="card-title h4 mb-3">
-                        <a href="/${post.slug}/" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a> <!-- Sửa URL -->
+                        <a href="/blog-post.html?post=${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
                     </h3>
                     <p class="card-text text-muted mb-3">${post.description || ''}</p>
                     ${post.tags && post.tags.length ? `
                     <div class="mb-3">
                         ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
                     </div>` : ''}
-                    <a href="/${post.slug}/" class="btn btn-outline-primary"> <!-- Sửa URL -->
+                    <a href="/blog-post.html?post=${post.slug}" class="btn btn-outline-primary">
                         Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
                     </a>
                 </div>
             </article>
         `).join('');
-    
+
         this.blogContainer.innerHTML = postsHTML;
     }
+
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
@@ -363,24 +362,9 @@ async loadSinglePost(slug) {
 }
 
 // Global functions
-window.loadSinglePost = function() {
+window.loadSinglePost = function(slug) {
     const loader = new BlogLoader();
-    const path = window.location.pathname; // Ví dụ: /a-complete-guide-to-data-driven-digital-marketing/
-    const slug = path.replace(/^\/|\/$/g, ''); // Loại bỏ dấu / ở đầu và cuối
-    if (slug) {
-        loader.loadSinglePost(slug);
-    } else {
-        console.error('No slug found in URL');
-        if (loader.postContainer) {
-            loader.postContainer.innerHTML = `
-                <div class="alert alert-danger text-center">
-                    <h5>Post not found</h5>
-                    <p>No blog post specified.</p>
-                    <a href="/blog.html" class="btn btn-primary">← Back to Blog</a>
-                </div>
-            `;
-        }
-    }
+    loader.loadSinglePost(slug);
 };
 
 // Initialize
