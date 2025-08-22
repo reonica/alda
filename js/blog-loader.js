@@ -16,21 +16,6 @@ class BlogLoader {
             name: 'Alda Hub',
             defaultAuthor: 'Alda Hub Team'
         };
-
-        this.isMobile = window.innerWidth <= 768;
-        this.isIOS = this.detectIOS();
-    }
-
-    detectIOS() {
-        return [
-            'iPad Simulator',
-            'iPhone Simulator',
-            'iPod Simulator',
-            'iPad',
-            'iPhone',
-            'iPod'
-        ].includes(navigator.platform) || 
-        (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     }
 
     async fetchBlogIndex() {
@@ -47,9 +32,7 @@ class BlogLoader {
                 headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
             }
 
-            // Sử dụng cache buster để tránh cache trên iOS
-            const cacheBuster = this.isIOS ? `?t=${new Date().getTime()}` : '';
-            const response = await fetch(apiUrl + cacheBuster, { headers });
+            const response = await fetch(apiUrl, { headers });
             
             if (!response.ok) {
                 console.error('GitHub API response not OK:', response.status, response.statusText);
@@ -67,7 +50,7 @@ class BlogLoader {
             const posts = await Promise.all(
                 markdownFiles.map(async (file) => {
                     try {
-                        const fileResponse = await fetch(file.download_url + (this.isIOS ? `?t=${new Date().getTime()}` : ''));
+                        const fileResponse = await fetch(file.download_url);
                         
                         if (!fileResponse.ok) {
                             console.error(`Failed to fetch ${file.name}: ${fileResponse.status}`);
@@ -99,13 +82,106 @@ class BlogLoader {
         }
     }
 
-    // ... (phần còn lại giữ nguyên cho đến renderBlogPosts)
+    getFallbackPosts() {
+        console.log('Using fallback posts');
+        return [
+            {
+                title: "Welcome to Alda Hub Blog",
+                slug: "welcome-to-alda-hub-blog",
+                date: "2024-08-21T10:00:00Z",
+                author: "Alda Hub Team",
+                description: "Welcome to our data-driven marketing blog. Stay tuned for insights and strategies.",
+                tags: ["welcome", "introduction"],
+                body: "# Welcome to Alda Hub Blog\n\nThis is our first blog post. More content coming soon!",
+                featured_image: "images/alda/blog-data-driven-marketing.jpg"
+            },
+            {
+                title: "Data-Driven Marketing Strategies",
+                slug: "data-driven-marketing-strategies",
+                date: "2024-08-20T10:00:00Z",
+                author: "Alda Hub Team",
+                description: "Learn how data-driven decisions can transform your marketing approach.",
+                tags: ["marketing", "data analysis"],
+                body: "# Data-Driven Marketing Strategies\n\nLeverage data to improve your marketing ROI.",
+                featured_image: "images/alda/blog-customer-data-analysis.jpg"
+            }
+        ];
+    }
+
+    async loadBlogPosts() {
+        try {
+            if (this.blogContainer) {
+                this.blogContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading blog posts...</p>
+                    </div>
+                `;
+            }
+
+            const posts = await this.fetchBlogIndex();
+            this.renderBlogPosts(posts);
+        } catch (error) {
+            console.error('Error loading blog posts:', error);
+            if (this.blogContainer) {
+                this.blogContainer.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <h5>No posts available yet</h5>
+                        <p>Check back soon for new content!</p>
+                        <button class="btn btn-primary mt-2" onclick="location.reload()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    parseFrontmatter(content) {
+        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+        const match = content.match(frontmatterRegex);
+        
+        if (!match) {
+            return { body: content };
+        }
+
+        const frontmatter = match[1];
+        const body = match[2];
+        
+        const metadata = {};
+        frontmatter.split('\n').forEach(line => {
+            const colonIndex = line.indexOf(':');
+            if (colonIndex > 0) {
+                const key = line.substring(0, colonIndex).trim();
+                let value = line.substring(colonIndex + 1).trim();
+                
+                // Remove quotes if present
+                if (value.startsWith('"') && value.endsWith('"') || 
+                    value.startsWith("'") && value.endsWith("'")) {
+                    value = value.substring(1, value.length - 1);
+                }
+                
+                // Handle tags as array or string
+                if (key === 'tags') {
+                    try {
+                        value = JSON.parse(value);
+                    } catch {
+                        value = value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    }
+                }
+                
+                metadata[key] = value;
+            }
+        });
+
+        return {
+            ...metadata,
+            body: body
+        };
+    }
 
     renderBlogPosts(posts) {
         if (!this.blogContainer) return;
-
-        // Xóa nội dung cũ hoàn toàn trước khi render mới (quan trọng cho iOS)
-        this.blogContainer.innerHTML = '';
 
         if (posts.length === 0) {
             this.blogContainer.innerHTML = `
@@ -149,28 +225,55 @@ class BlogLoader {
             </article>
         `).join('');
 
-        // Sử dụng requestAnimationFrame để đảm bảo render đúng trên iOS
-        requestAnimationFrame(() => {
-            this.blogContainer.innerHTML = postsHTML;
-            
-            // Kích hoạt lại các thành phần trên iOS nếu cần
-            if (this.isIOS) {
-                this.forceIOSRedraw();
-            }
-        });
+        this.blogContainer.innerHTML = postsHTML;
+        
+        // Gọi hàm xử lý riêng cho iOS sau khi render
+        if (this.isIOS()) {
+            this.applyIOSFixes();
+        }
     }
 
-    forceIOSRedraw() {
-        // Kỹ thuật ép buộc iOS redraw các phần tử
-        const containers = document.querySelectorAll('#blog-posts, .blog-post-card');
-        containers.forEach(container => {
-            container.style.display = 'none';
-            void container.offsetHeight; // Trigger reflow
-            container.style.display = '';
-        });
+    isIOS() {
+        return [
+            'iPad Simulator',
+            'iPhone Simulator',
+            'iPod Simulator',
+            'iPad',
+            'iPhone',
+            'iPod'
+        ].includes(navigator.platform) || 
+        (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     }
 
-    // ... (phần còn lại giữ nguyên)
+    applyIOSFixes() {
+        console.log("Applying iOS-specific fixes");
+        
+        // Đảm bảo các phần tử hiển thị đúng cách trên iOS
+        const blogPosts = document.getElementById('blog-posts');
+        if (blogPosts) {
+            blogPosts.style.display = 'none';
+            // Kích hoạt reflow
+            void blogPosts.offsetHeight;
+            blogPosts.style.display = 'block';
+        }
+        
+        // Thêm lớp CSS cho iOS
+        document.documentElement.classList.add('ios-device');
+    }
+
+    formatDate(dateString) {
+        try {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        } catch (error) {
+            console.error('Error formatting date:', error, dateString);
+            return 'Invalid date';
+        }
+    }
 }
 
 // Global functions
@@ -179,21 +282,11 @@ window.loadSinglePost = function(slug) {
     loader.loadSinglePost(slug);
 };
 
-// Khởi tạo với xử lý lỗi cho iOS
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Thêm lớp CSS cho iOS nếu cần
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        document.documentElement.classList.add('ios-device');
-    }
-    
     const blogLoader = new BlogLoader();
     
     if (document.getElementById('blog-posts')) {
-        // Thêm delay nhỏ cho iOS để đảm bảo DOM đã sẵn sàng
-        if (blogLoader.isIOS) {
-            setTimeout(() => blogLoader.loadBlogPosts(), 100);
-        } else {
-            blogLoader.loadBlogPosts();
-        }
+        blogLoader.loadBlogPosts();
     }
 });
