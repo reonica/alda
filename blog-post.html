@@ -104,8 +104,11 @@
     
     <script>
         window.addEventListener('DOMContentLoaded', function() {
-            if (window.loadSinglePost) {
-                window.loadSinglePost();
+            const urlParams = new URLSearchParams(window.location.search);
+            const postSlug = urlParams.get('post');
+            
+            if (postSlug && window.loadSinglePost) {
+                window.loadSinglePost(postSlug);
             }
         });
     </script>
