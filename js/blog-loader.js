@@ -1,11 +1,3 @@
-// Blog Loader for Static HTML Website with Markdown Support
-class BlogLoader {
-    constructor() {
-        this.blogContainer = document.getElementById('blog-posts');
-        this.postContainer = document.getElementById('blog-post');
-        this.blogFolder = '/blog/';
-    }
-
 // Blog Loader for Static HTML Website with GitHub API
 class BlogLoader {
     constructor() {
@@ -15,7 +7,7 @@ class BlogLoader {
         this.githubConfig = window.BLOG_CONFIG?.github || {
             owner: 'reonica',
             repo: 'alda',
-            token: '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',
+            token: '',
             blogPath: 'blog',
             branch: 'main'
         };
@@ -71,11 +63,9 @@ class BlogLoader {
 
             return posts
                 .filter(post => post !== null)
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-
+                .sort((a, b) => new Date(b.date || '1970-01-01') - new Date(a.date || '1970-01-01'));
         } catch (error) {
             console.error('Error fetching blog index:', error);
-            
             return this.getFallbackPosts();
         }
     }
@@ -96,7 +86,6 @@ class BlogLoader {
 
     async loadBlogPosts() {
         try {
-            // Show loading state
             if (this.blogContainer) {
                 this.blogContainer.innerHTML = `
                     <div class="text-center py-5">
@@ -125,7 +114,6 @@ class BlogLoader {
 
     async loadSinglePost(slug) {
         try {
-            // Show loading state
             if (this.postContainer) {
                 this.postContainer.innerHTML = `
                     <div class="text-center py-5">
@@ -175,13 +163,21 @@ class BlogLoader {
         const frontmatter = match[1];
         const body = match[2];
         
-        // Parse YAML-like frontmatter
         const metadata = {};
         frontmatter.split('\n').forEach(line => {
             const colonIndex = line.indexOf(':');
             if (colonIndex > 0) {
                 const key = line.substring(0, colonIndex).trim();
-                const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+                let value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+                
+                // Handle tags as array or string
+                if (key === 'tags') {
+                    try {
+                        value = JSON.parse(value);
+                    } catch {
+                        value = value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    }
+                }
                 metadata[key] = value;
             }
         });
@@ -205,20 +201,20 @@ class BlogLoader {
                     <div class="d-flex align-items-center mb-3">
                         <small class="text-muted me-3">
                             <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
-                            ${this.formatDate(post.date)}
+                            ${this.formatDate(post.date || '1970-01-01')}
                         </small>
                         <small class="text-muted">
                             <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
-                            ${post.author}
+                            ${post.author || this.siteConfig.defaultAuthor}
                         </small>
                     </div>
                     <h3 class="card-title h4 mb-3">
-                        <a href="/blog-post.html?post=${post.slug}" class="text-decoration-none text-dark">${post.title}</a>
+                        <a href="/blog-post.html?post=${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
                     </h3>
-                    <p class="card-text text-muted mb-3">${post.description}</p>
-                    ${post.tags ? `
+                    <p class="card-text text-muted mb-3">${post.description || ''}</p>
+                    ${post.tags && post.tags.length ? `
                     <div class="mb-3">
-                        ${post.tags.map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
+                        ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
                     </div>` : ''}
                     <a href="/blog-post.html?post=${post.slug}" class="btn btn-outline-primary">
                         Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
@@ -233,39 +229,39 @@ class BlogLoader {
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
-        document.title = `${post.title} - Alda Hub`;
+        document.title = `${post.title || 'Untitled'} - Alda Hub`;
         
         const titleEl = document.getElementById('post-title');
         const descriptionEl = document.getElementById('post-description');
         const breadcrumbEl = document.getElementById('breadcrumb-title');
         
-        if (titleEl) titleEl.textContent = `${post.title} - Alda Hub`;
+        if (titleEl) titleEl.textContent = `${post.title || 'Untitled'} - Alda Hub`;
         if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
-        if (breadcrumbEl) breadcrumbEl.textContent = post.title;
+        if (breadcrumbEl) breadcrumbEl.textContent = post.title || 'Untitled';
 
-        const htmlContent = marked.parse(post.body || '');
+        const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
 
         this.postContainer.innerHTML = `
             <div class="mb-4">
                 ${post.featured_image ? `
                 <div class="mb-4">
-                    <img src="${post.featured_image}" alt="${post.title}" class="img-fluid w-100 rounded shadow">
+                    <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid w-100 rounded shadow">
                 </div>` : ''}
                 
                 <div class="mb-4">
-                    <h1 class="display-4 fw-bold text-dark mb-3">${post.title}</h1>
+                    <h1 class="display-4 fw-bold text-dark mb-3">${post.title || 'Untitled'}</h1>
                     <div class="d-flex align-items-center text-muted mb-4">
                         <small class="me-4">
                             <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
-                            ${this.formatDate(post.date)}
+                            ${this.formatDate(post.date || '1970-01-01')}
                         </small>
                         <small class="me-4">
                             <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
-                            ${post.author}
+                            ${post.author || this.siteConfig.defaultAuthor}
                         </small>
-                        ${post.tags ? `<small>
+                        ${post.tags && post.tags.length ? `<small>
                             <iconify-icon icon="bi:tags" class="me-1"></iconify-icon>
-                            ${post.tags.split(',').slice(0, 2).map(tag => tag.trim()).join(', ')}
+                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).slice(0, 2).join(', ')}
                         </small>` : ''}
                     </div>
                 </div>
@@ -274,18 +270,17 @@ class BlogLoader {
                     ${htmlContent}
                 </div>
                 
-                ${post.tags ? `
+                ${post.tags && post.tags.length ? `
                 <div class="mt-5 pt-4 border-top">
                     <h6 class="text-muted mb-3">Tags:</h6>
                     <div>
-                        ${post.tags.split(',').map(tag => `
+                        ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `
                         <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">
-                            ${tag.trim()}
+                            ${tag}
                         </a>`).join('')}
                     </div>
                 </div>` : ''}
                 
-                <!-- Share Buttons -->
                 <div class="mt-5 pt-4 border-top">
                     <h6 class="text-muted mb-3">Share this post:</h6>
                     <div class="d-flex gap-2">
@@ -325,7 +320,6 @@ window.loadSinglePost = function(slug) {
 document.addEventListener('DOMContentLoaded', function() {
     const blogLoader = new BlogLoader();
     
-    // Load blog posts list
     if (document.getElementById('blog-posts')) {
         blogLoader.loadBlogPosts();
     }
