@@ -15,7 +15,6 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Slug", name: "slug", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime", default: ""}
       - {label: "Author", name: "author", widget: "string", default: "Aldahub"}
       - {label: "Description", name: "description", widget: "text"}
