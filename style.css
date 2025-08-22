@@ -1662,7 +1662,6 @@ Chocolat
 /* iOS-specific fixes */
 .ios-device #blog-posts {
     -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
 }
 
 .ios-device .card {
@@ -1670,16 +1669,11 @@ Chocolat
     transform: translateZ(0);
 }
 
-@media (max-width: 991px) {
-    .ios-device .col-lg-4 {
-        margin-top: 2rem !important;
-    }
-    
-    .ios-device .sidebar-widget {
-        margin-bottom: 2rem;
-    }
+.ios-device .sidebar-widget {
+    margin-bottom: 2rem;
 }
 
-.ios-device a, .ios-device button {
-    -webkit-tap-highlight-color: transparent;
+.ios-device .card-img-top {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
