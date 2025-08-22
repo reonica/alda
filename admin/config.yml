@@ -13,7 +13,6 @@ collections:
     folder: "blog"
     create: true
     slug: "{{slug}}"
-    permalink: "/{slug}/"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
