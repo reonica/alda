@@ -146,6 +146,125 @@
       });
     }
   }
+// TOC
+  function initTOC() {
+    const blogContent = document.querySelector('.blog-content.post-content');
+    if (!blogContent) return;
+    
+    const headings = blogContent.querySelectorAll('h2, h3, h4');
+    if (headings.length === 0) return;
+    
+    const tocContainer = document.getElementById('toc-container');
+    if (tocContainer) {
+        tocContainer.classList.remove('d-none');
+    }
+    
+    const toc = document.getElementById('table-of-contents');
+    const tocList = document.createElement('ul');
+    
+    headings.forEach((heading, index) => {
+        if (!heading.id) {
+            heading.id = 'section-' + index;
+        }
+        
+        const listItem = document.createElement('li');
+        listItem.classList.add(`${heading.tagName.toLowerCase()}-item`);
+        
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        link.addEventListener('click', smoothScroll);
+        
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
+    });
+    
+    toc.appendChild(tocList);
+    
+    addMobileToggle();
+    
+    const toggleBtn = document.getElementById('toc-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            tocContainer.classList.toggle('collapsed');
+        });
+    }
+    
+    window.addEventListener('scroll', throttle(highlightActiveSection, 100));
+    highlightActiveSection();
+  }
+
+  function smoothScroll(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    
+    if (targetElement) {
+        const headerOffset = 100;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+        
+        if (window.innerWidth < 992) {
+            document.getElementById('toc-container').classList.remove('active');
+        }
+    }
+  }
+
+  function highlightActiveSection() {
+    const sections = document.querySelectorAll('.blog-content h2, .blog-content h3, .blog-content h4');
+    const tocLinks = document.querySelectorAll('.toc-content a');
+    
+    let currentSection = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 150) {
+            currentSection = '#' + section.id;
+        }
+    });
+    
+    tocLinks.forEach(link => {
+        link.classList.remove('active');
+        link.parentElement.classList.remove('active');
+        
+        if (link.getAttribute('href') === currentSection) {
+            link.classList.add('active');
+            link.parentElement.classList.add('active');
+        }
+    });
+  }
+
+  function addMobileToggle() {
+    const mobileToggle = document.createElement('button');
+    mobileToggle.classList.add('toc-mobile-toggle');
+    mobileToggle.innerHTML = '<iconify-icon icon="mi:list"></iconify-icon>';
+    mobileToggle.setAttribute('aria-label', 'Show table of contents');
+    
+    document.body.appendChild(mobileToggle);
+    
+    mobileToggle.addEventListener('click', function() {
+        const tocContainer = document.getElementById('toc-container');
+        tocContainer.classList.toggle('active');
+    });
+  }
+
+  function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+  }
 
   /* ======================
      DOCUMENT READY
@@ -157,6 +276,8 @@
     initChocolat();
     initScrollButtons();
     $(window).scroll(initScrollNav);
+    
+    setTimeout(initTOC, 1000);
   });
 
 })(jQuery);
