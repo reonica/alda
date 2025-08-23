@@ -1,1 +1,2 @@
 https://aldahub.netlify.app/* https://aldahub.com/:splat 301!
+/blog-post.html  /:splat   301
