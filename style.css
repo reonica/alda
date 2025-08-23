@@ -1665,7 +1665,7 @@ Chocolat
     }
 }
 
-/* Table of Contents Styles */
+/* Table of Contents Styles - UPDATED */
 .toc-wrapper {
     position: sticky;
     top: 120px;
@@ -1676,6 +1676,7 @@ Chocolat
     transition: all 0.3s ease;
     max-height: 70vh;
     overflow-y: auto;
+    z-index: 99;
 }
 
 .toc-header {
@@ -1700,10 +1701,17 @@ Chocolat
     padding: 0.25rem;
     border-radius: 3px;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .toc-toggle-btn:hover {
     background: rgba(25, 25, 25, 0.1);
+}
+
+.toc-toggle-btn iconify-icon {
+    transition: transform 0.3s ease;
 }
 
 .toc-content {
@@ -1720,6 +1728,7 @@ Chocolat
     margin-bottom: 0.5rem;
     position: relative;
     padding-left: 0.75rem;
+    transition: all 0.2s ease;
 }
 
 .toc-content li:before {
@@ -1759,6 +1768,7 @@ Chocolat
 
 .toc-content .h2-item {
     margin-left: 0;
+    font-weight: 600;
 }
 
 .toc-content .h3-item {
@@ -1780,7 +1790,7 @@ Chocolat
     transform: rotate(180deg);
 }
 
-/* Mobile TOC button (for smaller screens) */
+/* Mobile TOC button */
 .toc-mobile-toggle {
     display: none;
     position: fixed;
@@ -1812,6 +1822,7 @@ Chocolat
         border-top: 3px solid var(--primary-color);
         transform: translateY(100%);
         transition: transform 0.3s ease;
+        display: block !important;
     }
     
     .toc-wrapper.active {
@@ -1827,7 +1838,6 @@ Chocolat
 html {
     scroll-behavior: smooth;
 }
-
 /* Tags and Pagination (unchanged) */
 .tags-container .tag-link {
     display: inline-block;
@@ -1901,6 +1911,7 @@ html {
   height: 50px;
   width: 200px;
 }
+
 
 
 
