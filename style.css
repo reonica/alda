@@ -1540,7 +1540,7 @@ Chocolat
 
 /* Blog Post Single Styles */
 #blog-post-content.section-padding {
-    padding-top: 6rem; /* Increased for navbar spacing */
+    padding-top: 10rem; /* Increased for navbar spacing */
     padding-bottom: 5rem;
 }
 
@@ -1591,7 +1591,7 @@ Chocolat
 }
 
 .blog-post-single .post-content img {
-    max-width: 100%;
+    max-width: 65%;
     height: auto;
     margin: 2rem 0;
     border-radius: 8px;
@@ -1738,6 +1738,7 @@ Chocolat
   height: 50px;
   width: 200px;
 }
+
 
 
 
