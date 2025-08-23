@@ -1448,114 +1448,126 @@ Chocolat
 .chocolat-wrapper {
   z-index: 9999;
 }
-/*--------------------------------------------------------------
-/** Blog Page Styles
---------------------------------------------------------------*/
+/* Blog Page Styles */
 #blog.section-padding {
-  padding: 60px 0;
+    padding: 60px 0;
 }
 
 .blogSwiper .swiper-slide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .image-holder {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 8px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .post-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
 .image-holder:hover .post-image {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .post-image[src=""], .post-image:not([src]) {
-  background-color: #f0f0f0;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-  font-size: 0.875rem;
-  text-align: center;
-  border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid #ddd;
 }
 
 .post-image[src=""]::after, .post-image:not([src])::after {
-  content: 'Image not available';
+    content: 'Image not available';
 }
 
 .post-title {
-  margin-top: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #333;
-  text-decoration: none;
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
 }
 
 .post-title:hover {
-  color: #007bff;
+    color: #007bff;
 }
 
 .post-date {
-  font-size: 0.875rem;
-  color: #6c757d;
-  margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
 }
 
 #load-more {
-  padding: 10px 30px;
-  font-size: 1rem;
-  text-transform: uppercase;
+    padding: 10px 30px;
+    font-size: 1rem;
+    text-transform: uppercase;
 }
 
 .swiper-pagination-bullet {
-  background: #191919;
-  opacity: 0.5;
+    background: #191919;
+    opacity: 0.5;
 }
 
 .swiper-pagination-bullet-active {
-  opacity: 1;
+    opacity: 1;
 }
 
 @media (max-width: 767px) {
-  #blog-posts-desktop {
-    display: none;
-  }
+    #blog-posts-desktop {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) {
-  #blog-posts-mobile {
-    display: none;
-  }
+    #blog-posts-mobile {
+        display: none;
+    }
 }
 
-/* Blog Specific Styles */
-.blog-posts-grid {
+/* Blog Post Single Styles */
+.blog-post-single {
+    font-family: 'Roboto', sans-serif;
 }
 
-/* Post Content Styling */
-.post-content h2, .post-content h3, .post-content h4 {
-    color: #2c3e50;
+.blog-post-single .post-content h2,
+.blog-post-single .post-content h3,
+.blog-post-single .post-content h4 {
+    font-weight: 600;
+    color: #222222; /* Matches About Us */
     margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Matches mb-4 */
 }
 
-.post-content p {
-    margin-bottom: 1.5rem;
+.blog-post-single .post-content h3.display-5 {
+    font-size: 2.5rem; /* Matches display-5 */
 }
 
-.post-content img {
+.blog-post-single .post-content h3:not(.display-5) {
+    font-size: 1.75rem; /* Subheadings */
+}
+
+.blog-post-single .post-content p {
+    font-size: 1rem; /* ~16px */
+    line-height: 1.6; /* Matches About Us */
+    text-align: justify; /* Matches About Us */
+    margin-bottom: 1.5rem; /* Matches mb-4 */
+}
+
+.blog-post-single .post-content img {
     max-width: 100%;
     height: auto;
     margin: 2rem 0;
@@ -1563,7 +1575,7 @@ Chocolat
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.post-content blockquote {
+.blog-post-single .post-content blockquote {
     border-left: 4px solid #007bff;
     padding-left: 1.5rem;
     margin: 2rem 0;
@@ -1573,20 +1585,51 @@ Chocolat
     border-radius: 4px;
 }
 
-.post-content code {
+.blog-post-single .post-content code {
     background-color: #f8f9fa;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
 }
 
-.post-content pre {
+.blog-post-single .post-content pre {
     background-color: #f8f9fa;
     padding: 1rem;
     border-radius: 8px;
     overflow-x: auto;
 }
 
+.blog-post-single .post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.blog-post-single .image-holder.zoom-effect {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.blog-post-single .image-holder.zoom-effect img {
+    transition: transform 0.3s ease;
+}
+
+.blog-post-single .image-holder.zoom-effect:hover img {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .blog-post-single .post-content h3 {
+        font-size: 2rem;
+    }
+    .blog-post-single .post-content p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Tags and Pagination (unchanged) */
 .tags-container .tag-link {
     display: inline-block;
     background: #f8f9fa;
@@ -1617,6 +1660,7 @@ Chocolat
 #blog-posts article {
     animation: fadeIn 0.6s ease-out;
 }
+
 /* Bootstrap Pagination */
 .pagination .page-link {
     color: var(--primary-color, #191919);
@@ -1658,3 +1702,4 @@ Chocolat
   height: 50px;
   width: 200px;
 }
+
