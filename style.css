@@ -1567,6 +1567,21 @@ Chocolat
     margin-bottom: 1.5rem; /* Matches mb-4 */
 }
 
+/* New styles for bullet points */
+.blog-post-single .post-content ul,
+.blog-post-single .post-content ol {
+    font-size: 1rem; /* ~16px */
+    line-height: 1.6; /* Matches About Us */
+    text-align: justify; /* Matches About Us */
+    margin-bottom: 1.5rem; /* Matches mb-4 */
+    padding-left: 1.5rem; /* Reasonable indent for bullets */
+}
+
+.blog-post-single .post-content ul li,
+.blog-post-single .post-content ol li {
+    margin-bottom: 0.5rem; /* Space between list items */
+}
+
 .blog-post-single .post-content img {
     max-width: 100%;
     height: auto;
@@ -1624,8 +1639,14 @@ Chocolat
     .blog-post-single .post-content h3 {
         font-size: 2rem;
     }
-    .blog-post-single .post-content p {
+    .blog-post-single .post-content p,
+    .blog-post-single .post-content ul,
+    .blog-post-single .post-content ol {
         font-size: 0.9rem;
+    }
+    .blog-post-single .post-content ul li,
+    .blog-post-single .post-content ol li {
+        margin-bottom: 0.4rem;
     }
 }
 
@@ -1702,4 +1723,5 @@ Chocolat
   height: 50px;
   width: 200px;
 }
+
 
