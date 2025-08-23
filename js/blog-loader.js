@@ -256,14 +256,14 @@ class BlogLoader {
                         </small>
                     </div>
                     <h3 class="card-title h4 mb-3">
-                        <a href="/blog-post.html?post=${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
+                        <a href="/${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
                     </h3>
                     <p class="card-text text-muted mb-3">${post.description || ''}</p>
                     ${post.tags && post.tags.length ? `
                     <div class="mb-3">
                         ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
                     </div>` : ''}
-                    <a href="/blog-post.html?post=${post.slug}" class="btn btn-outline-primary">
+                    <a href="/${post.slug}" class="btn btn-outline-primary">
                         Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
                     </a>
                 </div>
