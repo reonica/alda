@@ -33,33 +33,54 @@
     
     <!-- Blog Post Content -->
     <section id="blog-post-content" class="section-padding">
-        <div class="container">
-            <div class="row">
-                <!-- Main Post Content -->
-                <div class="col-lg-10 offset-lg-1">
-                <!-- Table of Contents -->
-                <div id="toc-container" class="toc-wrapper d-none d-lg-block mb-5">
-                    <div class="toc-header d-flex align-items-center justify-content-between">
-                        <h6 class="toc-title mb-0">Content</h6>
-                        <button id="toc-toggle" class="toc-toggle-btn">
-                            <iconify-icon icon="mi:chevron-up"></iconify-icon>
-                        </button>
-                    </div>
-                    <nav id="table-of-contents" class="toc-content">
-                        <!-- TOC here -->
-                    </nav>
-                </div>
+    <div class="container">
+        <div class="row">
+            <!-- Main Post Content -->
+            <div class="col-lg-10 offset-lg-1">
                 <article id="blog-post" class="blog-post-single">
-                    <div class="row align-items-center mb-5">
-                        <div class="col-lg-6 order-lg-1 order-2">
-                            <h3 class="display-5 fw-semibold" id="post-title">Blog Post Title</h3>
-                            <p class="lead mt-3">Loading post...</p>
+                    <!-- Title -->
+                    <div class="row align-items-center mb-4">
+                        <div class="col-12">
+                            <h1 class="display-5 fw-semibold mb-3" id="post-title">Blog Post Title</h1>
                         </div>
-                        <div class="col-lg-6 order-lg-2 order-1">
-                            <div class="image-holder zoom-effect mb-4 mb-lg-0">
+                    </div>
+                    
+                    <!-- Thumbnail Image -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="image-holder zoom-effect">
                                 <img src="images/placeholder.jpg" alt="Blog Post Image" class="post-image img-fluid rounded">
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Date & Author -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="post-meta d-flex align-items-center flex-wrap">
+                                <span class="post-date me-3">
+                                    <iconify-icon icon="mi:calendar" class="me-1"></iconify-icon>
+                                    <span id="post-date">Loading date...</span>
+                                </span>
+                                <span class="post-author">
+                                    <iconify-icon icon="mi:person" class="me-1"></iconify-icon>
+                                    <span id="post-author">Loading author...</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Table of Contents -->
+                    <div id="toc-container" class="toc-wrapper d-none d-lg-block mb-5">
+                        <div class="toc-header d-flex align-items-center justify-content-between">
+                            <h6 class="toc-title mb-0">Contents</h6>
+                            <button id="toc-toggle" class="toc-toggle-btn">
+                                <iconify-icon icon="mi:chevron-up"></iconify-icon>
+                            </button>
+                        </div>
+                        <nav id="table-of-contents" class="toc-content">
+                            <!-- TOC here -->
+                        </nav>
                     </div>
                         <div class="blog-content post-content">
                             <!-- Dynamic content loaded here -->
