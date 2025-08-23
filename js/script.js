@@ -146,25 +146,45 @@
       });
     }
   }
-// TOC
+  /* ======================
+     TOC FUNCTIONS - UPDATED
+     ====================== */
   function initTOC() {
+    console.log("Initializing TOC...");
+    
     const blogContent = document.querySelector('.blog-content.post-content');
-    if (!blogContent) return;
+    if (!blogContent) {
+        console.log("Blog content not found");
+        return;
+    }
     
     const headings = blogContent.querySelectorAll('h2, h3, h4');
-    if (headings.length === 0) return;
+    console.log("Found headings:", headings.length);
+    
+    if (headings.length === 0) {
+        console.log("No headings found");
+        return;
+    }
     
     const tocContainer = document.getElementById('toc-container');
     if (tocContainer) {
         tocContainer.classList.remove('d-none');
+        console.log("TOC container shown");
     }
     
     const toc = document.getElementById('table-of-contents');
+    if (!toc) {
+        console.log("TOC element not found");
+        return;
+    }
+    
+    toc.innerHTML = '';
     const tocList = document.createElement('ul');
     
     headings.forEach((heading, index) => {
+        // Tạo ID nếu chưa có
         if (!heading.id) {
-            heading.id = 'section-' + index;
+            heading.id = 'toc-' + index + '-' + heading.tagName.toLowerCase();
         }
         
         const listItem = document.createElement('li');
@@ -187,11 +207,14 @@
     if (toggleBtn) {
         toggleBtn.addEventListener('click', function() {
             tocContainer.classList.toggle('collapsed');
+            console.log("TOC toggle clicked");
         });
     }
     
     window.addEventListener('scroll', throttle(highlightActiveSection, 100));
     highlightActiveSection();
+    
+    console.log("TOC initialized successfully");
   }
 
   function smoothScroll(e) {
@@ -210,7 +233,10 @@
         });
         
         if (window.innerWidth < 992) {
-            document.getElementById('toc-container').classList.remove('active');
+            const tocContainer = document.getElementById('toc-container');
+            if (tocContainer) {
+                tocContainer.classList.remove('active');
+            }
         }
     }
   }
@@ -220,11 +246,13 @@
     const tocLinks = document.querySelectorAll('.toc-content a');
     
     let currentSection = '';
+    let currentPosition = '';
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         if (window.pageYOffset >= sectionTop - 150) {
             currentSection = '#' + section.id;
+            currentPosition = sectionTop;
         }
     });
     
@@ -240,6 +268,10 @@
   }
 
   function addMobileToggle() {
+    if (document.querySelector('.toc-mobile-toggle')) {
+        return;
+    }
+    
     const mobileToggle = document.createElement('button');
     mobileToggle.classList.add('toc-mobile-toggle');
     mobileToggle.innerHTML = '<iconify-icon icon="mi:list"></iconify-icon>';
@@ -249,7 +281,9 @@
     
     mobileToggle.addEventListener('click', function() {
         const tocContainer = document.getElementById('toc-container');
-        tocContainer.classList.toggle('active');
+        if (tocContainer) {
+            tocContainer.classList.toggle('active');
+        }
     });
   }
 
@@ -267,7 +301,7 @@
   }
 
   /* ======================
-     DOCUMENT READY
+     DOCUMENT READY - UPDATED
      ====================== */
   $(document).ready(function () {
     initSwipers();
@@ -277,7 +311,9 @@
     initScrollButtons();
     $(window).scroll(initScrollNav);
     
-    setTimeout(initTOC, 1000);
+    $(window).on('load', function() {
+        setTimeout(initTOC, 500);
+    });
   });
 
 })(jQuery);
