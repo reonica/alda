@@ -1665,6 +1665,40 @@ Chocolat
     }
 }
 
+/* Blog Post Meta Styles */
+.post-meta {
+    color: var(--light-dark-color);
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+}
+
+.post-meta iconify-icon {
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.post-date, .post-author {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1.5rem;
+}
+
+/* Responsive adjustments for meta */
+@media (max-width: 768px) {
+    .post-meta {
+        font-size: 0.85rem;
+    }
+    
+    .post-date, .post-author {
+        margin-right: 1rem;
+    }
+}
+
+/* Additional TOC spacing adjustment */
+.toc-wrapper {
+    margin: 2rem 0;
+}
+
 /* Table of Contents Styles - UPDATED */
 .toc-wrapper {
     position: sticky;
@@ -1911,6 +1945,7 @@ html {
   height: 50px;
   width: 200px;
 }
+
 
 
 
