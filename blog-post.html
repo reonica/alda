@@ -145,13 +145,13 @@
     <script src="/js/blog-loader.js"></script>
     
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postSlug = urlParams.get('post');
-            
-            if (postSlug && window.loadSinglePost) {
-                window.loadSinglePost(postSlug);
-            }
+        document.addEventListener("DOMContentLoaded", () => {
+          const slug = window.location.pathname.split("/").pop();
+          const canonicalUrl = "https://aldahub.com/" + slug;
+          const link = document.createElement("link");
+          link.setAttribute("rel", "canonical");
+          link.setAttribute("href", canonicalUrl);
+          document.head.appendChild(link);
         });
     </script>
 </body>
