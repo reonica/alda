@@ -370,17 +370,8 @@ window.loadSinglePost = function(slug) {
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     const blogLoader = new BlogLoader();
-
+    
     if (document.getElementById('blog-posts')) {
         blogLoader.loadBlogPosts();
-    }
-
-    if (document.getElementById('blog-post')) {
-        const path = window.location.pathname;
-        const slugWithExt = path.substring(path.lastIndexOf("/") + 1);
-        const slug = slugWithExt.replace(".html", "");
-        if (slug && window.loadSinglePost) {
-            window.loadSinglePost(slug);
-        }
     }
 });
