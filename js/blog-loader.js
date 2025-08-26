@@ -353,13 +353,13 @@ renderSinglePost(post) {
                 <h6 class="text-muted mb-3">Share this post:</h6>
                 <div class="d-flex gap-2">
                     <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" class="btn btn-outline-primary">
-                        <iconify-icon icon="ri:facebook-fill"></iconify-icon> Facebook
+                        <iconify-icon icon="ri:facebook-fill"></iconify-icon>
                     </a>
                     <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title || 'Check this out!')}" target="_blank" class="btn btn-outline-primary">
-                        <iconify-icon icon="ri:twitter-fill"></iconify-icon> Twitter
+                        <iconify-icon icon="ri:twitter-fill"></iconify-icon>
                     </a>
                     <a href="https://wa.me/?text=${encodeURIComponent(post.title + ' ' + window.location.href)}" target="_blank" class="btn btn-outline-primary">
-                        <iconify-icon icon="ri:whatsapp-fill"></iconify-icon> WhatsApp
+                        <iconify-icon icon="ri:whatsapp-fill"></iconify-icon>
                     </a>
                 </div>
             </div>
