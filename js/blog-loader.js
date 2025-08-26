@@ -288,6 +288,7 @@ renderSinglePost(post) {
 
     const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
 
+    // Render nội dung ban đầu
     this.postContainer.innerHTML = `
         <div class="mb-4">
             <!-- Title -->
@@ -327,12 +328,12 @@ renderSinglePost(post) {
                     </button>
                 </div>
                 <nav id="table-of-contents" class="toc-content">
-                    <!-- TOC here -->
+                    <!-- TOC will be populated dynamically -->
                 </nav>
             </div>
 
             <!-- Body -->
-            <div class="post-content fs-5 lh-lg">
+            <div class="post-content fs-5 lh-lg" id="post-content">
                 ${htmlContent}
             </div>
 
@@ -365,8 +366,54 @@ renderSinglePost(post) {
             </div>
         </div>
     `;
+
+    // Tạo TOC động sau khi render
+    this.generateTOC(post.body, htmlContent);
+
+    // Thêm sự kiện toggle cho mobile
+    const tocToggle = document.getElementById('toc-toggle');
+    const tocContainer = document.getElementById('toc-container');
+    if (tocToggle && tocContainer) {
+        tocToggle.addEventListener('click', () => {
+            tocContainer.classList.toggle('active');
+        });
+    }
 }
 
+// Hàm tạo TOC động
+generateTOC(rawBody, htmlContent) {
+    const tocContainer = document.getElementById('table-of-contents');
+    if (!tocContainer || !window.marked) return;
+
+    // Tạo DOM tạm để phân tích heading
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+
+    const headings = tempDiv.querySelectorAll('h2, h3, h4');
+    if (headings.length === 0) {
+        tocContainer.innerHTML = '<p>No contents available.</p>';
+        return;
+    }
+
+    const tocList = document.createElement('ul');
+    headings.forEach(heading => {
+        const level = heading.tagName.toLowerCase();
+        const text = heading.textContent;
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); // Tạo ID từ text
+        heading.id = id; // Gán ID cho heading
+
+        const li = document.createElement('li');
+        li.className = `${level}-item`;
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.textContent = text;
+        li.appendChild(a);
+        tocList.appendChild(li);
+    });
+
+    tocContainer.innerHTML = '';
+    tocContainer.appendChild(tocList);
+}
     formatDate(dateString) {
         try {
             const options = { 
