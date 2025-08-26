@@ -1945,3 +1945,46 @@ html {
   height: 50px;
   width: 200px;
 }
+
+/* Social Share Buttons */
+.social-share-btn {
+    width: 50px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.social-share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.social-share-btn.facebook {
+    background-color: #1877F2;
+}
+
+.social-share-btn.twitter {
+    background-color: #000000;
+}
+
+.social-share-btn.whatsapp {
+    background-color: #25D366;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .social-share-btn {
+        width: 48px;
+        height: 38px;
+        font-size: 1.3rem;
+    }
+}
