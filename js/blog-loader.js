@@ -273,7 +273,7 @@ class BlogLoader {
         this.blogContainer.innerHTML = postsHTML;
     }
 
-    renderSinglePost(post) {
+renderSinglePost(post) {
     if (!this.postContainer) return;
 
     document.title = `${post.title || 'Untitled'} - ${this.siteConfig.name}`;
@@ -290,17 +290,17 @@ class BlogLoader {
 
     this.postContainer.innerHTML = `
         <div class="mb-4">
-            <!-- Tiêu đề và ảnh cỡ nhỏ sắp xếp ngang -->
-            <div class="d-flex align-items-center mb-4">
-                ${post.featured_image ? `
-                    <div class="me-3">
-                        <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="max-width: 150px; height: auto;">
-                    </div>
-                ` : ''}
-                <div>
-                    <h1 class="display-4 fw-bold text-dark mb-0">${post.title || 'Untitled'}</h1>
-                </div>
+            <!-- Tiêu đề phía trên -->
+            <div class="mb-4">
+                <h1 class="display-4 fw-bold text-dark mb-3">${post.title || 'Untitled'}</h1>
             </div>
+
+            <!-- Ảnh cỡ 2/3 chiều rộng màn hình phía dưới -->
+            ${post.featured_image ? `
+                <div class="mb-4">
+                    <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="width: 66.67%; max-width: 100%; height: auto;">
+                </div>
+            ` : ''}
 
             <!-- Thông tin meta -->
             <div class="d-flex align-items-center text-muted mb-4">
