@@ -349,17 +349,16 @@ renderSinglePost(post) {
             </div>` : ''}
 
             <!-- Section share -->
-            <div class="mt-5 pt-4 border-top">
-                <h6 class="text-muted mb-3">Share this post:</h6>
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-outline-primary btn-sm">
-                        <iconify-icon icon="bi:facebook"></iconify-icon> Facebook
+            <div class="share-section fixed-top" style="top: 50%; right: 0; transform: translateY(-50%); z-index: 1000;">
+                <div class="d-flex flex-column gap-2 p-2 bg-light rounded-start">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" class="btn btn-outline-primary btn-sm rounded-0">
+                        <iconify-icon icon="bi:facebook"></iconify-icon>
                     </a>
-                    <a href="#" class="btn btn-outline-info btn-sm">
-                        <iconify-icon icon="bi:twitter"></iconify-icon> Twitter
+                    <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title || 'Check this out!')}" target="_blank" class="btn btn-outline-info btn-sm rounded-0">
+                        <iconify-icon icon="bi:twitter"></iconify-icon>
                     </a>
-                    <a href="#" class="btn btn-outline-success btn-sm">
-                        <iconify-icon icon="bi:whatsapp"></iconify-icon> WhatsApp
+                    <a href="https://wa.me/?text=${encodeURIComponent(post.title + ' ' + window.location.href)}" target="_blank" class="btn btn-outline-success btn-sm rounded-0">
+                        <iconify-icon icon="bi:whatsapp"></iconify-icon>
                     </a>
                 </div>
             </div>
