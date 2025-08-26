@@ -290,19 +290,19 @@ renderSinglePost(post) {
 
     this.postContainer.innerHTML = `
         <div class="mb-4">
-            <!-- Tiêu đề phía trên -->
-            <div class="mb-4">
+            <!-- Title -->
+            <div class="mb-4" style="display: flex; justify-content: justify;">
                 <h1 class="display-4 fw-bold text-dark mb-3">${post.title || 'Untitled'}</h1>
             </div>
 
-            <!-- Ảnh cỡ 2/3 chiều rộng màn hình phía dưới -->
+            <!-- Thumb -->
             ${post.featured_image ? `
-                <div class="mb-4">
+                <div class="mb-4" style="display: flex; justify-content: center;">
                     <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="width: 66.67%; max-width: 100%; height: auto;">
                 </div>
             ` : ''}
 
-            <!-- Thông tin meta -->
+            <!-- Meta -->
             <div class="d-flex align-items-center text-muted mb-4">
                 <small class="me-4">
                     <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
@@ -327,16 +327,16 @@ renderSinglePost(post) {
                     </button>
                 </div>
                 <nav id="table-of-contents" class="toc-content">
-                    <!-- TOC sẽ được tạo động bởi script khác nếu có -->
+                    <!-- TOC here -->
                 </nav>
             </div>
 
-            <!-- Nội dung bài viết -->
+            <!-- Body -->
             <div class="post-content fs-5 lh-lg">
                 ${htmlContent}
             </div>
 
-            <!-- Section tags (nếu có) -->
+            <!-- Section tags -->
             ${post.tags && post.tags.length ? `
             <div class="mt-5 pt-4 border-top">
                 <h6 class="text-muted mb-3">Tags:</h6>
@@ -348,7 +348,7 @@ renderSinglePost(post) {
                 </div>
             </div>` : ''}
 
-            <!-- Section chia sẻ -->
+            <!-- Section share -->
             <div class="mt-5 pt-4 border-top">
                 <h6 class="text-muted mb-3">Share this post:</h6>
                 <div class="d-flex gap-2">
