@@ -274,77 +274,98 @@ class BlogLoader {
     }
 
     renderSinglePost(post) {
-        if (!this.postContainer) return;
+    if (!this.postContainer) return;
 
-        document.title = `${post.title || 'Untitled'} - ${this.siteConfig.name}`;
-        
-        const titleEl = document.getElementById('post-title');
-        const descriptionEl = document.getElementById('post-description');
-        const breadcrumbEl = document.getElementById('breadcrumb-title');
-        
-        if (titleEl) titleEl.textContent = post.title || 'Untitled';
-        if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
-        if (breadcrumbEl) breadcrumbEl.textContent = post.title || 'Untitled';
+    document.title = `${post.title || 'Untitled'} - ${this.siteConfig.name}`;
+    
+    const titleEl = document.getElementById('post-title');
+    const descriptionEl = document.getElementById('post-description');
+    const breadcrumbEl = document.getElementById('breadcrumb-title');
+    
+    if (titleEl) titleEl.textContent = post.title || 'Untitled';
+    if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
+    if (breadcrumbEl) breadcrumbEl.textContent = post.title || 'Untitled';
 
-        const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
+    const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
 
-        this.postContainer.innerHTML = `
-            <div class="mb-4">
+    this.postContainer.innerHTML = `
+        <div class="mb-4">
+            <!-- Tiêu đề và ảnh cỡ nhỏ sắp xếp ngang -->
+            <div class="d-flex align-items-center mb-4">
                 ${post.featured_image ? `
-                <div class="mb-4">
-                    <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid w-100 rounded shadow">
-                </div>` : ''}
-                
-                <div class="mb-4">
-                    <h1 class="display-4 fw-bold text-dark mb-3">${post.title || 'Untitled'}</h1>
-                    <div class="d-flex align-items-center text-muted mb-4">
-                        <small class="me-4">
-                            <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
-                            ${this.formatDate(post.date || '1970-01-01')}
-                        </small>
-                        <small class="me-4">
-                            <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
-                            ${post.author || this.siteConfig.defaultAuthor}
-                        </small>
-                        ${post.tags && post.tags.length ? `<small>
-                            <iconify-icon icon="bi:tags" class="me-1"></iconify-icon>
-                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).slice(0, 2).join(', ')}
-                        </small>` : ''}
+                    <div class="me-3">
+                        <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="max-width: 150px; height: auto;">
                     </div>
-                </div>
-                
-                <div class="post-content fs-5 lh-lg">
-                    ${htmlContent}
-                </div>
-                
-                ${post.tags && post.tags.length ? `
-                <div class="mt-5 pt-4 border-top">
-                    <h6 class="text-muted mb-3">Tags:</h6>
-                    <div>
-                        ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `
-                        <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">
-                            ${tag}
-                        </a>`).join('')}
-                    </div>
-                </div>` : ''}
-                
-                <div class="mt-5 pt-4 border-top">
-                    <h6 class="text-muted mb-3">Share this post:</h6>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm">
-                            <iconify-icon icon="bi:facebook"></iconify-icon> Facebook
-                        </a>
-                        <a href="#" class="btn btn-outline-info btn-sm">
-                            <iconify-icon icon="bi:twitter"></iconify-icon> Twitter
-                        </a>
-                        <a href="#" class="btn btn-outline-success btn-sm">
-                            <iconify-icon icon="bi:whatsapp"></iconify-icon> WhatsApp
-                        </a>
-                    </div>
+                ` : ''}
+                <div>
+                    <h1 class="display-4 fw-bold text-dark mb-0">${post.title || 'Untitled'}</h1>
                 </div>
             </div>
-        `;
-    }
+
+            <!-- Thông tin meta -->
+            <div class="d-flex align-items-center text-muted mb-4">
+                <small class="me-4">
+                    <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
+                    ${this.formatDate(post.date || '1970-01-01')}
+                </small>
+                <small class="me-4">
+                    <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
+                    ${post.author || this.siteConfig.defaultAuthor}
+                </small>
+                ${post.tags && post.tags.length ? `<small>
+                    <iconify-icon icon="bi:tags" class="me-1"></iconify-icon>
+                    ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).slice(0, 2).join(', ')}
+                </small>` : ''}
+            </div>
+
+            <!-- Table of Contents (TOC) -->
+            <div id="toc-container" class="toc-wrapper mb-5">
+                <div class="toc-header d-flex align-items-center justify-content-between">
+                    <h6 class="toc-title mb-0">Contents</h6>
+                    <button id="toc-toggle" class="toc-toggle-btn">
+                        <iconify-icon icon="mi:chevron-up"></iconify-icon>
+                    </button>
+                </div>
+                <nav id="table-of-contents" class="toc-content">
+                    <!-- TOC sẽ được tạo động bởi script khác nếu có -->
+                </nav>
+            </div>
+
+            <!-- Nội dung bài viết -->
+            <div class="post-content fs-5 lh-lg">
+                ${htmlContent}
+            </div>
+
+            <!-- Section tags (nếu có) -->
+            ${post.tags && post.tags.length ? `
+            <div class="mt-5 pt-4 border-top">
+                <h6 class="text-muted mb-3">Tags:</h6>
+                <div>
+                    ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).map(tag => `
+                    <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">
+                        ${tag}
+                    </a>`).join('')}
+                </div>
+            </div>` : ''}
+
+            <!-- Section chia sẻ -->
+            <div class="mt-5 pt-4 border-top">
+                <h6 class="text-muted mb-3">Share this post:</h6>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-outline-primary btn-sm">
+                        <iconify-icon icon="bi:facebook"></iconify-icon> Facebook
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-sm">
+                        <iconify-icon icon="bi:twitter"></iconify-icon> Twitter
+                    </a>
+                    <a href="#" class="btn btn-outline-success btn-sm">
+                        <iconify-icon icon="bi:whatsapp"></iconify-icon> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
     formatDate(dateString) {
         try {
