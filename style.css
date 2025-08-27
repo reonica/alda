@@ -1814,7 +1814,6 @@ html {
   font-weight: normal !important;
 }
 
-/* Ensure only headings are bold */
 .blog-content h1, 
 .blog-content h2, 
 .blog-content h3, 
@@ -1832,7 +1831,6 @@ html {
   font-weight: 600 !important;
 }
 
-/* Fix for blog post content */
 .blog-post-single .post-content {
   font-weight: normal;
 }
@@ -1840,3 +1838,4 @@ html {
 .blog-post-single .post-content p {
   font-weight: normal;
 }
+
