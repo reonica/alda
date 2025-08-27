@@ -268,30 +268,6 @@
     });
   }
 
-  function addMobileToggle() {
-    if (document.querySelector('.toc-mobile-toggle')) {
-      return;
-    }
-    
-    if (window.innerWidth >= 992) {
-      return;
-    }
-    
-    const mobileToggle = document.createElement('button');
-    mobileToggle.classList.add('toc-mobile-toggle');
-    mobileToggle.innerHTML = '<iconify-icon icon="mi:list"></iconify-icon>';
-    mobileToggle.setAttribute('aria-label', 'Show table of contents');
-    
-    document.body.appendChild(mobileToggle);
-    
-    mobileToggle.addEventListener('click', function() {
-      const tocContainer = document.getElementById('toc-container');
-      if (tocContainer) {
-        tocContainer.classList.toggle('active');
-      }
-    });
-  }
-
   const throttledHighlight = throttle(highlightActiveSection, 100);
 
   function initTOC() {
@@ -369,8 +345,6 @@
       toc.appendChild(tocList);
       console.log('TOC built successfully with', headings.length, 'items');
       
-      addMobileToggle();
-      
       setupTOCToggle();
       
       window.removeEventListener('scroll', throttledHighlight);
@@ -384,7 +358,7 @@
     tryInitTOC();
   }
 
-function setupTOCToggle() {
+  function setupTOCToggle() {
     const toggleBtn = document.getElementById('toc-toggle');
     const tocContainer = document.getElementById('toc-container');
     
@@ -454,4 +428,3 @@ function setupTOCToggle() {
   });
 
 })(jQuery);
-
