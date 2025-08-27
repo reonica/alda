@@ -292,13 +292,11 @@
     });
   }
 
-  // Create throttled version once - FIXED: Tạo trước khi sử dụng
   const throttledHighlight = throttle(highlightActiveSection, 100);
 
   function initTOC() {
     console.log('Initializing TOC...');
     
-    // FIX: Đợi thêm một chút nếu content chưa sẵn sàng
     let retryCount = 0;
     const maxRetries = 10;
     
@@ -316,7 +314,6 @@
           tocContainer.style.display = 'none';
         }
         
-        // Retry nếu chưa đạt max attempts
         if (retryCount < maxRetries) {
           retryCount++;
           setTimeout(tryInitTOC, 100);
@@ -374,10 +371,8 @@
       
       addMobileToggle();
       
-      // FIX: Đảm bảo toggle button hoạt động
       setupTOCToggle();
       
-      // Bind scroll events - FIXED: Sử dụng throttledHighlight đã được định nghĩa
       window.removeEventListener('scroll', throttledHighlight);
       window.addEventListener('scroll', throttledHighlight);
       highlightActiveSection();
@@ -388,27 +383,57 @@
     // Start the initialization process
     tryInitTOC();
   }
-  
-  // FIX: Tách function setup toggle để tránh conflict
-  function setupTOCToggle() {
-    const toggleBtn = document.getElementById('toc-toggle');
-    if (toggleBtn) {
-        // Remove existing listeners
-        toggleBtn.removeEventListener('click', handleTOCToggle);
-        toggleBtn.addEventListener('click', handleTOCToggle);
-        console.log('TOC toggle button set up');
-    }
-  }
-  
-  function handleTOCToggle() {
-    const tocContainer = document.getElementById('toc-container');
-    if (tocContainer) {
-        tocContainer.classList.toggle('collapsed');
-        console.log('TOC toggled');
-    }
-  }
 
-  // FIX: Make initTOC globally available
+function setupTOCToggle() {
+    const toggleBtn = document.getElementById('toc-toggle');
+    const tocContainer = document.getElementById('toc-container');
+    
+    console.log('Setting up TOC toggle...');
+    console.log('Toggle button found:', !!toggleBtn);
+    console.log('TOC container found:', !!tocContainer);
+    
+    if (toggleBtn && tocContainer) {
+        // Remove ALL existing listeners
+        const newToggleBtn = toggleBtn.cloneNode(true);
+        toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+        
+        // Add fresh event listener
+        newToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('TOC toggle clicked');
+            const container = document.getElementById('toc-container');
+            
+            if (container) {
+                const isCollapsed = container.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    container.classList.remove('collapsed');
+                    console.log('TOC expanded');
+                } else {
+                    container.classList.add('collapsed');
+                    console.log('TOC collapsed');
+                }
+                
+                // Update toggle icon
+                const icon = newToggleBtn.querySelector('iconify-icon');
+                if (icon) {
+                    if (container.classList.contains('collapsed')) {
+                        icon.setAttribute('icon', 'mi:chevron-down');
+                    } else {
+                        icon.setAttribute('icon', 'mi:chevron-up');
+                    }
+                }
+            }
+        });
+        
+        console.log('TOC toggle button set up successfully');
+    } else {
+        console.log('TOC toggle setup failed - missing elements');
+    }
+  }
+  
   window.initTOC = initTOC;
 
   /* ======================
@@ -429,3 +454,4 @@
   });
 
 })(jQuery);
+
