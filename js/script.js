@@ -188,76 +188,24 @@
   }
 
   /* ======================
-     TOC FUNCTIONS
+     UTILITY FUNCTIONS
      ====================== */
-  function initTOC() {
-    const blogContent = document.querySelector('.blog-content.post-content');
-    if (!blogContent) {
-      const tocContainer = document.getElementById('toc-container');
-      if (tocContainer) {
-        tocContainer.style.display = 'none';
+  function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
       }
-      return;
     }
-    
-    const headings = blogContent.querySelectorAll('h2, h3, h4, h5, h6');
-    if (headings.length === 0) {
-      const tocContainer = document.getElementById('toc-container');
-      if (tocContainer) {
-        tocContainer.style.display = 'none';
-      }
-      return;
-    }
-
-    const tocContainer = document.getElementById('toc-container');
-    if (tocContainer) {
-      tocContainer.classList.remove('d-none');
-      tocContainer.style.display = 'block';
-    }
-    
-    const toc = document.getElementById('table-of-contents');
-    if (!toc) {
-      return;
-    }
-    
-    toc.innerHTML = '';
-    const tocList = document.createElement('ul');
-    
-    headings.forEach((heading, index) => {
-      if (!heading.id) {
-        heading.id = 'section-' + index + '-' + heading.tagName.toLowerCase();
-      }
-      
-      const listItem = document.createElement('li');
-      listItem.classList.add(`${heading.tagName.toLowerCase()}-item`);
-      
-      const link = document.createElement('a');
-      link.href = `#${heading.id}`;
-      link.textContent = heading.textContent;
-      link.addEventListener('click', smoothScroll);
-      
-      listItem.appendChild(link);
-      tocList.appendChild(listItem);
-    });
-    
-    toc.appendChild(tocList);
-    
-    addMobileToggle();
-    
-    const toggleBtn = document.getElementById('toc-toggle');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', function() {
-            const tocContainer = document.getElementById('toc-container');
-            if (tocContainer) {
-                tocContainer.classList.toggle('collapsed');
-            }
-        });
-    }
-    
-    window.addEventListener('scroll', throttle(highlightActiveSection, 100));
-    highlightActiveSection();
   }
 
+  /* ======================
+     TOC FUNCTIONS - FIXED VERSION
+     ====================== */
   function smoothScroll(e) {
     e.preventDefault();
     const targetId = this.getAttribute('href');
@@ -344,18 +292,124 @@
     });
   }
 
-  function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-      const args = arguments;
-      const context = this;
-      if (!inThrottle) {
-        func.apply(context, args);
-        inThrottle = true;
-        setTimeout(() => inThrottle = false, limit);
+  // Create throttled version once - FIXED: Tạo trước khi sử dụng
+  const throttledHighlight = throttle(highlightActiveSection, 100);
+
+  function initTOC() {
+    console.log('Initializing TOC...');
+    
+    // FIX: Đợi thêm một chút nếu content chưa sẵn sàng
+    let retryCount = 0;
+    const maxRetries = 10;
+    
+    function tryInitTOC() {
+      const blogContent = document.querySelector('.blog-content.post-content');
+      const tocContainer = document.getElementById('toc-container');
+      
+      console.log('TOC Init attempt:', retryCount + 1);
+      console.log('Blog content found:', !!blogContent);
+      console.log('TOC container found:', !!tocContainer);
+      
+      if (!blogContent) {
+        console.log('Blog content not found');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+        
+        // Retry nếu chưa đạt max attempts
+        if (retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(tryInitTOC, 100);
+          return;
+        }
+        return;
       }
+      
+      const headings = blogContent.querySelectorAll('h2, h3, h4, h5, h6');
+      console.log('Headings found:', headings.length);
+      
+      if (headings.length === 0) {
+        console.log('No headings found');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+        return;
+      }
+
+      if (tocContainer) {
+        tocContainer.classList.remove('d-none');
+        tocContainer.style.display = 'block';
+        console.log('TOC container shown');
+      }
+      
+      const toc = document.getElementById('table-of-contents');
+      if (!toc) {
+        console.log('TOC element not found');
+        return;
+      }
+      
+      console.log('Building TOC...');
+      toc.innerHTML = '';
+      const tocList = document.createElement('ul');
+      
+      headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = 'section-' + index + '-' + heading.tagName.toLowerCase();
+        }
+        
+        const listItem = document.createElement('li');
+        listItem.classList.add(`${heading.tagName.toLowerCase()}-item`);
+        
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        link.addEventListener('click', smoothScroll);
+        
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
+      });
+      
+      toc.appendChild(tocList);
+      console.log('TOC built successfully with', headings.length, 'items');
+      
+      addMobileToggle();
+      
+      // FIX: Đảm bảo toggle button hoạt động
+      setupTOCToggle();
+      
+      // Bind scroll events - FIXED: Sử dụng throttledHighlight đã được định nghĩa
+      window.removeEventListener('scroll', throttledHighlight);
+      window.addEventListener('scroll', throttledHighlight);
+      highlightActiveSection();
+      
+      console.log('TOC initialization complete');
+    }
+    
+    // Start the initialization process
+    tryInitTOC();
+  }
+  
+  // FIX: Tách function setup toggle để tránh conflict
+  function setupTOCToggle() {
+    const toggleBtn = document.getElementById('toc-toggle');
+    if (toggleBtn) {
+        // Remove existing listeners
+        toggleBtn.removeEventListener('click', handleTOCToggle);
+        toggleBtn.addEventListener('click', handleTOCToggle);
+        console.log('TOC toggle button set up');
     }
   }
+  
+  function handleTOCToggle() {
+    const tocContainer = document.getElementById('toc-container');
+    if (tocContainer) {
+        tocContainer.classList.toggle('collapsed');
+        console.log('TOC toggled');
+    }
+  }
+
+  // FIX: Make initTOC globally available
+  window.initTOC = initTOC;
 
   /* ======================
      DOCUMENT READY
@@ -375,4 +429,3 @@
   });
 
 })(jQuery);
-
