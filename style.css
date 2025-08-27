@@ -1799,43 +1799,4 @@ html {
   }
 }
 
-/* FIX FOR BOLD TEXT ISSUE ON DESKTOP */
-.blog-content,
-.post-content,
-.card-body,
-.blog-post-summary {
-  font-weight: normal !important;
-}
-
-.blog-content p,
-.post-content p,
-.card-body p,
-.blog-post-summary p {
-  font-weight: normal !important;
-}
-
-.blog-content h1, 
-.blog-content h2, 
-.blog-content h3, 
-.blog-content h4, 
-.blog-content h5, 
-.blog-content h6,
-.post-content h1, 
-.post-content h2, 
-.post-content h3, 
-.post-content h4, 
-.post-content h5, 
-.post-content h6,
-.card-title,
-.card-title a {
-  font-weight: 600 !important;
-}
-
-.blog-post-single .post-content {
-  font-weight: normal;
-}
-
-.blog-post-single .post-content p {
-  font-weight: normal;
-}
 
