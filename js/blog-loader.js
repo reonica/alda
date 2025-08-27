@@ -331,8 +331,7 @@ renderSinglePost(post) {
                 </nav>
             </div>
 
-            <!-- Body -->
-            <div class="post-content fs-5 lh-lg" id="post-content">
+            <div class="blog-content post-content fs-5 lh-lg" id="post-content">
                 ${htmlContent}
             </div>
 
@@ -367,11 +366,14 @@ renderSinglePost(post) {
     `;
 
     setTimeout(() => {
-        if (typeof initTOC === 'function') {
-            initTOC();
-        }
-    }, 100);
+        requestAnimationFrame(() => {
+            if (typeof initTOC === 'function') {
+                initTOC();
+            }
+        });
+    }, 300);
 
+    // Handle TOC toggle
     const tocToggle = document.getElementById('toc-toggle');
     const tocContainer = document.getElementById('toc-container');
     if (tocToggle && tocContainer) {
