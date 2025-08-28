@@ -6,7 +6,7 @@ description: Unlock the power of your customer data. This ultimate guide of Alda
   Hub explains what data-driven digital marketing is, its key benefits,
   real-world examples, and how to start using it to boost ROI and customer
   loyalty. Start your journey here.
-featured_image: /images/blog/a-guide-to-data-driven-digital-marketing.jpg
+featured_image: /images/blog/data-driven-digital-marketing-agency.jpg
 tags:
   - AldaHub
   - Data-driven Digital Marketing
