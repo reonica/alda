@@ -4,7 +4,7 @@ date: 2025-08-28T17:17:00.000+07:00
 author: Côme
 description: Discover 7 steps to build a data-driven marketing strategy, from
   creating a data strategy to successful implementation.
-featured_image: /images/blog/data-driven-marketing-stategy.jpg
+featured_image: /images/blog/data-driven-marketing-strategy.jpg
 tags:
   - Alda Hub
   - Data-Driven Marketing Strategy
