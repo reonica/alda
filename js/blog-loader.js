@@ -269,7 +269,7 @@ class BlogLoader {
                 </div>
                 ${post.featured_image ? `
                     <div class="mb-4" style="display: flex; justify-content: center;">
-                        <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="width: 66.67%; max-width: 100%; height: auto;">
+                        <img src="${post.featured_image}" alt="${post.title || 'Untitled'}" class="img-fluid rounded shadow" style="width: 100%; max-width: 100%; height: auto;">
                     </div>
                 ` : ''}
                 <div class="d-flex align-items-center text-muted mb-4">
