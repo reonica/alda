@@ -249,6 +249,136 @@ class BlogLoader {
         this.blogContainer.innerHTML = postsHTML;
     }
 
+        // Schema
+        detectSchemaFromMarkdown(content, metadata) {
+          const schemas = [];
+          
+          // --- BlogPosting ( Person + Organization) ---
+          const blogPosting = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": metadata.title,
+            "description": metadata.description,
+            "datePublished": metadata.date ? new Date(metadata.date).toISOString() : new Date().toISOString(),
+            "dateModified": metadata.updated || metadata.date ? new Date(metadata.updated || metadata.date).toISOString() : new Date().toISOString(),
+            "author": { "@type": "Person", "name": metadata.author || "Alda Hub Team" },
+            "image": metadata.featured_image ? {
+              "@type": "ImageObject",
+              "url": metadata.featured_image,
+              "width": 1200,
+              "height": 630
+            } : metadata.featured_image || "",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": window.location.href
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Alda Hub",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://aldahub.com/images/logo.png",
+                "width": 512,
+                "height": 512
+              }
+            },
+            "keywords": metadata.tags || []
+          };
+          schemas.push(blogPosting);
+          
+          // --- BreadcrumbList ---
+          const breadcrumb = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://aldahub.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://aldahub.com/blog.html"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": metadata.title,
+                "item": window.location.href
+              }
+            ]
+          };
+          schemas.push(breadcrumb);
+          
+          // --- Detect FAQPage ---
+          if (/##\s*FAQ/i.test(content)) {
+            const faqItems = [];
+            const faqRegex = /###\s*(.+?)\n([\s\S]*?)(?=###|$)/g;
+            let match;
+            while ((match = faqRegex.exec(content)) !== null) {
+              const question = match[1].trim();
+              const answer = match[2].trim();
+              if (question && answer) {
+                faqItems.push({
+                  "@type": "Question",
+                  "name": question,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": answer
+                  }
+                });
+              }
+            }
+            if (faqItems.length > 0) {
+              schemas.push({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqItems
+              });
+            }
+          }
+          
+          // --- Detect HowTo ---
+          if (/##\s*(How to|How-to)/i.test(content)) {
+            const steps = [];
+            const stepRegex = /(?:^|\n)(?:\d+\.|-|\*)\s+(.+)/g;
+            let stepMatch;
+            while ((stepMatch = stepRegex.exec(content)) !== null) {
+              const stepText = stepMatch[1].trim();
+              if (stepText.length > 5) { // Only meaningful steps
+                steps.push({
+                  "@type": "HowToStep",
+                  "text": stepText
+                });
+              }
+            }
+            if (steps.length > 0) {
+              schemas.push({
+                "@context": "https://schema.org",
+                "@type": "HowTo",
+                "name": metadata.title,
+                "description": metadata.description,
+                "step": steps
+              });
+            }
+          }
+          
+          // --- Render all schema to <head> with error handling ---
+          schemas.forEach((schema, index) => {
+            try {
+              const script = document.createElement("script");
+              script.type = "application/ld+json";
+              script.text = JSON.stringify(schema, null, 2);
+              document.head.appendChild(script);
+            } catch (error) {
+              console.warn('Error rendering schema:', error);
+            }
+          });
+        }
+    
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
@@ -326,6 +456,8 @@ class BlogLoader {
             </div>
         `;
 
+        this.detectSchemaFromMarkdown(post.body || '', post);
+        
         setTimeout(() => {
             requestAnimationFrame(() => {
                 if (typeof initTOC === 'function') {
@@ -333,7 +465,7 @@ class BlogLoader {
                 }
             });
         }, 300);
-
+        
         const tocToggle = document.getElementById('toc-toggle');
         const tocContainer = document.getElementById('toc-container');
         if (tocToggle && tocContainer) {
