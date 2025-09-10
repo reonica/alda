@@ -21,7 +21,9 @@ Kick things off with Analyze, where you answer "What happened?" This descriptive
 
 Picture this: You're running a startup in sustainable fashion. In Analyze, you'd review website visits, sales figures, and engagement stats from the last few months. GA4 dashboards make it easy to spot patterns, like traffic sources or peak times. As UNSW Online explains, descriptive analytics boils down historical data into digestible summaries, such as graphing quarterly traffic growth.
 
-In [data-driven digital marketing](https://aldahub.com/a-complete-guide-to-data-driven-digital-marketing) at Alda Hub, this involves setting up a Data Warehouse with raw, cleaned, and report-ready layers. They apply Google's HEART framework (Happiness, Engagement, Adoption, Retention, Task success) for key metrics. Aim for 95%+ data completeness in less than 48 hours—this speedy foundation keeps you grounded and ready for deeper dives.
+In [data-driven digital marketing](https://aldahub.com/a-complete-guide-to-data-driven-digital-marketing) at Alda Hub, this involves setting up a Data Warehouse with MAP process (Mining Layer → Analysis Layer → Presentation Layer). They apply Google's HEART framework (Happiness, Engagement, Adoption, Retention, Task success) for key metrics. Aim for 95%+ data completeness in less than 48 hours—this speedy foundation keeps you grounded and ready for deeper dives.
+
+> We simplify the data journey into three layers: Mining turns raw data into useful inputs, Analysis refines them like a cleaned layer, and Presentation transforms insights into clear, report-ready stories.
 
 ## II. Step 2: Learn – Uncovering Reasons Behind the Data in Data-Driven Digital Marketing
 
