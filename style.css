@@ -1685,8 +1685,8 @@ html {
 /*----------------------------------------------*/
 .tags-container .tag-link {
   display: inline-block;
-  background: #f8f9fa;
-  color: #6c757d;
+  background: #ededed;
+  color: #222;
   padding: 0.375rem 0.75rem;
   margin: 0.25rem 0.25rem 0.25rem 0;
   border-radius: 1rem;
@@ -1696,7 +1696,7 @@ html {
 }
 
 .tags-container .tag-link:hover {
-  background: #007bff;
+  background: #333;
   color: white;
 }
 
@@ -1798,6 +1798,7 @@ html {
     font-size: 1.3rem;
   }
 }
+
 
 
 
