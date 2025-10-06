@@ -32,14 +32,14 @@ included_files = [
 
 # ========== REDIRECTS ==========
 
-# Primary domain redirects (nếu cần)
+# Primary domain redirects
 [[redirects]]
   from = "https://aldahub.netlify.app/*"
   to = "https://aldahub.com/:splat"
   status = 301
   force = true
 
-# Blog pagination routes
+# Blog pagination routes - QUAN TRỌNG: đặt TRƯỚC catch-all
 [[redirects]]
   from = "/blog"
   to = "/blog.html"
@@ -55,27 +55,7 @@ included_files = [
   to = "/blog.html?page=:page"
   status = 200
 
-# Individual blog posts - QUAN TRỌNG: đặt TRƯỚC catch-all
-[[redirects]]
-  from = "/:slug"
-  to = "/blog-post.html"
-  status = 200
-
-# Catch-all for SPA behavior - đặt SAU CÙNG
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
-  conditions = { Method = ["GET"] }
-
-# Success page
-[[redirects]]
-  from = "/success"
-  to = "/success.html"
-  status = 200
-
-# Category and Tag routes
+# Blog category and tag routes - QUAN TRỌNG: đặt TRƯỚC catch-all
 [[redirects]]
   from = "/blog/category/:category"
   to = "/blog.html?category=:category"
@@ -85,3 +65,23 @@ included_files = [
   from = "/blog/tag/:tag"
   to = "/blog.html?tag=:tag"
   status = 200
+
+# Individual blog posts - QUAN TRỌNG: đặt TRƯỚC catch-all
+[[redirects]]
+  from = "/:slug"
+  to = "/blog-post.html"
+  status = 200
+
+# Success page
+[[redirects]]
+  from = "/success"
+  to = "/success.html"
+  status = 200
+
+# Catch-all for SPA behavior - ĐẶT CUỐI CÙNG
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+  conditions = { Method = ["GET"] }
