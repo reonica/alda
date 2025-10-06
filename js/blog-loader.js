@@ -31,33 +31,69 @@ class BlogLoader {
         try {
             console.log('Fetching blog index from GitHub...');
             const rawUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
-            const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawUrl)}`;
-            const headers = { 'Accept': 'application/vnd.github.v3+json' };
-            if (this.githubConfig.token) headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
+            
+            // THỬ TRỰC TIẾP TRƯỚC, NẾU LỖI THÌ DÙNG PROXY
+            let response;
+            try {
+                const headers = { 
+                    'Accept': 'application/vnd.github.v3+json',
+                    'User-Agent': 'Alda-Hub-Blog'
+                };
+                if (this.githubConfig.token) {
+                    headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
+                }
 
-            const response = await fetch(apiUrl + '?t=' + Date.now(), {
-                headers,
-                mode: 'cors',
-                cache: 'no-store'
-            });
+                response = await fetch(rawUrl + '?t=' + Date.now(), {
+                    headers,
+                    mode: 'cors',
+                    cache: 'no-store'
+                });
 
-            if (!response.ok) {
-                console.error('GitHub API response not OK:', response.status, response.statusText);
-                console.warn('Full response:', response);
-                console.warn('User Agent:', navigator.userAgent);
-                console.warn('This may be a CORS or cache issue (especially on Safari iOS).');
-                return this.getFallbackPosts();
+                if (!response.ok) {
+                    throw new Error(`GitHub API failed: ${response.status}`);
+                }
+            } catch (directError) {
+                console.log('Direct GitHub API failed, trying proxy...', directError);
+                // Dùng proxy fallback
+                const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawUrl)}`;
+                response = await fetch(apiUrl + '?t=' + Date.now(), {
+                    cache: 'no-store'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Proxy also failed: ${response.status}`);
+                }
             }
 
+            let files = await response.json();
+            
+            // XỬ LÝ RESPONSE TỪ PROXY (nếu dùng allorigins.win)
+            if (files && files.contents) {
+                files = JSON.parse(files.contents); // allorigins.win wrap response trong contents
+            }
+            
+            console.log('Raw files response:', files);
 
-            const files = await response.json();
-            const markdownFiles = files.filter(file => file.name.endsWith('.md') && file.type === 'file');
-            console.log(`Found ${markdownFiles.length} markdown files`);
+            const markdownFiles = files.filter(file => 
+                file.name.endsWith('.md') && 
+                file.type === 'file' &&
+                !file.name.startsWith('_') // Bỏ qua file bắt đầu bằng _
+            );
+            
+            console.log(`Found ${markdownFiles.length} markdown files:`, markdownFiles.map(f => f.name));
 
+            // LOAD CONTENT CỦA TẤT CẢ BÀI VIẾT
             const posts = await Promise.all(
                 markdownFiles.map(async (file) => {
                     try {
-                        const fileResponse = await fetch(file.download_url);
+                        let contentUrl = file.download_url;
+                        
+                        // Nếu dùng proxy, cần xử lý URL download
+                        if (!contentUrl && file.url) {
+                            contentUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(file.url)}`;
+                        }
+                        
+                        const fileResponse = await fetch(contentUrl);
                         if (!fileResponse.ok) {
                             console.error(`Failed to fetch ${file.name}: ${fileResponse.status}`);
                             return null;
@@ -77,11 +113,13 @@ class BlogLoader {
                 })
             );
 
-            return posts
-                .filter(post => post !== null)
-                .sort((a, b) => new Date(b.date || '1970-01-01') - new Date(a.date || '1970-01-01'));
+            const validPosts = posts.filter(post => post !== null);
+            console.log(`Successfully loaded ${validPosts.length} posts`);
+            
+            return validPosts.sort((a, b) => new Date(b.date || '1970-01-01') - new Date(a.date || '1970-01-01'));
         } catch (error) {
             console.error('Error fetching blog index:', error);
+            console.log('Falling back to default posts');
             return this.getFallbackPosts();
         }
     }
