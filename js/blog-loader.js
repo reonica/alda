@@ -20,8 +20,7 @@ class BlogLoader {
     async fetchBlogIndex() {
         try {
             console.log('Fetching blog index from GitHub...');
-            const rawUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
-            const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawUrl)}`;
+            const apiUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
             const headers = { 'Accept': 'application/vnd.github.v3+json' };
             if (this.githubConfig.token) headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
 
