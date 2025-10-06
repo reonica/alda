@@ -5,10 +5,10 @@
 [build.environment]
   NETLIFY_BUILD_USE_INCLUDES = "true"
   
-  [functions.emails]
-  included_files = [
-    "./emails/**"
-  ]
+[functions.emails]
+included_files = [
+  "./emails/**"
+]
 
 [context]
 
@@ -29,6 +29,39 @@
       included_files = [
         "./emails/**"
       ]
+
+# ========== REDIRECTS ==========
+
+# Primary domain redirects (nếu cần)
+[[redirects]]
+  from = "https://aldahub.netlify.app/*"
+  to = "https://aldahub.com/:splat"
+  status = 301
+  force = true
+
+# Blog pagination routes
+[[redirects]]
+  from = "/blog"
+  to = "/blog.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog/"
+  to = "/blog.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog?page=:page"
+  to = "/blog.html?page=:page"
+  status = 200
+
+# Individual blog posts - QUAN TRỌNG: đặt TRƯỚC catch-all
+[[redirects]]
+  from = "/:slug"
+  to = "/blog-post.html"
+  status = 200
+
+# Catch-all for SPA behavior - đặt SAU CÙNG
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -36,6 +69,7 @@
   force = true
   conditions = { Method = ["GET"] }
 
+# Success page
 [[redirects]]
   from = "/success"
   to = "/success.html"
