@@ -14,13 +14,24 @@ class BlogLoader {
             name: 'Alda Hub',
             defaultAuthor: 'Alda Hub Team'
         };
+        // THÊM PAGINATION CONFIG
+        this.postsPerPage = window.BLOG_CONFIG?.postsPerPage || 6;
+        this.currentPage = this.getCurrentPage();
+        this.allPosts = [];
         this.isMobile = window.innerWidth <= 768;
+    }
+
+    // THÊM METHOD ĐỂ LẤY TRANG HIỆN TẠI
+    getCurrentPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return parseInt(urlParams.get('page')) || 1;
     }
 
     async fetchBlogIndex() {
         try {
             console.log('Fetching blog index from GitHub...');
-            const apiUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
+            const rawUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
+            const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawUrl)}`;
             const headers = { 'Accept': 'application/vnd.github.v3+json' };
             if (this.githubConfig.token) headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
 
@@ -115,7 +126,9 @@ class BlogLoader {
 
         try {
             const posts = await this.fetchBlogIndex();
-            this.renderBlogPosts(posts);
+            this.allPosts = posts; // Lưu tất cả bài viết
+            this.renderPaginatedPosts(); // Render có phân trang
+            this.renderPagination(); // Render pagination controls
         } catch (error) {
             console.error('Error loading blog posts:', error);
             this.blogContainer.innerHTML = `
@@ -126,6 +139,133 @@ class BlogLoader {
                 </div>
             `;
         }
+    }
+
+    // THÊM METHOD RENDER CÓ PAGINATION
+    renderPaginatedPosts() {
+        if (!this.blogContainer) return;
+        
+        const startIndex = (this.currentPage - 1) * this.postsPerPage;
+        const endIndex = startIndex + this.postsPerPage;
+        const postsToShow = this.allPosts.slice(startIndex, endIndex);
+
+        if (postsToShow.length === 0) {
+            this.blogContainer.innerHTML = `
+                <div class="alert alert-info text-center">
+                    <h5>No blog posts on this page</h5>
+                    <p>Try going back to page 1.</p>
+                    <a href="/blog" class="btn btn-primary">Go to First Page</a>
+                </div>
+            `;
+            return;
+        }
+
+        const postsHTML = postsToShow.map(post => `
+            <article class="card mb-4 border-0 shadow-sm">
+                ${post.featured_image ? `
+                    <div class="card-img-top overflow-hidden" style="height: 250px;">
+                        <img src="${post.featured_image}" alt="${post.title}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                    </div>
+                ` : ''}
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <small class="text-muted me-3">
+                            <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
+                            ${this.formatDate(post.date || '1970-01-01')}
+                        </small>
+                        <small class="text-muted">
+                            <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
+                            ${post.author || this.siteConfig.defaultAuthor}
+                        </small>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        <a href="/${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
+                    </h3>
+                    <p class="card-text text-muted mb-3">${post.description || ''}</p>
+                    ${post.tags && post.tags.length ? `
+                        <div class="mb-3">
+                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
+                                .map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <a href="/${post.slug}" class="btn btn-outline-primary">
+                        Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
+                    </a>
+                </div>
+            </article>
+        `).join('');
+
+        this.blogContainer.innerHTML = postsHTML;
+    }
+
+    // THÊM METHOD RENDER PAGINATION CONTROLS
+    renderPagination() {
+        const totalPages = Math.ceil(this.allPosts.length / this.postsPerPage);
+        
+        // Ẩn pagination nếu chỉ có 1 trang
+        const paginationElement = document.getElementById('blog-pagination');
+        if (!paginationElement || totalPages <= 1) {
+            if (paginationElement) {
+                paginationElement.style.display = 'none';
+            }
+            return;
+        }
+
+        let paginationHTML = '';
+
+        // Previous button
+        if (this.currentPage > 1) {
+            paginationHTML += `
+                <li class="page-item">
+                    <a class="page-link" href="/blog?page=${this.currentPage - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `;
+        } else {
+            paginationHTML += `
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `;
+        }
+
+        // Page numbers - hiển thị tối đa 5 trang
+        const startPage = Math.max(1, this.currentPage - 2);
+        const endPage = Math.min(totalPages, startPage + 4);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const active = i === this.currentPage ? 'active' : '';
+            paginationHTML += `
+                <li class="page-item ${active}">
+                    <a class="page-link" href="/blog?page=${i}">${i}</a>
+                </li>
+            `;
+        }
+
+        // Next button
+        if (this.currentPage < totalPages) {
+            paginationHTML += `
+                <li class="page-item">
+                    <a class="page-link" href="/blog?page=${this.currentPage + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `;
+        } else {
+            paginationHTML += `
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-disabled="true">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `;
+        }
+
+        paginationElement.innerHTML = paginationHTML;
+        paginationElement.style.display = 'flex';
     }
 
     async loadSinglePost(slugInput) {
@@ -206,56 +346,6 @@ class BlogLoader {
             }
         });
         return { ...metadata, body };
-    }
-
-    renderBlogPosts(posts) {
-        if (!this.blogContainer) return;
-        if (posts.length === 0) {
-            this.blogContainer.innerHTML = `
-                <div class="alert alert-info text-center">
-                    <h5>No blog posts yet</h5>
-                    <p>Check back soon for new content!</p>
-                </div>
-            `;
-            return;
-        }
-
-        const postsHTML = posts.map(post => `
-            <article class="card mb-4 border-0 shadow-sm">
-                ${post.featured_image ? `
-                    <div class="card-img-top overflow-hidden" style="height: 250px;">
-                        <img src="${post.featured_image}" alt="${post.title}" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                    </div>
-                ` : ''}
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <small class="text-muted me-3">
-                            <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
-                            ${this.formatDate(post.date || '1970-01-01')}
-                        </small>
-                        <small class="text-muted">
-                            <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
-                            ${post.author || this.siteConfig.defaultAuthor}
-                        </small>
-                    </div>
-                    <h3 class="card-title h4 mb-3">
-                        <a href="/${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
-                    </h3>
-                    <p class="card-text text-muted mb-3">${post.description || ''}</p>
-                    ${post.tags && post.tags.length ? `
-                        <div class="mb-3">
-                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    <a href="/${post.slug}" class="btn btn-outline-primary">
-                        Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
-                    </a>
-                </div>
-            </article>
-        `).join('');
-
-        this.blogContainer.innerHTML = postsHTML;
     }
 
         // Schema
