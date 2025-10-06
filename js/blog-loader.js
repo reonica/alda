@@ -24,11 +24,20 @@ class BlogLoader {
             const headers = { 'Accept': 'application/vnd.github.v3+json' };
             if (this.githubConfig.token) headers['Authorization'] = `Bearer ${this.githubConfig.token}`;
 
-            const response = await fetch(apiUrl, { headers });
+            const response = await fetch(apiUrl + '?t=' + Date.now(), {
+                headers,
+                mode: 'cors',
+                cache: 'no-store'
+            });
+
             if (!response.ok) {
                 console.error('GitHub API response not OK:', response.status, response.statusText);
+                console.warn('Full response:', response);
+                console.warn('User Agent:', navigator.userAgent);
+                console.warn('This may be a CORS or cache issue (especially on Safari iOS).');
                 return this.getFallbackPosts();
             }
+
 
             const files = await response.json();
             const markdownFiles = files.filter(file => file.name.endsWith('.md') && file.type === 'file');
@@ -70,24 +79,24 @@ class BlogLoader {
         console.log('Using fallback posts');
         return [
             {
-                title: "Welcome to Alda Hub Blog",
-                slug: "welcome-to-alda-hub-blog",
-                date: "2024-08-21T10:00:00Z",
-                author: "Alda Hub Team",
-                description: "Welcome to our data-driven marketing blog. Stay tuned for insights and strategies.",
-                tags: ["welcome", "introduction"],
+                title: "Unlocking Data-Driven Digital Marketing with ALDA Framework",
+                slug: "unlocking-data-driven-digital-marketing-with-alda-framework",
+                date: "2025-09-06T10:00:00Z",
+                author: "Côme",
+                description: "ALDA, which stands for Analyze, Learn, Design, and Act/Alchemy, is the heartbeat of Alda Hub's approach...",
+                tags: ["ALDA", "Data-driven Digital Marketing"],
                 body: "# Welcome to Alda Hub Blog\n\nThis is our first blog post. More content coming soon!",
-                featured_image: "images/alda/blog-data-driven-marketing.jpg"
+                featured_image: "images/blog/unlocking-data-driven-digital-marketing-with-alda-framework.jpg"
             },
             {
-                title: "Data-Driven Marketing Strategies",
-                slug: "data-driven-marketing-strategies",
-                date: "2024-08-20T10:00:00Z",
-                author: "Alda Hub Team",
-                description: "Learn how data-driven decisions can transform your marketing approach.",
-                tags: ["marketing", "data analysis"],
+                title: "How to Build a Data-Driven Marketing Strategy in 7 Steps",
+                slug: "how-to-build-a-data-driven-marketing-strategy-in-7-steps",
+                date: "2025-08-28T10:00:00Z",
+                author: "Côme",
+                description: "This guide will walk you through the essential steps to not only build a robust data-driven marketing strategy...",
+                tags: ["Data-driven Marketing", "Data Analysis"],
                 body: "# Data-Driven Marketing Strategies\n\nLeverage data to improve your marketing ROI.",
-                featured_image: "images/alda/blog-customer-data-analysis.jpg"
+                featured_image: "images/blog/data-driven-marketing-strategy.jpg"
             }
         ];
     }
