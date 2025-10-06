@@ -14,5 +14,5 @@ window.BLOG_CONFIG = {
         defaultAuthor: 'Alda Hub Team'
     },
     
-    postsPerPage: 10
+    postsPerPage: 1
 };
