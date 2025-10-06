@@ -306,6 +306,168 @@ class BlogLoader {
         paginationElement.style.display = 'flex';
     }
 
+    // THÊM METHOD LỌC BÀI VIẾT THEO CATEGORY/TAG
+    filterPostsByCategory(category) {
+        return this.allPosts.filter(post => {
+            const categories = this.getPostCategories(post);
+            return categories.some(cat => 
+                cat.toLowerCase() === category.toLowerCase()
+            );
+        });
+    }
+
+    filterPostsByTag(tag) {
+        return this.allPosts.filter(post => {
+            const tags = this.getPostTags(post);
+            return tags.some(t => 
+                t.toLowerCase() === tag.toLowerCase()
+            );
+        });
+    }
+
+    getPostCategories(post) {
+        if (post.categories) {
+            return Array.isArray(post.categories) ? post.categories : [post.categories];
+        }
+        return [];
+    }
+
+    getPostTags(post) {
+        if (post.tags) {
+            return Array.isArray(post.tags) ? post.tags : [post.tags];
+        }
+        return [];
+    }
+
+    // METHOD XỬ LÝ CATEGORY/TAG PAGES
+    async loadFilteredPosts() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        const tag = urlParams.get('tag');
+        
+        if (!this.blogContainer) return;
+
+        this.blogContainer.innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Loading posts...</p>
+            </div>
+        `;
+
+        try {
+            const posts = await this.fetchBlogIndex();
+            this.allPosts = posts;
+
+            let filteredPosts = [];
+            let pageTitle = '';
+            let pageDescription = '';
+
+            if (category) {
+                filteredPosts = this.filterPostsByCategory(category);
+                pageTitle = `Category: ${category}`;
+                pageDescription = `Blog posts in ${category} category`;
+            } else if (tag) {
+                filteredPosts = this.filterPostsByTag(tag);
+                pageTitle = `Tag: ${tag}`;
+                pageDescription = `Blog posts tagged with ${tag}`;
+            }
+
+            // UPDATE PAGE TITLE
+            document.title = `${pageTitle} - ${this.siteConfig.name}`;
+            
+            // RENDER FILTERED POSTS
+            this.renderFilteredPosts(filteredPosts, pageTitle, pageDescription);
+            
+        } catch (error) {
+            console.error('Error loading filtered posts:', error);
+            this.blogContainer.innerHTML = `
+                <div class="alert alert-danger text-center">
+                    <h5>Error loading posts</h5>
+                    <p>Please try again later.</p>
+                    <a href="/blog" class="btn btn-primary">Back to Blog</a>
+                </div>
+            `;
+        }
+    }
+
+    // RENDER FILTERED POSTS
+    renderFilteredPosts(posts, title, description) {
+        if (!this.blogContainer) return;
+
+        if (posts.length === 0) {
+            this.blogContainer.innerHTML = `
+                <div class="alert alert-info text-center">
+                    <h4>${title}</h4>
+                    <p>No posts found.</p>
+                    <a href="/blog" class="btn btn-primary">Back to Blog</a>
+                </div>
+            `;
+            return;
+        }
+
+        const headerHTML = `
+            <div class="row mb-5">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+                            <li class="breadcrumb-item active">${title}</li>
+                        </ol>
+                    </nav>
+                    <h1 class="display-5 fw-bold">${title}</h1>
+                    <p class="lead">${description}</p>
+                    <p class="text-muted">Found ${posts.length} post(s)</p>
+                </div>
+            </div>
+        `;
+
+        const postsHTML = posts.map(post => `
+            <article class="card mb-4 border-0 shadow-sm">
+                ${post.featured_image ? `
+                    <div class="card-img-top overflow-hidden" style="height: 250px;">
+                        <img src="${post.featured_image}" alt="${post.title}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                    </div>
+                ` : ''}
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <small class="text-muted me-3">
+                            <iconify-icon icon="bi:calendar3" class="me-1"></iconify-icon>
+                            ${this.formatDate(post.date || '1970-01-01')}
+                        </small>
+                        <small class="text-muted">
+                            <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
+                            ${post.author || this.siteConfig.defaultAuthor}
+                        </small>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        <a href="/${post.slug}" class="text-decoration-none text-dark">${post.title || 'Untitled'}</a>
+                    </h3>
+                    <p class="card-text text-muted mb-3">${post.description || ''}</p>
+                    ${post.tags && post.tags.length ? `
+                        <div class="mb-3">
+                            ${this.getPostTags(post)
+                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag)}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`)
+                                .join('')}
+                        </div>
+                    ` : ''}
+                    <a href="/${post.slug}" class="btn btn-outline-primary">
+                        Read More <iconify-icon icon="bi:arrow-right" class="ms-1"></iconify-icon>
+                    </a>
+                </div>
+            </article>
+        `).join('');
+
+        this.blogContainer.innerHTML = headerHTML + postsHTML;
+        
+        // ẨN PAGINATION MẶC ĐỊNH VÌ FILTERED POSTS KHÔNG CẦN PAGINATION
+        const paginationElement = document.getElementById('blog-pagination');
+        if (paginationElement) {
+            paginationElement.style.display = 'none';
+        }
+    }
+
     async loadSinglePost(slugInput) {
         if (!this.postContainer) return;
 
@@ -635,10 +797,19 @@ class BlogLoader {
     }
 
     initialize() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        const tag = urlParams.get('tag');
+
         if (this.blogContainer) {
-            this.loadBlogPosts();
+            if (category || tag) {
+                this.loadFilteredPosts(); // LOAD FILTERED POSTS
+            } else {
+                this.loadBlogPosts(); // LOAD NORMAL PAGINATION
+            }
             return;
         }
+        
         if (this.postContainer) {
             const params = new URLSearchParams(window.location.search);
             let slug = params.get('post') || window.location.pathname.split('/').filter(Boolean).pop();
