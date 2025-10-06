@@ -74,3 +74,14 @@ included_files = [
   from = "/success"
   to = "/success.html"
   status = 200
+
+# Category and Tag routes
+[[redirects]]
+  from = "/blog/category/:category"
+  to = "/blog.html?category=:category"
+  status = 200
+
+[[redirects]]
+  from = "/blog/tag/:tag"
+  to = "/blog.html?tag=:tag"
+  status = 200
