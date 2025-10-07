@@ -249,13 +249,13 @@ class BlogLoader {
                     ${post.tags && post.tags.length ? `
                         <div class="mb-3">
                             ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`).join('')}
+                                .map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`).join('')}
                         </div>
                     ` : ''}
                     ${post.categories && post.categories.length ? `
                         <div class="mb-3">
                             ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
-                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`).join('')}
+                                .map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`).join('')}
                         </div>
                     ` : ''}
                     <a href="/${post.slug}" class="btn btn-outline-primary">
@@ -490,14 +490,14 @@ class BlogLoader {
                     ${post.tags && post.tags.length ? `
                         <div class="mb-3">
                             ${this.getPostTags(post)
-                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`)
+                                .map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`)
                                 .join('')}
                         </div>
                     ` : ''}
                     ${post.categories && post.categories.length ? `
                         <div class="mb-3">
                             ${this.getPostCategories(post)
-                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`)
+                                .map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`)
                                 .join('')}
                         </div>
                     ` : ''}
@@ -783,7 +783,7 @@ class BlogLoader {
                         <h6 class="text-muted mb-3">Tags:</h6>
                         <div>
                             ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
+                                .map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
                         </div>
                     </div>
                 ` : ''}
@@ -792,7 +792,7 @@ class BlogLoader {
                         <h6 class="text-muted mb-3">Categories:</h6>
                         <div>
                             ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
-                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2 mb-2 p-2">${cat}</a>`).join('')}
+                                .map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2 mb-2 p-2">${cat}</a>`).join('')}
                         </div>
                     </div>
                 ` : ''}
