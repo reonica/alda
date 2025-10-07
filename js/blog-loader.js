@@ -1,4 +1,4 @@
-// Blog Loader for Static HTML Website with GitHub API
+// Blog Loader for Static HTML Website with GitHub API - FIXED VERSION
 class BlogLoader {
     constructor() {
         this.blogContainer = document.getElementById('blog-posts');
@@ -19,6 +19,24 @@ class BlogLoader {
         this.currentPage = this.getCurrentPage();
         this.allPosts = [];
         this.isMobile = window.innerWidth <= 768;
+        
+        // FIX: Thêm detection cho category/tag từ URL path
+        this.currentCategory = this.getCategoryFromPath();
+        this.currentTag = this.getTagFromPath();
+    }
+
+    // FIX: Thêm method để lấy category từ URL path
+    getCategoryFromPath() {
+        const path = window.location.pathname;
+        const categoryMatch = path.match(/\/blog\/category\/([^\/]+)/);
+        return categoryMatch ? decodeURIComponent(categoryMatch[1]) : null;
+    }
+
+    // FIX: Thêm method để lấy tag từ URL path
+    getTagFromPath() {
+        const path = window.location.pathname;
+        const tagMatch = path.match(/\/blog\/tag\/([^\/]+)/);
+        return tagMatch ? decodeURIComponent(tagMatch[1]) : null;
     }
 
     // THÊM METHOD ĐỂ LẤY TRANG HIỆN TẠI
@@ -134,6 +152,7 @@ class BlogLoader {
                 author: "Côme",
                 description: "ALDA, which stands for Analyze, Learn, Design, and Act/Alchemy, is the heartbeat of Alda Hub's approach...",
                 tags: ["ALDA", "Data-driven Digital Marketing"],
+                categories: ["Data-driven SEO", "Marketing"],
                 body: "# Welcome to Alda Hub Blog\n\nThis is our first blog post. More content coming soon!",
                 featured_image: "images/blog/unlocking-data-driven-digital-marketing-with-alda-framework.jpg"
             },
@@ -144,6 +163,7 @@ class BlogLoader {
                 author: "Côme",
                 description: "This guide will walk you through the essential steps to not only build a robust data-driven marketing strategy...",
                 tags: ["Data-driven Marketing", "Data Analysis"],
+                categories: ["Data-driven SEO", "Data Analysis"],
                 body: "# Data-Driven Marketing Strategies\n\nLeverage data to improve your marketing ROI.",
                 featured_image: "images/blog/data-driven-marketing-strategy.jpg"
             }
@@ -165,8 +185,14 @@ class BlogLoader {
         try {
             const posts = await this.fetchBlogIndex();
             this.allPosts = posts; // Lưu tất cả bài viết
-            this.renderPaginatedPosts(); // Render có phân trang
-            this.renderPagination(); // Render pagination controls
+            
+            // FIX: Kiểm tra nếu đang ở category/tag page thì load filtered posts
+            if (this.currentCategory || this.currentTag) {
+                this.loadFilteredPosts();
+            } else {
+                this.renderPaginatedPosts(); // Render có phân trang
+                this.renderPagination(); // Render pagination controls
+            }
         } catch (error) {
             console.error('Error loading blog posts:', error);
             this.blogContainer.innerHTML = `
@@ -223,7 +249,13 @@ class BlogLoader {
                     ${post.tags && post.tags.length ? `
                         <div class="mb-3">
                             ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<span class="badge bg-light text-dark me-2">${tag}</span>`).join('')}
+                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    ${post.categories && post.categories.length ? `
+                        <div class="mb-3">
+                            ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
+                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`).join('')}
                         </div>
                     ` : ''}
                     <a href="/${post.slug}" class="btn btn-outline-primary">
@@ -339,12 +371,8 @@ class BlogLoader {
         return [];
     }
 
-    // METHOD XỬ LÝ CATEGORY/TAG PAGES
+    // METHOD XỬ LÝ CATEGORY/TAG PAGES - FIXED VERSION
     async loadFilteredPosts() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category');
-        const tag = urlParams.get('tag');
-        
         if (!this.blogContainer) return;
 
         this.blogContainer.innerHTML = `
@@ -363,22 +391,36 @@ class BlogLoader {
             let filteredPosts = [];
             let pageTitle = '';
             let pageDescription = '';
+            let filterType = '';
+
+            // FIX: Sử dụng cả path-based và query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = this.currentCategory || urlParams.get('category');
+            const tag = this.currentTag || urlParams.get('tag');
 
             if (category) {
                 filteredPosts = this.filterPostsByCategory(category);
                 pageTitle = `Category: ${category}`;
                 pageDescription = `Blog posts in ${category} category`;
+                filterType = 'category';
             } else if (tag) {
                 filteredPosts = this.filterPostsByTag(tag);
                 pageTitle = `Tag: ${tag}`;
                 pageDescription = `Blog posts tagged with ${tag}`;
+                filterType = 'tag';
             }
 
             // UPDATE PAGE TITLE
             document.title = `${pageTitle} - ${this.siteConfig.name}`;
             
+            // UPDATE META DESCRIPTION
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+                metaDescription.setAttribute('content', pageDescription);
+            }
+            
             // RENDER FILTERED POSTS
-            this.renderFilteredPosts(filteredPosts, pageTitle, pageDescription);
+            this.renderFilteredPosts(filteredPosts, pageTitle, pageDescription, filterType);
             
         } catch (error) {
             console.error('Error loading filtered posts:', error);
@@ -392,8 +434,8 @@ class BlogLoader {
         }
     }
 
-    // RENDER FILTERED POSTS
-    renderFilteredPosts(posts, title, description) {
+    // RENDER FILTERED POSTS - IMPROVED VERSION
+    renderFilteredPosts(posts, title, description, filterType) {
         if (!this.blogContainer) return;
 
         if (posts.length === 0) {
@@ -448,7 +490,14 @@ class BlogLoader {
                     ${post.tags && post.tags.length ? `
                         <div class="mb-3">
                             ${this.getPostTags(post)
-                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag)}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`)
+                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`)
+                                .join('')}
+                        </div>
+                    ` : ''}
+                    ${post.categories && post.categories.length ? `
+                        <div class="mb-3">
+                            ${this.getPostCategories(post)
+                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`)
                                 .join('')}
                         </div>
                     ` : ''}
@@ -535,11 +584,11 @@ class BlogLoader {
                 if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
                     value = value.substring(1, value.length - 1);
                 }
-                if (key === 'tags') {
+                if (key === 'tags' || key === 'categories') {
                     try {
                         value = JSON.parse(value);
                     } catch {
-                        value = value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                        value = value.split(',').map(item => item.trim()).filter(item => item);
                     }
                 }
                 metadata[key] = value;
@@ -548,12 +597,12 @@ class BlogLoader {
         return { ...metadata, body };
     }
 
-        // Schema
-        detectSchemaFromMarkdown(content, metadata) {
-          const schemas = [];
-          
-          // --- BlogPosting ( Person + Organization) ---
-          const blogPosting = {
+    // Schema
+    detectSchemaFromMarkdown(content, metadata) {
+        const schemas = [];
+        
+        // --- BlogPosting ( Person + Organization) ---
+        const blogPosting = {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": metadata.title,
@@ -562,122 +611,122 @@ class BlogLoader {
             "dateModified": metadata.updated || metadata.date ? new Date(metadata.updated || metadata.date).toISOString() : new Date().toISOString(),
             "author": { "@type": "Person", "name": metadata.author || "Alda Hub Team" },
             "image": metadata.featured_image ? {
-              "@type": "ImageObject",
-              "url": metadata.featured_image,
-              "width": 1200,
-              "height": 630
+                "@type": "ImageObject",
+                "url": metadata.featured_image,
+                "width": 1200,
+                "height": 630
             } : metadata.featured_image || "",
             "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": window.location.href
+                "@type": "WebPage",
+                "@id": window.location.href
             },
             "publisher": {
-              "@type": "Organization",
-              "name": "Alda Hub",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://aldahub.com/images/logo.png",
-                "width": 512,
-                "height": 512
-              }
+                "@type": "Organization",
+                "name": "Alda Hub",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://aldahub.com/images/logo.png",
+                    "width": 512,
+                    "height": 512
+                }
             },
             "keywords": metadata.tags || []
-          };
-          schemas.push(blogPosting);
-          
-          // --- BreadcrumbList ---
-          const breadcrumb = {
+        };
+        schemas.push(blogPosting);
+        
+        // --- BreadcrumbList ---
+        const breadcrumb = {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://aldahub.com/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Blog",
-                "item": "https://aldahub.com/blog.html"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": metadata.title,
-                "item": window.location.href
-              }
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://aldahub.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Blog",
+                    "item": "https://aldahub.com/blog.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": metadata.title,
+                    "item": window.location.href
+                }
             ]
-          };
-          schemas.push(breadcrumb);
-          
-          // --- Detect FAQPage ---
-          if (/##\s*FAQ/i.test(content)) {
+        };
+        schemas.push(breadcrumb);
+        
+        // --- Detect FAQPage ---
+        if (/##\s*FAQ/i.test(content)) {
             const faqItems = [];
             const faqRegex = /###\s*(.+?)\n([\s\S]*?)(?=###|$)/g;
             let match;
             while ((match = faqRegex.exec(content)) !== null) {
-              const question = match[1].trim();
-              const answer = match[2].trim();
-              if (question && answer) {
-                faqItems.push({
-                  "@type": "Question",
-                  "name": question,
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": answer
-                  }
-                });
-              }
+                const question = match[1].trim();
+                const answer = match[2].trim();
+                if (question && answer) {
+                    faqItems.push({
+                        "@type": "Question",
+                        "name": question,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": answer
+                        }
+                    });
+                }
             }
             if (faqItems.length > 0) {
-              schemas.push({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": faqItems
-              });
+                schemas.push({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": faqItems
+                });
             }
-          }
-          
-          // --- Detect HowTo ---
-          if (/##\s*(How to|How-to)/i.test(content)) {
+        }
+        
+        // --- Detect HowTo ---
+        if (/##\s*(How to|How-to)/i.test(content)) {
             const steps = [];
             const stepRegex = /(?:^|\n)(?:\d+\.|-|\*)\s+(.+)/g;
             let stepMatch;
             while ((stepMatch = stepRegex.exec(content)) !== null) {
-              const stepText = stepMatch[1].trim();
-              if (stepText.length > 5) { // Only meaningful steps
-                steps.push({
-                  "@type": "HowToStep",
-                  "text": stepText
-                });
-              }
+                const stepText = stepMatch[1].trim();
+                if (stepText.length > 5) { // Only meaningful steps
+                    steps.push({
+                        "@type": "HowToStep",
+                        "text": stepText
+                    });
+                }
             }
             if (steps.length > 0) {
-              schemas.push({
-                "@context": "https://schema.org",
-                "@type": "HowTo",
-                "name": metadata.title,
-                "description": metadata.description,
-                "step": steps
-              });
+                schemas.push({
+                    "@context": "https://schema.org",
+                    "@type": "HowTo",
+                    "name": metadata.title,
+                    "description": metadata.description,
+                    "step": steps
+                });
             }
-          }
-          
-          // --- Render all schema to <head> with error handling ---
-          schemas.forEach((schema, index) => {
-            try {
-              const script = document.createElement("script");
-              script.type = "application/ld+json";
-              script.text = JSON.stringify(schema, null, 2);
-              document.head.appendChild(script);
-            } catch (error) {
-              console.warn('Error rendering schema:', error);
-            }
-          });
         }
-    
+        
+        // --- Render all schema to <head> with error handling ---
+        schemas.forEach((schema, index) => {
+            try {
+                const script = document.createElement("script");
+                script.type = "application/ld+json";
+                script.text = JSON.stringify(schema, null, 2);
+                document.head.appendChild(script);
+            } catch (error) {
+                console.warn('Error rendering schema:', error);
+            }
+        });
+    }
+
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
@@ -734,7 +783,16 @@ class BlogLoader {
                         <h6 class="text-muted mb-3">Tags:</h6>
                         <div>
                             ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
+                                .map(tag => `<a href="/blog/tag/${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                ${post.categories && post.categories.length ? `
+                    <div class="mt-5 pt-4 border-top">
+                        <h6 class="text-muted mb-3">Categories:</h6>
+                        <div>
+                            ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
+                                .map(cat => `<a href="/blog/category/${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2 mb-2 p-2">${cat}</a>`).join('')}
                         </div>
                     </div>
                 ` : ''}
@@ -797,16 +855,9 @@ class BlogLoader {
     }
 
     initialize() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category');
-        const tag = urlParams.get('tag');
-
+        // FIX: Sử dụng detection mới từ URL path
         if (this.blogContainer) {
-            if (category || tag) {
-                this.loadFilteredPosts(); // LOAD FILTERED POSTS
-            } else {
-                this.loadBlogPosts(); // LOAD NORMAL PAGINATION
-            }
+            this.loadBlogPosts(); // Luôn gọi loadBlogPosts, nó sẽ tự detect category/tag
             return;
         }
         
