@@ -137,6 +137,8 @@ Building your first marketing strategy might initially feel overwhelming, but fo
 
 Remember that effective marketing is a marathon, not a sprint. Some tactics deliver immediate results while others require patience as they build momentum, but the most sustainable growth comes from balanced strategies combining quick wins with long-term investments in channels like content marketing and SEO. Embrace continuous testing and learning as core principles of your approach, remaining willing to adjust tactics while staying focused on overarching strategic goals. With 91% of Fortune 1000 companies increasing AI investments and digital ad spending exceeding $740 billion globally, the opportunities for businesses leveraging data-driven digital marketing have never been greater. Start with one or two channels where your audience actively engages, master those channels completely before expanding, and let data guide every decision you make along the journey.
 
+> See more: [Alda framework](https://aldahub.com/unlocking-data-driven-digital-marketing-with-alda-framework)
+
 ## Frequently Asked Questions About Marketing Strategy
 
 ### 1. How much should I budget for my first marketing strategy?
