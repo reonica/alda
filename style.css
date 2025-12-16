@@ -1417,7 +1417,7 @@ img, video, iframe {
 }
 
 .blog-post-single .post-content h3:not(.display-5) {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .blog-post-single .post-content p {
@@ -1798,5 +1798,6 @@ html {
     font-size: 1.3rem;
   }
 }
+
 
 
