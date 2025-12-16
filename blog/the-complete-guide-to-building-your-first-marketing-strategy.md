@@ -1,6 +1,6 @@
 ---
 title: The Complete Guide to Building Your First Marketing Strategy
-date: 2025-12-16T23:04:00.000+07:00
+date: 2025-12-16T23:14:00.000+07:00
 author: Côme
 description: Learn how to build your first marketing strategy with expert
   insights from digital marketing agencies like Alda Hub. Discover data-driven
