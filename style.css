@@ -1413,11 +1413,11 @@ img, video, iframe {
 }
 
 .blog-post-single .post-content h3.display-5 {
-  font-size: 0.8rem;
+  font-size: 0.5rem;
 }
 
 .blog-post-single .post-content h3:not(.display-5) {
-  font-size: 1.75rem;
+  font-size: 0.5rem;
 }
 
 .blog-post-single .post-content p {
@@ -1499,7 +1499,7 @@ img, video, iframe {
 
 @media (max-width: 768px) {
   .blog-post-single .post-content h3 {
-    font-size: 0.8rem;
+    font-size: 0.5rem;
   }
   .blog-post-single .post-content p,
   .blog-post-single .post-content ul,
