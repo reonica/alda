@@ -1700,6 +1700,67 @@ html {
   color: white;
 }
 
+/* Tags styling */
+.post-tags .tag {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.post-tags .tag:hover {
+  background-color: var(--primary-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Post meta styling */
+.post-meta iconify-icon {
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+
+/* Featured image */
+.post-featured-image img {
+  max-height: 500px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Content styling */
+.post-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.post-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.post-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Share buttons */
+.share-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
 .blog-post-preview:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
@@ -1798,6 +1859,7 @@ html {
     font-size: 1.3rem;
   }
 }
+
 
 
 
