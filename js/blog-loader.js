@@ -190,13 +190,7 @@ class BlogLoader {
             const urlParams = new URLSearchParams(window.location.search);
             const category = this.currentCategory || urlParams.get('category');
             const tag = this.currentTag || urlParams.get('tag');
-            if (category || tag) {
-                console.log('Category/Tag detected, loading filtered posts');
-                this.loadFilteredPosts();
-                return; // Dừng lại, không phân trang
-            }
-            // CHỈ phân trang khi KHÔNG có category/tag
-            console.log('No category/tag, showing paginated posts');
+  
             // FIX: Kiểm tra nếu đang ở category/tag page thì load filtered posts
             if (this.allPosts.length <= this.postsPerPage) {
                 console.log('Few posts, hiding pagination');
