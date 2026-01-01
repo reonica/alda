@@ -271,6 +271,15 @@ class BlogLoader {
     // THÊM METHOD RENDER PAGINATION CONTROLS
     renderPagination() {
         const totalPages = Math.ceil(this.allPosts.length / this.postsPerPage);
+        
+        // Ẩn pagination nếu chỉ có 1 trang
+        const paginationElement = document.getElementById('blog-pagination');
+        if (!paginationElement || totalPages <= 1) {
+            if (paginationElement) {
+                paginationElement.style.display = 'none';
+            }
+            return;
+        }
 
         let paginationHTML = '';
 
@@ -295,7 +304,7 @@ class BlogLoader {
 
         // Page numbers - hiển thị tối đa 5 trang
         const startPage = Math.max(1, this.currentPage - 2);
-        const endPage = Math.min(totalPages, startPage + 100);
+        const endPage = Math.min(totalPages, startPage + 4);
 
         for (let i = startPage; i <= endPage; i++) {
             const active = i === this.currentPage ? 'active' : '';
