@@ -6,7 +6,7 @@ description: Learn how to build your first marketing strategy with expert
   insights from digital marketing agencies like Alda Hub. Discover data-driven
   digital marketing tactics, cost-effective channels, and proven frameworks for
   your success.
-featured_image: /images/blog/1st-mkt-strategy.jpg
+featured_image: /images/blog/1st-marketing-strategy.jpg
 tags:
   - Alda Hub
   - Data-driven Digital Marketing
