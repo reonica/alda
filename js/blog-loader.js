@@ -185,26 +185,13 @@ class BlogLoader {
         try {
             const posts = await this.fetchBlogIndex();
             this.allPosts = posts; // Lưu tất cả bài viết
-            console.log('Total posts loaded:', this.allPosts.length);
-            console.log('Posts per page config:', this.postsPerPage);
-            const urlParams = new URLSearchParams(window.location.search);
-            const category = this.currentCategory || urlParams.get('category');
-            const tag = this.currentTag || urlParams.get('tag');
-  
+            
             // FIX: Kiểm tra nếu đang ở category/tag page thì load filtered posts
-            if (this.allPosts.length <= this.postsPerPage) {
-                console.log('Few posts, hiding pagination');
-                const paginationElement = document.getElementById('blog-pagination');
-                if (paginationElement) {
-                    paginationElement.style.display = 'none';
-                }
-                
-                // Hiển thị tất cả bài viết
-                this.renderAllPosts();
+            if (this.currentCategory || this.currentTag) {
+                this.loadFilteredPosts();
             } else {
-                // FIX: Luôn gọi cả hai phương thức
-                this.renderPaginatedPosts();
-                this.renderPagination();
+                this.renderPaginatedPosts(); // Render có phân trang
+                this.renderPagination(); // Render pagination controls
             }
         } catch (error) {
             console.error('Error loading blog posts:', error);
@@ -225,14 +212,7 @@ class BlogLoader {
         const startIndex = (this.currentPage - 1) * this.postsPerPage;
         const endIndex = startIndex + this.postsPerPage;
         const postsToShow = this.allPosts.slice(startIndex, endIndex);
-        console.log('=== PAGINATION DEBUG ===');
-        console.log('Total posts:', this.allPosts.length);
-        console.log('Posts per page:', this.postsPerPage);
-        console.log('Current page:', this.currentPage);
-        console.log('Start index:', startIndex);
-        console.log('End index:', endIndex);
-        console.log('Posts to show:', postsToShow.length);
-        console.log('Total pages:', Math.ceil(this.allPosts.length / this.postsPerPage));
+
         if (postsToShow.length === 0) {
             this.blogContainer.innerHTML = `
                 <div class="alert alert-info text-center">
@@ -904,13 +884,6 @@ window.loadSinglePost = function(slug) {
     const loader = new BlogLoader();
     loader.loadSinglePost(slug);
 };
-
-// Debug info - Test logging
-console.log('=== BLOG LOADER CONFIG ===');
-console.log('BLOG_CONFIG exists:', !!window.BLOG_CONFIG);
-console.log('Posts per page from config:', window.BLOG_CONFIG?.postsPerPage);
-console.log('Current URL:', window.location.href);
-console.log('URL search params:', new URLSearchParams(window.location.search).toString());
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
