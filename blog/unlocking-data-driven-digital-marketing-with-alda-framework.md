@@ -5,7 +5,7 @@ author: Côme
 description: Explore data-driven digital marketing at Alda Hub through the ALDA
   Framework. This guide shows how SMEs and startups can analyze data, gain
   insights, design strategies, and act for growth.
-featured_image: /images/blog/unlocking-data-driven-digital-marketing-with-alda-framework.jpg
+featured_image: /images/blog/alda-framework.jpg
 tags:
   - Data-Driven Digital Marketing
   - Alda Hub
