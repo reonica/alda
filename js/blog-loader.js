@@ -1,4 +1,4 @@
-// Blog Loader for Static HTML Website with GitHub API - FIXED VERSION
+// Blog Loader for Static HTML Website with GitHub API - UPDATED VERSION
 class BlogLoader {
     constructor() {
         this.blogContainer = document.getElementById('blog-posts');
@@ -14,32 +14,27 @@ class BlogLoader {
             name: 'Alda Hub',
             defaultAuthor: 'Alda Hub Team'
         };
-        // THÊM PAGINATION CONFIG
         this.postsPerPage = window.BLOG_CONFIG?.postsPerPage || 6;
         this.currentPage = this.getCurrentPage();
         this.allPosts = [];
         this.isMobile = window.innerWidth <= 768;
         
-        // FIX: Thêm detection cho category/tag từ URL path
         this.currentCategory = this.getCategoryFromPath();
         this.currentTag = this.getTagFromPath();
     }
 
-    // FIX: Thêm method để lấy category từ URL path
     getCategoryFromPath() {
         const path = window.location.pathname;
         const categoryMatch = path.match(/\/blog\/category\/([^\/]+)/);
         return categoryMatch ? decodeURIComponent(categoryMatch[1]) : null;
     }
 
-    // FIX: Thêm method để lấy tag từ URL path
     getTagFromPath() {
         const path = window.location.pathname;
         const tagMatch = path.match(/\/blog\/tag\/([^\/]+)/);
         return tagMatch ? decodeURIComponent(tagMatch[1]) : null;
     }
 
-    // THÊM METHOD ĐỂ LẤY TRANG HIỆN TẠI
     getCurrentPage() {
         const urlParams = new URLSearchParams(window.location.search);
         return parseInt(urlParams.get('page')) || 1;
@@ -50,7 +45,6 @@ class BlogLoader {
             console.log('Fetching blog index from GitHub...');
             const rawUrl = `https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.blogPath}`;
             
-            // THỬ TRỰC TIẾP TRƯỚC, NẾU LỖI THÌ DÙNG PROXY
             let response;
             try {
                 const headers = { 
@@ -72,7 +66,6 @@ class BlogLoader {
                 }
             } catch (directError) {
                 console.log('Direct GitHub API failed, trying proxy...', directError);
-                // Dùng proxy fallback
                 const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawUrl)}`;
                 response = await fetch(apiUrl + '?t=' + Date.now(), {
                     cache: 'no-store'
@@ -85,9 +78,8 @@ class BlogLoader {
 
             let files = await response.json();
             
-            // XỬ LÝ RESPONSE TỪ PROXY (nếu dùng allorigins.win)
             if (files && files.contents) {
-                files = JSON.parse(files.contents); // allorigins.win wrap response trong contents
+                files = JSON.parse(files.contents);
             }
             
             console.log('Raw files response:', files);
@@ -95,18 +87,16 @@ class BlogLoader {
             const markdownFiles = files.filter(file => 
                 file.name.endsWith('.md') && 
                 file.type === 'file' &&
-                !file.name.startsWith('_') // Bỏ qua file bắt đầu bằng _
+                !file.name.startsWith('_')
             );
             
             console.log(`Found ${markdownFiles.length} markdown files:`, markdownFiles.map(f => f.name));
 
-            // LOAD CONTENT CỦA TẤT CẢ BÀI VIẾT
             const posts = await Promise.all(
                 markdownFiles.map(async (file) => {
                     try {
                         let contentUrl = file.download_url;
                         
-                        // Nếu dùng proxy, cần xử lý URL download
                         if (!contentUrl && file.url) {
                             contentUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(file.url)}`;
                         }
@@ -140,6 +130,103 @@ class BlogLoader {
             console.log('Falling back to default posts');
             return this.getFallbackPosts();
         }
+    }
+
+    // FIXED: Parse YAML array format correctly
+    parseFrontmatter(content) {
+        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+        const match = content.match(frontmatterRegex);
+        if (!match) return { body: content };
+
+        const frontmatter = match[1];
+        const body = match[2];
+        const metadata = {};
+        const lines = frontmatter.split('\n');
+        
+        let currentKey = null;
+        let collectingArray = false;
+        let currentArray = [];
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            
+            // Skip empty lines
+            if (line.trim() === '') continue;
+            
+            // Check if we're currently collecting array items
+            if (collectingArray) {
+                // Check if line is an array item (starts with - or space + -)
+                const arrayItemMatch = line.match(/^\s*-\s+(.+)$/);
+                if (arrayItemMatch) {
+                    currentArray.push(arrayItemMatch[1].trim());
+                    continue;
+                } else {
+                    // End of array, save it
+                    metadata[currentKey] = currentArray;
+                    collectingArray = false;
+                    currentArray = [];
+                    currentKey = null;
+                    // Continue processing this line
+                }
+            }
+            
+            // Check for key-value pair
+            const colonIndex = line.indexOf(':');
+            if (colonIndex > 0) {
+                const key = line.substring(0, colonIndex).trim();
+                let value = line.substring(colonIndex + 1).trim();
+                
+                // Handle YAML array format (key with no immediate value)
+                if (value === '') {
+                    // Check next line to see if it's an array
+                    if (i + 1 < lines.length) {
+                        const nextLine = lines[i + 1];
+                        if (nextLine.match(/^\s*-\s/)) {
+                            // Start collecting array
+                            currentKey = key;
+                            collectingArray = true;
+                            currentArray = [];
+                            continue;
+                        }
+                    }
+                    metadata[key] = value; // Empty string
+                } 
+                // Handle inline array format: tags: [tag1, tag2]
+                else if (value.startsWith('[') && value.endsWith(']')) {
+                    try {
+                        metadata[key] = JSON.parse(value);
+                    } catch (e) {
+                        // Fallback to comma-separated
+                        metadata[key] = value.replace(/[\[\]\"]/g, '').split(',').map(item => item.trim());
+                    }
+                }
+                // Handle quoted strings
+                else if ((value.startsWith('"') && value.endsWith('"')) || 
+                         (value.startsWith("'") && value.endsWith("'"))) {
+                    metadata[key] = value.substring(1, value.length - 1);
+                }
+                // Handle comma-separated lists (for backward compatibility)
+                else if (key === 'tags' || key === 'categories') {
+                    // Check if value looks like a comma-separated list
+                    if (value.includes(',')) {
+                        metadata[key] = value.split(',').map(item => item.trim());
+                    } else {
+                        metadata[key] = [value];
+                    }
+                }
+                // Regular value
+                else {
+                    metadata[key] = value;
+                }
+            }
+        }
+        
+        // If we were collecting an array at the end of the file, save it
+        if (collectingArray && currentKey && currentArray.length > 0) {
+            metadata[currentKey] = currentArray;
+        }
+        
+        return { ...metadata, body };
     }
 
     getFallbackPosts() {
@@ -184,14 +271,13 @@ class BlogLoader {
 
         try {
             const posts = await this.fetchBlogIndex();
-            this.allPosts = posts; // Lưu tất cả bài viết
+            this.allPosts = posts;
             
-            // FIX: Kiểm tra nếu đang ở category/tag page thì load filtered posts
             if (this.currentCategory || this.currentTag) {
                 this.loadFilteredPosts();
             } else {
-                this.renderPaginatedPosts(); // Render có phân trang
-                this.renderPagination(); // Render pagination controls
+                this.renderPaginatedPosts();
+                this.renderPagination();
             }
         } catch (error) {
             console.error('Error loading blog posts:', error);
@@ -205,7 +291,6 @@ class BlogLoader {
         }
     }
 
-    // THÊM METHOD RENDER CÓ PAGINATION
     renderPaginatedPosts() {
         if (!this.blogContainer) return;
         
@@ -248,13 +333,13 @@ class BlogLoader {
                     <p class="card-text text-muted mb-3">${post.description || ''}</p>
                     ${post.tags && post.tags.length ? `
                         <div class="mb-3">
-                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
+                            ${this.getPostTags(post)
                                 .map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2">${tag}</a>`).join('')}
                         </div>
                     ` : ''}
                     ${post.categories && post.categories.length ? `
                         <div class="mb-3">
-                            ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
+                            ${this.getPostCategories(post)
                                 .map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2">${cat}</a>`).join('')}
                         </div>
                     ` : ''}
@@ -268,11 +353,9 @@ class BlogLoader {
         this.blogContainer.innerHTML = postsHTML;
     }
 
-    // THÊM METHOD RENDER PAGINATION CONTROLS
     renderPagination() {
         const totalPages = Math.ceil(this.allPosts.length / this.postsPerPage);
         
-        // Ẩn pagination nếu chỉ có 1 trang
         const paginationElement = document.getElementById('blog-pagination');
         if (!paginationElement || totalPages <= 1) {
             if (paginationElement) {
@@ -283,7 +366,6 @@ class BlogLoader {
 
         let paginationHTML = '';
 
-        // Previous button
         if (this.currentPage > 1) {
             paginationHTML += `
                 <li class="page-item">
@@ -302,7 +384,6 @@ class BlogLoader {
             `;
         }
 
-        // Page numbers - hiển thị tối đa 5 trang
         const startPage = Math.max(1, this.currentPage - 2);
         const endPage = Math.min(totalPages, startPage + 4);
 
@@ -315,7 +396,6 @@ class BlogLoader {
             `;
         }
 
-        // Next button
         if (this.currentPage < totalPages) {
             paginationHTML += `
                 <li class="page-item">
@@ -338,7 +418,6 @@ class BlogLoader {
         paginationElement.style.display = 'flex';
     }
 
-    // THÊM METHOD LỌC BÀI VIẾT THEO CATEGORY/TAG
     filterPostsByCategory(category) {
         return this.allPosts.filter(post => {
             const categories = this.getPostCategories(post);
@@ -358,20 +437,41 @@ class BlogLoader {
     }
 
     getPostCategories(post) {
-        if (post.categories) {
-            return Array.isArray(post.categories) ? post.categories : [post.categories];
+        if (!post.categories) return [];
+        
+        if (Array.isArray(post.categories)) {
+            return post.categories;
         }
+        
+        // Handle string categories
+        if (typeof post.categories === 'string') {
+            if (post.categories.includes(',')) {
+                return post.categories.split(',').map(item => item.trim());
+            }
+            return [post.categories];
+        }
+        
         return [];
     }
 
     getPostTags(post) {
-        if (post.tags) {
-            return Array.isArray(post.tags) ? post.tags : [post.tags];
+        if (!post.tags) return [];
+        
+        if (Array.isArray(post.tags)) {
+            return post.tags;
         }
+        
+        // Handle string tags
+        if (typeof post.tags === 'string') {
+            if (post.tags.includes(',')) {
+                return post.tags.split(',').map(item => item.trim());
+            }
+            return [post.tags];
+        }
+        
         return [];
     }
 
-    // METHOD XỬ LÝ CATEGORY/TAG PAGES - FIXED VERSION
     async loadFilteredPosts() {
         if (!this.blogContainer) return;
 
@@ -391,9 +491,7 @@ class BlogLoader {
             let filteredPosts = [];
             let pageTitle = '';
             let pageDescription = '';
-            let filterType = '';
 
-            // FIX: Sử dụng cả path-based và query parameter
             const urlParams = new URLSearchParams(window.location.search);
             const category = this.currentCategory || urlParams.get('category');
             const tag = this.currentTag || urlParams.get('tag');
@@ -402,25 +500,20 @@ class BlogLoader {
                 filteredPosts = this.filterPostsByCategory(category);
                 pageTitle = `Category: ${category}`;
                 pageDescription = `Blog posts in ${category} category`;
-                filterType = 'category';
             } else if (tag) {
                 filteredPosts = this.filterPostsByTag(tag);
                 pageTitle = `Tag: ${tag}`;
                 pageDescription = `Blog posts tagged with ${tag}`;
-                filterType = 'tag';
             }
 
-            // UPDATE PAGE TITLE
             document.title = `${pageTitle} - ${this.siteConfig.name}`;
             
-            // UPDATE META DESCRIPTION
             const metaDescription = document.querySelector('meta[name="description"]');
             if (metaDescription) {
                 metaDescription.setAttribute('content', pageDescription);
             }
             
-            // RENDER FILTERED POSTS
-            this.renderFilteredPosts(filteredPosts, pageTitle, pageDescription, filterType);
+            this.renderFilteredPosts(filteredPosts, pageTitle, pageDescription);
             
         } catch (error) {
             console.error('Error loading filtered posts:', error);
@@ -434,8 +527,7 @@ class BlogLoader {
         }
     }
 
-    // RENDER FILTERED POSTS - IMPROVED VERSION
-    renderFilteredPosts(posts, title, description, filterType) {
+    renderFilteredPosts(posts, title, description) {
         if (!this.blogContainer) return;
 
         if (posts.length === 0) {
@@ -510,7 +602,6 @@ class BlogLoader {
 
         this.blogContainer.innerHTML = headerHTML + postsHTML;
         
-        // ẨN PAGINATION MẶC ĐỊNH VÌ FILTERED POSTS KHÔNG CẦN PAGINATION
         const paginationElement = document.getElementById('blog-pagination');
         if (paginationElement) {
             paginationElement.style.display = 'none';
@@ -568,177 +659,21 @@ class BlogLoader {
         this.renderSinglePost(post);
     }
 
-    parseFrontmatter(content) {
-        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-        const match = content.match(frontmatterRegex);
-        if (!match) return { body: content };
-
-        const frontmatter = match[1];
-        const body = match[2];
-        const metadata = {};
-        frontmatter.split('\n').forEach(line => {
-            const colonIndex = line.indexOf(':');
-            if (colonIndex > 0) {
-                const key = line.substring(0, colonIndex).trim();
-                let value = line.substring(colonIndex + 1).trim();
-                if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
-                    value = value.substring(1, value.length - 1);
-                }
-                if (key === 'tags' || key === 'categories') {
-                    try {
-                        value = JSON.parse(value);
-                    } catch {
-                        value = value.split(',').map(item => item.trim()).filter(item => item);
-                    }
-                }
-                metadata[key] = value;
-            }
-        });
-        return { ...metadata, body };
-    }
-
-    // Schema
-    detectSchemaFromMarkdown(content, metadata) {
-        const schemas = [];
-        
-        // --- BlogPosting ( Person + Organization) ---
-        const blogPosting = {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": metadata.title,
-            "description": metadata.description,
-            "datePublished": metadata.date ? new Date(metadata.date).toISOString() : new Date().toISOString(),
-            "dateModified": metadata.updated || metadata.date ? new Date(metadata.updated || metadata.date).toISOString() : new Date().toISOString(),
-            "author": { "@type": "Person", "name": metadata.author || "Alda Hub Team" },
-            "image": metadata.featured_image ? {
-                "@type": "ImageObject",
-                "url": metadata.featured_image,
-                "width": 1200,
-                "height": 630
-            } : metadata.featured_image || "",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": window.location.href
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Alda Hub",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://aldahub.com/images/logo.png",
-                    "width": 512,
-                    "height": 512
-                }
-            },
-            "keywords": metadata.tags || []
-        };
-        schemas.push(blogPosting);
-        
-        // --- BreadcrumbList ---
-        const breadcrumb = {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://aldahub.com/"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Blog",
-                    "item": "https://aldahub.com/blog.html"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": metadata.title,
-                    "item": window.location.href
-                }
-            ]
-        };
-        schemas.push(breadcrumb);
-        
-        // --- Detect FAQPage ---
-        if (/##\s*FAQ/i.test(content)) {
-            const faqItems = [];
-            const faqRegex = /###\s*(.+?)\n([\s\S]*?)(?=###|$)/g;
-            let match;
-            while ((match = faqRegex.exec(content)) !== null) {
-                const question = match[1].trim();
-                const answer = match[2].trim();
-                if (question && answer) {
-                    faqItems.push({
-                        "@type": "Question",
-                        "name": question,
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": answer
-                        }
-                    });
-                }
-            }
-            if (faqItems.length > 0) {
-                schemas.push({
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    "mainEntity": faqItems
-                });
-            }
-        }
-        
-        // --- Detect HowTo ---
-        if (/##\s*(How to|How-to)/i.test(content)) {
-            const steps = [];
-            const stepRegex = /(?:^|\n)(?:\d+\.|-|\*)\s+(.+)/g;
-            let stepMatch;
-            while ((stepMatch = stepRegex.exec(content)) !== null) {
-                const stepText = stepMatch[1].trim();
-                if (stepText.length > 5) { // Only meaningful steps
-                    steps.push({
-                        "@type": "HowToStep",
-                        "text": stepText
-                    });
-                }
-            }
-            if (steps.length > 0) {
-                schemas.push({
-                    "@context": "https://schema.org",
-                    "@type": "HowTo",
-                    "name": metadata.title,
-                    "description": metadata.description,
-                    "step": steps
-                });
-            }
-        }
-        
-        // --- Render all schema to <head> with error handling ---
-        schemas.forEach((schema, index) => {
-            try {
-                const script = document.createElement("script");
-                script.type = "application/ld+json";
-                script.text = JSON.stringify(schema, null, 2);
-                document.head.appendChild(script);
-            } catch (error) {
-                console.warn('Error rendering schema:', error);
-            }
-        });
-    }
-
+    // FIXED: Render tags correctly in single post page
     renderSinglePost(post) {
         if (!this.postContainer) return;
 
         document.title = `${post.title || 'Untitled'} - ${this.siteConfig.name}`;
         const titleEl = document.getElementById('post-title');
         const descriptionEl = document.getElementById('post-description');
-        const breadcrumbEl = document.getElementById('breadcrumb-title');
         if (titleEl) titleEl.textContent = post.title || 'Untitled';
         if (descriptionEl) descriptionEl.setAttribute('content', post.description || '');
-        if (breadcrumbEl) breadcrumbEl.textContent = post.title || 'Untitled';
 
         const htmlContent = window.marked ? window.marked.parse(post.body || '') : post.body;
+
+        // Get tags and categories as arrays
+        const tags = this.getPostTags(post);
+        const categories = this.getPostCategories(post);
 
         this.postContainer.innerHTML = `
             <div class="mb-4">
@@ -759,10 +694,10 @@ class BlogLoader {
                         <iconify-icon icon="bi:person" class="me-1"></iconify-icon>
                         ${post.author || this.siteConfig.defaultAuthor}
                     </small>
-                    ${post.tags && post.tags.length ? `
+                    ${tags.length > 0 ? `
                         <small>
                             <iconify-icon icon="bi:tags" class="me-1"></iconify-icon>
-                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim())).slice(0, 2).join(', ')}
+                            ${tags.slice(0, 2).join(', ')}
                         </small>
                     ` : ''}
                 </div>
@@ -778,21 +713,19 @@ class BlogLoader {
                 <div class="blog-content post-content fs-5 lh-lg" id="post-content">
                     ${htmlContent}
                 </div>
-                ${post.tags && post.tags.length ? `
+                ${tags.length > 0 ? `
                     <div class="mt-5 pt-4 border-top">
                         <h6 class="text-muted mb-3">Tags:</h6>
                         <div>
-                            ${(Array.isArray(post.tags) ? post.tags : post.tags.split(',').map(tag => tag.trim()))
-                                .map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
+                            ${tags.map(tag => `<a href="/blog?tag=${encodeURIComponent(tag.toLowerCase())}" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">${tag}</a>`).join('')}
                         </div>
                     </div>
                 ` : ''}
-                ${post.categories && post.categories.length ? `
+                ${categories.length > 0 ? `
                     <div class="mt-5 pt-4 border-top">
                         <h6 class="text-muted mb-3">Categories:</h6>
                         <div>
-                            ${(Array.isArray(post.categories) ? post.categories : post.categories.split(',').map(cat => cat.trim()))
-                                .map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2 mb-2 p-2">${cat}</a>`).join('')}
+                            ${categories.map(cat => `<a href="/blog?category=${encodeURIComponent(cat.toLowerCase())}" class="badge bg-primary text-white text-decoration-none me-2 mb-2 p-2">${cat}</a>`).join('')}
                         </div>
                     </div>
                 ` : ''}
@@ -832,6 +765,130 @@ class BlogLoader {
         }
     }
 
+    detectSchemaFromMarkdown(content, metadata) {
+        const schemas = [];
+        
+        const blogPosting = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": metadata.title,
+            "description": metadata.description,
+            "datePublished": metadata.date ? new Date(metadata.date).toISOString() : new Date().toISOString(),
+            "dateModified": metadata.updated || metadata.date ? new Date(metadata.updated || metadata.date).toISOString() : new Date().toISOString(),
+            "author": { "@type": "Person", "name": metadata.author || "Alda Hub Team" },
+            "image": metadata.featured_image ? {
+                "@type": "ImageObject",
+                "url": metadata.featured_image,
+                "width": 1200,
+                "height": 630
+            } : metadata.featured_image || "",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": window.location.href
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Alda Hub",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://aldahub.com/images/logo.png",
+                    "width": 512,
+                    "height": 512
+                }
+            },
+            "keywords": this.getPostTags(metadata) || []
+        };
+        schemas.push(blogPosting);
+        
+        const breadcrumb = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://aldahub.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Blog",
+                    "item": "https://aldahub.com/blog.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": metadata.title,
+                    "item": window.location.href
+                }
+            ]
+        };
+        schemas.push(breadcrumb);
+        
+        if (/##\s*FAQ/i.test(content)) {
+            const faqItems = [];
+            const faqRegex = /###\s*(.+?)\n([\s\S]*?)(?=###|$)/g;
+            let match;
+            while ((match = faqRegex.exec(content)) !== null) {
+                const question = match[1].trim();
+                const answer = match[2].trim();
+                if (question && answer) {
+                    faqItems.push({
+                        "@type": "Question",
+                        "name": question,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": answer
+                        }
+                    });
+                }
+            }
+            if (faqItems.length > 0) {
+                schemas.push({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": faqItems
+                });
+            }
+        }
+        
+        if (/##\s*(How to|How-to)/i.test(content)) {
+            const steps = [];
+            const stepRegex = /(?:^|\n)(?:\d+\.|-|\*)\s+(.+)/g;
+            let stepMatch;
+            while ((stepMatch = stepRegex.exec(content)) !== null) {
+                const stepText = stepMatch[1].trim();
+                if (stepText.length > 5) {
+                    steps.push({
+                        "@type": "HowToStep",
+                        "text": stepText
+                    });
+                }
+            }
+            if (steps.length > 0) {
+                schemas.push({
+                    "@context": "https://schema.org",
+                    "@type": "HowTo",
+                    "name": metadata.title,
+                    "description": metadata.description,
+                    "step": steps
+                });
+            }
+        }
+        
+        schemas.forEach((schema, index) => {
+            try {
+                const script = document.createElement("script");
+                script.type = "application/ld+json";
+                script.text = JSON.stringify(schema, null, 2);
+                document.head.appendChild(script);
+            } catch (error) {
+                console.warn('Error rendering schema:', error);
+            }
+        });
+    }
+
     formatDate(dateString) {
         try {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -855,9 +912,8 @@ class BlogLoader {
     }
 
     initialize() {
-        // FIX: Sử dụng detection mới từ URL path
         if (this.blogContainer) {
-            this.loadBlogPosts(); // Luôn gọi loadBlogPosts, nó sẽ tự detect category/tag
+            this.loadBlogPosts();
             return;
         }
         
