@@ -4,7 +4,7 @@ date: 2025-10-22T23:24:00.000+07:00
 author: Côme
 description: Learn how to build a data-driven SEO strategy with clear goals,
   tools, KPIs, testing and scaling for measurable organic growth.
-featured_image: /images/blog/how-to-build-a-data-driven-seo-strategy.jpg
+featured_image: /images/blog/data-driven-seo-strategy.jpg
 tags:
   - Seo Strategy
   - Data-driven Seo Strategy
