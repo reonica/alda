@@ -204,7 +204,166 @@ class BlogLoader {
             `;
         }
     }
+    // add tags to blog post page
+    async function loadBlogPost() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id') || urlParams.get('slug');
+    
+    if (!postId) {
+        console.error('No post ID or slug found in URL');
+        return;
+    }
 
+    try {
+        // Fetch post data
+        const response = await fetch(`${BLOG_CONFIG.apiUrl}/${postId}?populate=*`);
+        const { data: postData } = await response.json();
+        
+        // Update page metadata
+        document.getElementById('post-title').textContent = postData.attributes.title;
+        document.getElementById('post-description').content = postData.attributes.excerpt;
+        
+        // Render post content with tags
+        renderBlogPost(postData);
+    } catch (error) {
+        console.error('Error loading blog post:', error);
+        document.getElementById('blog-post').innerHTML = `
+        <div class="alert alert-danger">
+            <h3>Error loading post</h3>
+            <p>Please try again later.</p>
+        </div>
+        `;
+    }
+    }
+
+    function renderBlogPost(postData) {
+    const postContainer = document.getElementById('blog-post');
+    const attributes = postData.attributes;
+    
+    // Format date
+    const publishDate = new Date(attributes.publishedAt || attributes.createdAt);
+    const formattedDate = publishDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    // Check if tags exist
+    let tagsHTML = '';
+    if (attributes.tags && attributes.tags.data && attributes.tags.data.length > 0) {
+        tagsHTML = `
+        <div class="post-tags mt-4">
+            <h5 class="mb-3">Tags:</h5>
+            <div class="d-flex flex-wrap gap-2">
+            ${attributes.tags.data.map(tag => `
+                <a href="/blog?tag=${tag.attributes.slug}" class="tag badge bg-primary text-decoration-none">
+                ${tag.attributes.name}
+                </a>
+            `).join('')}
+            </div>
+        </div>
+        `;
+    }
+    
+    // Render post
+    postContainer.innerHTML = `
+        <header class="post-header mb-5">
+        <h1 class="post-title mb-3">${attributes.title}</h1>
+        <div class="post-meta text-muted mb-4">
+            <span class="post-date me-3">
+            <iconify-icon icon="mdi:calendar" class="me-1"></iconify-icon>
+            ${formattedDate}
+            </span>
+            ${attributes.author ? `
+            <span class="post-author me-3">
+                <iconify-icon icon="mdi:account" class="me-1"></iconify-icon>
+                ${attributes.author}
+            </span>
+            ` : ''}
+            ${attributes.reading_time ? `
+            <span class="post-reading-time">
+                <iconify-icon icon="mdi:clock-outline" class="me-1"></iconify-icon>
+                ${attributes.reading_time} min read
+            </span>
+            ` : ''}
+        </div>
+        ${attributes.featured_image?.data ? `
+            <div class="post-featured-image mb-4">
+            <img src="${attributes.featured_image.data.attributes.url}" 
+                alt="${attributes.title}" 
+                class="img-fluid rounded">
+            ${attributes.image_caption ? `
+                <p class="text-center text-muted mt-2"><small>${attributes.image_caption}</small></p>
+            ` : ''}
+            </div>
+        ` : ''}
+        </header>
+        
+        <div class="post-content mb-5">
+        ${marked.parse(attributes.content || '')}
+        </div>
+        
+        ${tagsHTML}
+        
+        <div class="post-footer mt-5 pt-4 border-top">
+        <div class="row">
+            <div class="col-md-6">
+            <a href="/blog" class="btn btn-outline-primary">
+                <iconify-icon icon="mdi:arrow-left" class="me-2"></iconify-icon>
+                Back to Blog
+            </a>
+            </div>
+            <div class="col-md-6 text-md-end">
+            <div class="share-buttons">
+                <span class="me-2">Share:</span>
+                <button class="btn btn-sm btn-outline-secondary me-2 share-btn" data-platform="facebook">
+                <iconify-icon icon="ri:facebook-fill"></iconify-icon>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary me-2 share-btn" data-platform="twitter">
+                <iconify-icon icon="ri:twitter-x-fill"></iconify-icon>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary share-btn" data-platform="linkedin">
+                <iconify-icon icon="ri:linkedin-fill"></iconify-icon>
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
+    `;
+    
+    // Add share functionality
+    addShareFunctionality();
+    }
+
+    function addShareFunctionality() {
+    document.querySelectorAll('.share-btn').forEach(button => {
+        button.addEventListener('click', function() {
+        const platform = this.dataset.platform;
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        
+        let shareUrl;
+        switch(platform) {
+            case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            break;
+            case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+            break;
+            case 'linkedin':
+            shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`;
+            break;
+        }
+        
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        });
+    });
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+    loadBlogPost();
+    });
     // THÊM METHOD RENDER CÓ PAGINATION
     renderPaginatedPosts() {
         if (!this.blogContainer) return;
