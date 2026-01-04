@@ -1,6 +1,6 @@
 ---
 title: What Is Media Buying?
-date: 2026-11-11T21:42:00.000+07:00
+date: 2025-11-11T22:51:00.000+07:00
 author: Côme
 description: Master media buying with our comprehensive guide. Learn strategies,
   explore top platforms, and discover expert tips to maximize your ad spend ROI
