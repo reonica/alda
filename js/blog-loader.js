@@ -272,6 +272,7 @@ class BlogLoader {
         try {
             const posts = await this.fetchBlogIndex();
             this.allPosts = posts;
+            this.updateRecentPosts();
             
             if (this.currentCategory || this.currentTag) {
                 this.loadFilteredPosts();
@@ -487,6 +488,8 @@ class BlogLoader {
         try {
             const posts = await this.fetchBlogIndex();
             this.allPosts = posts;
+
+            this.updateRecentPosts();
 
             let filteredPosts = [];
             let pageTitle = '';
@@ -934,6 +937,65 @@ class BlogLoader {
         }
     }
 }
+
+    // NEW METHOD: Render recent posts in sidebar
+    updateRecentPosts() {
+        const container = document.getElementById('recent-posts-list');
+        if (!container) {
+            console.log('Recent posts container not found');
+            return;
+        }
+        
+        if (!this.allPosts || this.allPosts.length === 0) {
+            container.innerHTML = '<p class="text-muted">No recent posts available.</p>';
+            return;
+        }
+        
+        // Sort by date (newest first) and take 5
+        const recentPosts = [...this.allPosts]
+            .sort((a, b) => new Date(b.date || '1970-01-01') - new Date(a.date || '1970-01-01'))
+            .slice(0, 5);
+        
+        if (recentPosts.length === 0) {
+            container.innerHTML = '<p class="text-muted">No recent posts available.</p>';
+            return;
+        }
+        
+        let html = '';
+        
+        recentPosts.forEach(post => {
+            const date = this.formatDate(post.date || '1970-01-01');
+            const thumbnail = post.featured_image || 
+                             post.featuredImage || 
+                             post.image || 
+                             '/images/blog/default-thumbnail.jpg';
+            const slug = post.slug || post.filename?.replace('.md', '') || '';
+            const url = `/${slug}`;
+            
+            html += `
+                <div class="recent-post-item mb-3">
+                    <a href="${url}" class="d-flex align-items-center text-decoration-none">
+                        <div class="flex-shrink-0">
+                            <img src="${thumbnail}" 
+                                 alt="${post.title || 'Blog post'}" 
+                                 width="60" 
+                                 height="60"
+                                 class="img-fluid rounded"
+                                 loading="lazy"
+                                 onerror="this.src='/images/blog/default-thumbnail.jpg'">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0" style="font-size: 0.9rem; line-height: 1.3;">${post.title || 'Untitled'}</h6>
+                            <small class="text-muted">${date}</small>
+                        </div>
+                    </a>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+        console.log('Recent posts sidebar updated with', recentPosts.length, 'posts');
+    }
 
 // Global functions
 window.loadSinglePost = function(slug) {
