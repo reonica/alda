@@ -914,31 +914,7 @@ class BlogLoader {
         return slug.replace(/[-_]+/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase());
     }
 
-    initialize() {
-        if (this.blogContainer) {
-            this.loadBlogPosts();
-            return;
-        }
-        
-        if (this.postContainer) {
-            const params = new URLSearchParams(window.location.search);
-            let slug = params.get('post') || window.location.pathname.split('/').filter(Boolean).pop();
-            if (slug && !/\.html?$/i.test(slug)) {
-                this.loadSinglePost(slug);
-            } else {
-                this.postContainer.innerHTML = `
-                    <div class="alert alert-warning text-center">
-                        <h5>Missing slug</h5>
-                        <p>We couldn't detect the post slug from this URL.</p>
-                        <a href="/blog.html" class="btn btn-outline-primary">← Back to Blog</a>
-                    </div>
-                `;
-            }
-        }
-    }
-}
-
-    // NEW METHOD: Render recent posts in sidebar
+    // NEW METHOD: Render recent posts in sidebar - MOVED INSIDE CLASS
     updateRecentPosts() {
         const container = document.getElementById('recent-posts-list');
         if (!container) {
@@ -996,6 +972,30 @@ class BlogLoader {
         container.innerHTML = html;
         console.log('Recent posts sidebar updated with', recentPosts.length, 'posts');
     }
+
+    initialize() {
+        if (this.blogContainer) {
+            this.loadBlogPosts();
+            return;
+        }
+        
+        if (this.postContainer) {
+            const params = new URLSearchParams(window.location.search);
+            let slug = params.get('post') || window.location.pathname.split('/').filter(Boolean).pop();
+            if (slug && !/\.html?$/i.test(slug)) {
+                this.loadSinglePost(slug);
+            } else {
+                this.postContainer.innerHTML = `
+                    <div class="alert alert-warning text-center">
+                        <h5>Missing slug</h5>
+                        <p>We couldn't detect the post slug from this URL.</p>
+                        <a href="/blog.html" class="btn btn-outline-primary">← Back to Blog</a>
+                    </div>
+                `;
+            }
+        }
+    }
+}
 
 // Global functions
 window.loadSinglePost = function(slug) {
