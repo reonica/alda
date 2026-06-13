@@ -182,6 +182,7 @@
       .roadmap-hero { padding-top: 7rem; }
       .trend-chip { min-width: 100%; border-radius: 18px; }
     }
+    /* Container chính cho tất cả các nút */
     .social-buttons-container {
       position: fixed;
       bottom: 20px;
@@ -192,6 +193,7 @@
       gap: 12px;
     }
 
+    /* Style chung cho tất cả các nút (kể cả nút chính, nút mạng xã hội và back-to-top) */
     .social-button,
     .back-to-top {
       width: 48px;
@@ -208,42 +210,55 @@
       color: #333;
     }
 
+    /* Hiệu ứng hover cho tất cả nút */
     .social-button:hover,
     .back-to-top:hover {
       transform: scale(1.05);
       background-color: #f5f5f5;
     }
 
+    /* Màu riêng cho nút WhatsApp */
     .whatsapp {
       background-color: #25D366;
       color: white;
       border: none;
     }
-
     .whatsapp:hover {
       background-color: #20b859;
     }
 
+    /* Màu riêng cho nút chính (share) */
     .social-main {
       background-color: #191919;
       color: white;
       border: none;
     }
 
-    .social-dropdown {
+    /* Wrapper chứa nút chính và dropdown menu */
+    .social-dropdown-wrapper {
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      align-items: center;
+    }
+
+    /* Dropdown menu (chứa Facebook, Twitter, LinkedIn) - chỉ định nghĩa 1 lần */
+    .social-dropdown {
       position: absolute;
       bottom: 100%;
       right: 0;
       margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      z-index: 1050;
     }
 
-    .social-buttons-container:hover .social-dropdown {
+    /* Chỉ hiển thị dropdown khi hover vào wrapper */
+    .social-dropdown-wrapper:hover .social-dropdown {
       opacity: 1;
       visibility: visible;
       margin-bottom: 8px;
