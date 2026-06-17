@@ -1532,6 +1532,60 @@
       }
     });
   });
+  // Khi click vào sidebar link → tự động mở section cha và topic tương ứng
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-links a');
+    const allSections = document.querySelectorAll('.section-collapsible');
+    
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href'); // ví dụ: #seo-fundamentals-1-introduction-to-seo
+        if (!targetId) return;
+        
+        // Tìm topic card cần mở
+        const targetTopic = document.querySelector(targetId);
+        if (!targetTopic) return;
+        
+        // Tìm section cha (section-collapsible) chứa topic này
+        const parentSection = targetTopic.closest('.section-collapsible');
+        if (!parentSection) return;
+        
+        // Đóng TẤT CẢ các section khác
+        allSections.forEach(section => {
+          if (section !== parentSection) {
+            section.classList.add('collapsed');
+            const icon = section.querySelector('.toggle-icon');
+            if (icon) icon.classList.remove('open');
+          }
+        });
+        
+        // Mở section cha nếu đang đóng
+        if (parentSection.classList.contains('collapsed')) {
+          parentSection.classList.remove('collapsed');
+          const icon = parentSection.querySelector('.toggle-icon');
+          if (icon) icon.classList.add('open');
+        }
+        
+        // Đóng tất cả topic khác
+        const allTopics = document.querySelectorAll('.topic-card');
+        allTopics.forEach(topic => {
+          if (topic !== targetTopic && topic.open) {
+            topic.open = false;
+          }
+        });
+        
+        // Mở topic được chọn
+        if (!targetTopic.open) {
+          targetTopic.open = true;
+        }
+        
+        // Đảm bảo scroll đến đúng vị trí (sau khi section mở)
+        setTimeout(() => {
+          targetTopic.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      });
+    });
+  });
 </script>
 </body>
 </html>
