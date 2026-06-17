@@ -22,7 +22,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chocolat/0.8.0/css/chocolat.min.css">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 
-  <!-- additional roadmap-specific styles (consistent with about-us) -->
   <style>
     :root{
       --roadmap-surface:#ffffff;
@@ -164,6 +163,65 @@
     .empty-state { display:none; text-align:center; padding: 3rem 1rem; background:#fff; border:1px dashed var(--roadmap-border); border-radius: var(--roadmap-radius);}
     .floating-help { position: fixed; inset: auto 20px 20px auto; z-index: 999; display:flex; flex-direction:column; gap:.75rem; }
     .roadmap-mobile-sidebar { display:none; }
+
+    /* Styles cho section-collapsible */
+    .section-collapsible {
+      margin-bottom: 2rem;
+      border: 1px solid var(--roadmap-border);
+      border-radius: var(--roadmap-radius);
+      background: #fff;
+      box-shadow: var(--roadmap-shadow);
+      overflow: hidden;
+    }
+    .section-collapsible .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      cursor: pointer;
+      background: #fff;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .section-collapsible .section-header:hover {
+      background: #f8f8f8;
+    }
+    .section-collapsible .section-header .section-heading {
+      margin-bottom: 0;
+      font-size: clamp(1.3rem, 2vw, 2rem);
+    }
+    .section-collapsible .section-header .section-sub {
+      margin-bottom: 0;
+      color: var(--roadmap-muted);
+      font-size: 0.95rem;
+      max-width: 80ch;
+    }
+    .section-collapsible .section-header .toggle-icon {
+      font-size: 1.5rem;
+      color: var(--roadmap-muted);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .section-collapsible .section-header .toggle-icon.open {
+      transform: rotate(180deg);
+    }
+    .section-collapsible .section-body {
+      padding: 0 1.5rem 1.5rem;
+    }
+    .section-collapsible .section-body .hotbox {
+      margin-top: 0.5rem;
+    }
+    .section-collapsible.collapsed .section-body {
+      display: none;
+    }
+    .section-collapsible .section-body {
+      display: block;
+    }
+    .section-collapsible.collapsed .section-body {
+      display: none;
+    }
+
     @media (max-width: 991px) {
       .layout-grid { grid-template-columns: 1fr; }
       .roadmap-sidebar { position: static; max-height: none; }
@@ -176,8 +234,18 @@
     @media (max-width: 768px) {
       .roadmap-hero { padding-top: 7rem; }
       .trend-chip { min-width: 100%; border-radius: 18px; }
+      .section-collapsible .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      .section-collapsible .section-header .toggle-icon {
+        align-self: flex-end;
+        margin-left: 0;
+      }
     }
-    /* Container chính cho tất cả các nút */
+
+    /* Social buttons */
     .social-buttons-container {
       position: fixed;
       bottom: 20px;
@@ -187,8 +255,6 @@
       flex-direction: column;
       gap: 12px;
     }
-
-    /* Style chung cho tất cả các nút (kể cả nút chính, nút mạng xã hội và back-to-top) */
     .social-button,
     .back-to-top {
       width: 48px;
@@ -204,15 +270,11 @@
       border: 1px solid #eaeaea;
       color: #333;
     }
-
-    /* Hiệu ứng hover cho tất cả nút */
     .social-button:hover,
     .back-to-top:hover {
       transform: scale(1.05);
       background-color: #f5f5f5;
     }
-
-    /* Màu riêng cho nút WhatsApp */
     .whatsapp {
       background-color: #25D366;
       color: white;
@@ -221,23 +283,17 @@
     .whatsapp:hover {
       background-color: #20b859;
     }
-
-    /* Màu riêng cho nút chính (share) */
     .social-main {
       background-color: #191919;
       color: white;
       border: none;
     }
-
-    /* Wrapper chứa nút chính và dropdown menu */
     .social-dropdown-wrapper {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
-    /* Dropdown menu (chứa Facebook, Twitter, LinkedIn) - chỉ định nghĩa 1 lần */
     .social-dropdown {
       position: absolute;
       bottom: 100%;
@@ -251,8 +307,6 @@
       transition: all 0.2s ease;
       z-index: 1050;
     }
-
-    /* Chỉ hiển thị dropdown khi hover vào wrapper */
     .social-dropdown-wrapper:hover .social-dropdown {
       opacity: 1;
       visibility: visible;
@@ -262,7 +316,7 @@
 </head>
 <body>
 
-<!-- SVG Symbols (same as about-us) -->
+<!-- SVG Symbols -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <defs>
     <symbol id="arrow-right" viewBox="0 0 24 24"><path fill="currentColor" d="M17.92 11.62a1 1 0 0 0-.21-.33l-5-5a1 1 0 0 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76Z"/></symbol>
@@ -275,11 +329,11 @@
   <div class="preloader"></div>
 </div>
 
-<!-- Navbar (same as homepage / about-us) -->
+<!-- Navbar -->
 <div data-include="navbar.html"></div>
 
 <main>
-  <!-- Hero section (similar style) -->
+  <!-- Hero section -->
   <section class="roadmap-hero">
     <div class="container">
       <div class="hero-card">
@@ -353,574 +407,605 @@
               <li><a href="#execute-an-seo-process-8-common-seo-execution-mistakes-to-avoid" data-target="execute-an-seo-process-8-common-seo-execution-mistakes-to-avoid">Common SEO Execution Mistakes <small>5</small></a></li>
             </ul></div>
           </div>
-          </aside>
+        </aside>
 
         <!-- main content -->
         <div class="roadmap-content">
-          <!-- SEO Fundamentals Section (unchanged, perfectly working) -->
-          <section id="seo-fundamentals">
-            <div class="mb-4">
+          <!-- SECTION 1: SEO Fundamentals - collapsible -->
+          <div class="section-collapsible" id="seo-fundamentals-section">
+            <div class="section-header" data-toggle="section">
+              <div>
                 <div class="section-heading">SEO Fundamentals</div>
                 <p class="section-sub">Start with the core mechanisms behind search, keyword discovery, content optimization, technical foundations, and link acquisition.</p>
+              </div>
+              <span class="toggle-icon">▼</span>
             </div>
-            <div class="hotbox mb-4">
+            <div class="section-body">
+              <div class="hotbox mb-4">
                 <div class="fw-bold mb-2">Hot trend focus inside this path</div>
                 <div class="d-flex flex-wrap gap-2">
-                    <span class="trend-pill">AI SEO</span>
-                    <span class="trend-pill">Entity SEO</span>
-                    <span class="trend-pill">Topical authority</span>
-                    <span class="trend-pill">Conversational keywords</span>
-                    <span class="trend-pill">Zero-click search</span>
+                  <span class="trend-pill">AI SEO</span>
+                  <span class="trend-pill">Entity SEO</span>
+                  <span class="trend-pill">Topical authority</span>
+                  <span class="trend-pill">Conversational keywords</span>
+                  <span class="trend-pill">Zero-click search</span>
                 </div>
-            </div>
+              </div>
 
-            <!-- Topic 1: Introduction to SEO -->
-            <details class="topic-card" id="seo-fundamentals-1-introduction-to-seo" data-search="seo fundamentals introduction to seo in-depth guide to how google search works google search engine optimization starter guide google search essentials beginner’s guide to seo moz ahrefs contentking semrush">
+              <!-- Topic 1: Introduction to SEO -->
+              <details class="topic-card" id="seo-fundamentals-1-introduction-to-seo" data-search="seo fundamentals introduction to seo in-depth guide to how google search works google search engine optimization starter guide google search essentials beginner’s guide to seo moz ahrefs contentking semrush">
                 <summary class="topic-summary"><span>Introduction to SEO</span><span class="topic-meta">8 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">In-depth guide to how Google Search works</div>
-                                <div class="resource-badges"><span class="source-pill">Google</span></div>
-                            </div>
-                            <a class="resource-link" href="https://developers.google.com/search/docs/fundamentals/how-search-works?hl=vi" target="_blank">https://developers.google.com/search/docs/fundamentals/how-search-works?hl=vi</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Search Engine Optimization (SEO) Starter Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Google</span></div>
-                            </div>
-                            <a class="resource-link" href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=vi" target="_blank">https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=vi</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Google Search Essentials</div>
-                                <div class="resource-badges"><span class="source-pill">Google</span></div>
-                            </div>
-                            <a class="resource-link" href="https://developers.google.com/search/docs/essentials?hl=vi" target="_blank">https://developers.google.com/search/docs/essentials?hl=vi</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Beginner’s Guide to SEO (Moz)</div>
-                                <div class="resource-badges"><span class="source-pill">Moz</span></div>
-                            </div>
-                            <a class="resource-link" href="https://moz.com/beginners-guide-to-seo" target="_blank">https://moz.com/beginners-guide-to-seo</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Basics: Beginner’s Guide to SEO Success</div>
-                                <div class="resource-badges"><span class="source-pill">Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/seo/seo-basics" target="_blank">https://ahrefs.com/seo/seo-basics</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Beginner’s Guide to SEO (ContentKing)</div>
-                                <div class="resource-badges"><span class="source-pill">ContentKing</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.conductor.com/academy/technical-seo-hub/" target="_blank">https://www.conductor.com/academy/technical-seo-hub/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Complete SEO Guide for Beginners</div>
-                                <div class="resource-badges"><span class="source-pill">Mangools</span></div>
-                            </div>
-                            <a class="resource-link" href="https://mangools.com/blog/learn-seo/" target="_blank">https://mangools.com/blog/learn-seo/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Fundamentals Course with Greg Gifford</div>
-                                <div class="resource-badges"><span class="source-pill">SEMrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">In-depth guide to how Google Search works</div>
+                        <div class="resource-badges"><span class="source-pill">Google</span></div>
+                      </div>
+                      <a class="resource-link" href="https://developers.google.com/search/docs/fundamentals/how-search-works?hl=vi" target="_blank">https://developers.google.com/search/docs/fundamentals/how-search-works?hl=vi</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Search Engine Optimization (SEO) Starter Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Google</span></div>
+                      </div>
+                      <a class="resource-link" href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=vi" target="_blank">https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=vi</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Google Search Essentials</div>
+                        <div class="resource-badges"><span class="source-pill">Google</span></div>
+                      </div>
+                      <a class="resource-link" href="https://developers.google.com/search/docs/essentials?hl=vi" target="_blank">https://developers.google.com/search/docs/essentials?hl=vi</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Beginner’s Guide to SEO (Moz)</div>
+                        <div class="resource-badges"><span class="source-pill">Moz</span></div>
+                      </div>
+                      <a class="resource-link" href="https://moz.com/beginners-guide-to-seo" target="_blank">https://moz.com/beginners-guide-to-seo</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Basics: Beginner’s Guide to SEO Success</div>
+                        <div class="resource-badges"><span class="source-pill">Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/seo/seo-basics" target="_blank">https://ahrefs.com/seo/seo-basics</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Beginner’s Guide to SEO (ContentKing)</div>
+                        <div class="resource-badges"><span class="source-pill">ContentKing</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.conductor.com/academy/technical-seo-hub/" target="_blank">https://www.conductor.com/academy/technical-seo-hub/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Complete SEO Guide for Beginners</div>
+                        <div class="resource-badges"><span class="source-pill">Mangools</span></div>
+                      </div>
+                      <a class="resource-link" href="https://mangools.com/blog/learn-seo/" target="_blank">https://mangools.com/blog/learn-seo/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Fundamentals Course with Greg Gifford</div>
+                        <div class="resource-badges"><span class="source-pill">SEMrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
+              </details>
 
-            <!-- Topic 2: Keyword Research -->
-            <details class="topic-card" id="seo-fundamentals-2-keyword-research" data-search="seo fundamentals keyword research how to do keyword research for seo tim soulo moz semrush">
+              <!-- Topic 2: Keyword Research -->
+              <details class="topic-card" id="seo-fundamentals-2-keyword-research" data-search="seo fundamentals keyword research how to do keyword research for seo tim soulo moz semrush">
                 <summary class="topic-summary"><span>Keyword Research</span><span class="topic-meta">9 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How to Do Keyword Research for SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Tim Soulo / Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/seo/keyword-research" target="_blank">https://ahrefs.com/seo/keyword-research</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The SEO Keyword Research Master Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Moz</span></div>
-                            </div>
-                            <a class="resource-link" href="https://moz.com/keyword-research-guide" target="_blank">https://moz.com/keyword-research-guide</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How to Do Keyword Research for SEO (A Detailed 3-Step Guide)</div>
-                                <div class="resource-badges"><span class="source-pill">Vlado Pavlik / SEMrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/blog/keyword-research/" target="_blank">https://www.semrush.com/blog/keyword-research/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Keyword Research: An In-Depth Beginner’s Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Shelley Walsh / Search Engine Journal</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.searchenginejournal.com/keyword-research/" target="_blank">https://www.searchenginejournal.com/keyword-research/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Keyword research for SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Mangools</span></div>
-                            </div>
-                            <a class="resource-link" href="https://mangools.com/blog/keyword-research/" target="_blank">https://mangools.com/blog/keyword-research/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Keyword Research: The Definitive Guide (2023)</div>
-                                <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
-                            </div>
-                            <a class="resource-link" href="https://backlinko.com/tools/keyword" target="_blank">https://backlinko.com/tools/keyword</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How to Do Keyword Research for SEO: A Beginner's Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Rachel Leist</span></div>
-                            </div>
-                            <a class="resource-link" href="https://blog.hubspot.com/marketing/how-to-do-keyword-research-ht" target="_blank">https://blog.hubspot.com/marketing/how-to-do-keyword-research-ht</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Keyword Research Course with Greg Gifford</div>
-                                <div class="resource-badges"><span class="source-pill">Greg Gifford / SEMrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Keyword Research for SEO Today: Guide, Steps, Tips, Tools, Mistakes and more!</div>
-                                <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.youtube.com/watch?v=ek0yCkmfVuM" target="_blank">https://www.youtube.com/watch?v=ek0yCkmfVuM</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How to Do Keyword Research for SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Tim Soulo / Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/seo/keyword-research" target="_blank">https://ahrefs.com/seo/keyword-research</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The SEO Keyword Research Master Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Moz</span></div>
+                      </div>
+                      <a class="resource-link" href="https://moz.com/keyword-research-guide" target="_blank">https://moz.com/keyword-research-guide</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How to Do Keyword Research for SEO (A Detailed 3-Step Guide)</div>
+                        <div class="resource-badges"><span class="source-pill">Vlado Pavlik / SEMrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/blog/keyword-research/" target="_blank">https://www.semrush.com/blog/keyword-research/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Keyword Research: An In-Depth Beginner’s Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Shelley Walsh / Search Engine Journal</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.searchenginejournal.com/keyword-research/" target="_blank">https://www.searchenginejournal.com/keyword-research/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Keyword research for SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Mangools</span></div>
+                      </div>
+                      <a class="resource-link" href="https://mangools.com/blog/keyword-research/" target="_blank">https://mangools.com/blog/keyword-research/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Keyword Research: The Definitive Guide (2023)</div>
+                        <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
+                      </div>
+                      <a class="resource-link" href="https://backlinko.com/tools/keyword" target="_blank">https://backlinko.com/tools/keyword</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How to Do Keyword Research for SEO: A Beginner's Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Rachel Leist</span></div>
+                      </div>
+                      <a class="resource-link" href="https://blog.hubspot.com/marketing/how-to-do-keyword-research-ht" target="_blank">https://blog.hubspot.com/marketing/how-to-do-keyword-research-ht</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Keyword Research Course with Greg Gifford</div>
+                        <div class="resource-badges"><span class="source-pill">Greg Gifford / SEMrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Keyword Research for SEO Today: Guide, Steps, Tips, Tools, Mistakes and more!</div>
+                        <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.youtube.com/watch?v=ek0yCkmfVuM" target="_blank">https://www.youtube.com/watch?v=ek0yCkmfVuM</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
+              </details>
 
-            <!-- Topic 3: Competition Analysis -->
-            <details class="topic-card" id="seo-fundamentals-3-competition-analysis" data-search="seo fundamentals competition analysis seo competitor analysis">
+              <!-- Topic 3: Competition Analysis -->
+              <details class="topic-card" id="seo-fundamentals-3-competition-analysis" data-search="seo fundamentals competition analysis seo competitor analysis">
                 <summary class="topic-summary"><span>Competition analysis</span><span class="topic-meta">7 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Guide to SEO Competitor Analysis</div>
-                                <div class="resource-badges"><span class="source-pill">Moz</span></div>
-                            </div>
-                            <a class="resource-link" href="https://moz.com/seo-competitor-analysis" target="_blank">https://moz.com/seo-competitor-analysis</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How to Do an SEO Competitive Analysis</div>
-                                <div class="resource-badges"><span class="source-pill">Semrush Team / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/blog/how-to-do-seo-competitive-analysis/" target="_blank">https://www.semrush.com/blog/how-to-do-seo-competitive-analysis/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How to Do an SEO Competitor Analysis [Template Included]</div>
-                                <div class="resource-badges"><span class="source-pill">Joshua Hardwick / Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/blog/seo-competitor-analysis/" target="_blank">https://ahrefs.com/blog/seo-competitor-analysis/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Your Essential Guide to Crushing Competition [w/ Template]</div>
-                                <div class="resource-badges"><span class="source-pill">Sam Underwood / Advanced Web Ranking</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.advancedwebranking.com/seo/competitor-analysis" target="_blank">https://www.advancedwebranking.com/seo/competitor-analysis</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The SEO Competitive Analysis Tools & Tips 100+ Marketers Rely On Most</div>
-                                <div class="resource-badges"><span class="source-pill">Davor Štefanović / Databox</span></div>
-                            </div>
-                            <a class="resource-link" href="https://databox.com/seo-competitor-analysis-report" target="_blank">https://databox.com/seo-competitor-analysis-report</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Competitive Analysis: The Definitive Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Aleh Barysevich / Search Engine Journal</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.searchenginejournal.com/seo-competitive-analysis-the-definitive-guide/273509/" target="_blank">https://www.searchenginejournal.com/seo-competitive-analysis-the-definitive-guide/273509/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">How To Do An SEO Competitor Analysis with free downloadable template</div>
-                                <div class="resource-badges"><span class="source-pill">Moz Team / Moz</span></div>
-                            </div>
-                            <a class="resource-link" href="https://moz.com/seo-competitor-analysis" target="_blank">https://moz.com/seo-competitor-analysis</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Guide to SEO Competitor Analysis</div>
+                        <div class="resource-badges"><span class="source-pill">Moz</span></div>
+                      </div>
+                      <a class="resource-link" href="https://moz.com/seo-competitor-analysis" target="_blank">https://moz.com/seo-competitor-analysis</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How to Do an SEO Competitive Analysis</div>
+                        <div class="resource-badges"><span class="source-pill">Semrush Team / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/blog/how-to-do-seo-competitive-analysis/" target="_blank">https://www.semrush.com/blog/how-to-do-seo-competitive-analysis/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How to Do an SEO Competitor Analysis [Template Included]</div>
+                        <div class="resource-badges"><span class="source-pill">Joshua Hardwick / Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/blog/seo-competitor-analysis/" target="_blank">https://ahrefs.com/blog/seo-competitor-analysis/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Your Essential Guide to Crushing Competition [w/ Template]</div>
+                        <div class="resource-badges"><span class="source-pill">Sam Underwood / Advanced Web Ranking</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.advancedwebranking.com/seo/competitor-analysis" target="_blank">https://www.advancedwebranking.com/seo/competitor-analysis</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The SEO Competitive Analysis Tools & Tips 100+ Marketers Rely On Most</div>
+                        <div class="resource-badges"><span class="source-pill">Davor Štefanović / Databox</span></div>
+                      </div>
+                      <a class="resource-link" href="https://databox.com/seo-competitor-analysis-report" target="_blank">https://databox.com/seo-competitor-analysis-report</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Competitive Analysis: The Definitive Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Aleh Barysevich / Search Engine Journal</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.searchenginejournal.com/seo-competitive-analysis-the-definitive-guide/273509/" target="_blank">https://www.searchenginejournal.com/seo-competitive-analysis-the-definitive-guide/273509/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">How To Do An SEO Competitor Analysis with free downloadable template</div>
+                        <div class="resource-badges"><span class="source-pill">Moz Team / Moz</span></div>
+                      </div>
+                      <a class="resource-link" href="https://moz.com/seo-competitor-analysis" target="_blank">https://moz.com/seo-competitor-analysis</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
+              </details>
 
-            <!-- Topic 4: Content Optimization -->
-            <details class="topic-card" id="seo-fundamentals-4-content-optimization" data-search="seo fundamentals content optimization on-page seo tools guides">
+              <!-- Topic 4: Content Optimization -->
+              <details class="topic-card" id="seo-fundamentals-4-content-optimization" data-search="seo fundamentals content optimization on-page seo tools guides">
                 <summary class="topic-summary"><span>Content optimization</span><span class="topic-meta">25 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <!-- Free Content Optimization Guides -->
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">12 Content Optimization Strategies To Grow Traffic & Rankings</div>
-                                <div class="resource-badges"><span class="source-pill">Fraser McCulloch / Frase</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.frase.io/blog/content-optimization-strategies/" target="_blank">https://www.frase.io/blog/content-optimization-strategies/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Content Optimization: The Complete Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Priscilla Tan / Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/blog/content-optimization/" target="_blank">https://ahrefs.com/blog/content-optimization/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Copywriting: The Definitive Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
-                            </div>
-                            <a class="resource-link" href="https://backlinko.com/seo-copywriting" target="_blank">https://backlinko.com/seo-copywriting</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Copywriting Guide: A Smarter Approach To Ordering Content</div>
-                                <div class="resource-badges"><span class="source-pill">Maria Kalyadina / SEMrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/blog/seo-copywriting/" target="_blank">https://www.semrush.com/blog/seo-copywriting/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Role of Content Course with Eric Enge</div>
-                                <div class="resource-badges"><span class="source-pill">Eric Enge / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/content-marketing/" target="_blank">https://www.semrush.com/academy/courses/content-marketing/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Content Marketing Fundamentals Course with Ashley Segura</div>
-                                <div class="resource-badges"><span class="source-pill">Ashley Segura / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/content-marketing-principles-for-business/" target="_blank">https://www.semrush.com/academy/courses/content-marketing-principles-for-business/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Strategical Content Optimization in an SEO Process</div>
-                                <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.youtube.com/watch?v=TyiIFhqo8vE" target="_blank">https://www.youtube.com/watch?v=TyiIFhqo8vE</a>
-                        </li>
-                        <!-- Free On-Page SEO Tools -->
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Google Search Console Coverage, URL Inspection & Crawl Stats Reports</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Google</span></div>
-                            </div>
-                            <a class="resource-link" href="https://search.google.com/search-console/about" target="_blank">https://search.google.com/search-console/about</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Bing Webmaster Tools Site Scan and SEO Report</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Bing</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.bing.com/webmasters/help/recommendations-55a30304" target="_blank">https://www.bing.com/webmasters/help/recommendations-55a30304</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Screaming Frog SEO Spider</div>
-                                <div class="resource-badges"><span class="source-pill">Desktop Based from Screaming Frog</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.screamingfrog.co.uk/seo-spider/" target="_blank">https://www.screamingfrog.co.uk/seo-spider/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Greenflare: The Open Source SEO Crawler</div>
-                                <div class="resource-badges"><span class="source-pill">Desktop Based from Greenflare</span></div>
-                            </div>
-                            <a class="resource-link" href="https://greenflare.io/" target="_blank">https://greenflare.io/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEOlyzer: Crawler & log analysis for all SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from SEOlyzer</span></div>
-                            </div>
-                            <a class="resource-link" href="https://seolyzer.io/" target="_blank">https://seolyzer.io/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">httpstatus.io: Easily check status codes, response headers, and redirect chains</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Sander Heilbron</span></div>
-                            </div>
-                            <a class="resource-link" href="https://httpstatus.io/" target="_blank">https://httpstatus.io/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Server Header Checker Tool: Server Headers is your one stop tool to quickly extract useful SEO data from a URL</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Ryan Jones</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.serverheaders.com/" target="_blank">https://www.serverheaders.com/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Ahrefs Webmaster Tools</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/webmaster-tools" target="_blank">https://ahrefs.com/webmaster-tools</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Siteliner: Explore your website, revealing key issues</div>
-                                <div class="resource-badges"><span class="source-pill">Web Based from Siteliner</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.siteliner.com/" target="_blank">https://www.siteliner.com/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Checkbot: SEO, Web Speed & Security Tester</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from Checkbot</span></div>
-                            </div>
-                            <a class="resource-link" href="https://chromewebstore.google.com/detail/checkbot-seo-web-speed-se/dagohlmlhagincbfilmkadjgmdnkjinl?pli=1" target="_blank">https://chromewebstore.google.com/detail/checkbot-seo-web-speed-se/dagohlmlhagincbfilmkadjgmdnkjinl?pli=1</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Minion: On-Page SEO, Broken Link Checker, Hreflang Checker & more</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from SEO minion</span></div>
-                            </div>
-                            <a class="resource-link" href="https://keywordseverywhere.com/seominion/" target="_blank">https://keywordseverywhere.com/seominion/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Detailed SEO Extension</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from Detailed</span></div>
-                            </div>
-                            <a class="resource-link" href="https://detailed.com/extension/" target="_blank">https://detailed.com/extension/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEO Pro Extension</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from Marketing Syrup</span></div>
-                            </div>
-                            <a class="resource-link" href="https://marketingsyrup.com/seo-pro-extension/" target="_blank">https://marketingsyrup.com/seo-pro-extension/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">SEOInfo</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from Weeblr</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.weeblrpress.com/blog/seoinfo-our-free-chrome-and-firefox-extension" target="_blank">https://www.weeblrpress.com/blog/seoinfo-our-free-chrome-and-firefox-extension</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Spark Content Optimizer</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from SEOClarity</span></div>
-                            </div>
-                            <a class="resource-link" href="https://chromewebstore.google.com/detail/spark-seo-by-seoclarity/lbdjpmmladpghbcpadpeaiiopkcejpnf?hl=en" target="_blank">https://chromewebstore.google.com/detail/spark-seo-by-seoclarity/lbdjpmmladpghbcpadpeaiiopkcejpnf?hl=en</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Link Redirect Trace</div>
-                                <div class="resource-badges"><span class="source-pill">Browser Extension from LinkResearchTools</span></div>
-                            </div>
-                            <a class="resource-link" href="https://smart.linkresearchtools.com/seo-tools/link-redirect-trace-extension" target="_blank">https://smart.linkresearchtools.com/seo-tools/link-redirect-trace-extension</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Yoast SEO</div>
-                                <div class="resource-badges"><span class="source-pill">WordPress Plugin from Yoast</span></div>
-                            </div>
-                            <a class="resource-link" href="https://yoast.com/product/yoast-seo-premium-wordpress/" target="_blank">https://yoast.com/product/yoast-seo-premium-wordpress/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Rank Math SEO</div>
-                                <div class="resource-badges"><span class="source-pill">WordPress Plugin from Rank Math</span></div>
-                            </div>
-                            <a class="resource-link" href="https://rankmath.com/" target="_blank">https://rankmath.com/</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">12 Content Optimization Strategies To Grow Traffic & Rankings</div>
+                        <div class="resource-badges"><span class="source-pill">Fraser McCulloch / Frase</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.frase.io/blog/content-optimization-strategies/" target="_blank">https://www.frase.io/blog/content-optimization-strategies/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Content Optimization: The Complete Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Priscilla Tan / Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/blog/content-optimization/" target="_blank">https://ahrefs.com/blog/content-optimization/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Copywriting: The Definitive Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
+                      </div>
+                      <a class="resource-link" href="https://backlinko.com/seo-copywriting" target="_blank">https://backlinko.com/seo-copywriting</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Copywriting Guide: A Smarter Approach To Ordering Content</div>
+                        <div class="resource-badges"><span class="source-pill">Maria Kalyadina / SEMrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/blog/seo-copywriting/" target="_blank">https://www.semrush.com/blog/seo-copywriting/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Role of Content Course with Eric Enge</div>
+                        <div class="resource-badges"><span class="source-pill">Eric Enge / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/content-marketing/" target="_blank">https://www.semrush.com/academy/courses/content-marketing/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Content Marketing Fundamentals Course with Ashley Segura</div>
+                        <div class="resource-badges"><span class="source-pill">Ashley Segura / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/content-marketing-principles-for-business/" target="_blank">https://www.semrush.com/academy/courses/content-marketing-principles-for-business/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Strategical Content Optimization in an SEO Process</div>
+                        <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.youtube.com/watch?v=TyiIFhqo8vE" target="_blank">https://www.youtube.com/watch?v=TyiIFhqo8vE</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Google Search Console Coverage, URL Inspection & Crawl Stats Reports</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Google</span></div>
+                      </div>
+                      <a class="resource-link" href="https://search.google.com/search-console/about" target="_blank">https://search.google.com/search-console/about</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Bing Webmaster Tools Site Scan and SEO Report</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Bing</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.bing.com/webmasters/help/recommendations-55a30304" target="_blank">https://www.bing.com/webmasters/help/recommendations-55a30304</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Screaming Frog SEO Spider</div>
+                        <div class="resource-badges"><span class="source-pill">Desktop Based from Screaming Frog</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.screamingfrog.co.uk/seo-spider/" target="_blank">https://www.screamingfrog.co.uk/seo-spider/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Greenflare: The Open Source SEO Crawler</div>
+                        <div class="resource-badges"><span class="source-pill">Desktop Based from Greenflare</span></div>
+                      </div>
+                      <a class="resource-link" href="https://greenflare.io/" target="_blank">https://greenflare.io/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEOlyzer: Crawler & log analysis for all SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from SEOlyzer</span></div>
+                      </div>
+                      <a class="resource-link" href="https://seolyzer.io/" target="_blank">https://seolyzer.io/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">httpstatus.io: Easily check status codes, response headers, and redirect chains</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Sander Heilbron</span></div>
+                      </div>
+                      <a class="resource-link" href="https://httpstatus.io/" target="_blank">https://httpstatus.io/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Server Header Checker Tool: Server Headers is your one stop tool to quickly extract useful SEO data from a URL</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Ryan Jones</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.serverheaders.com/" target="_blank">https://www.serverheaders.com/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Ahrefs Webmaster Tools</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/webmaster-tools" target="_blank">https://ahrefs.com/webmaster-tools</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Siteliner: Explore your website, revealing key issues</div>
+                        <div class="resource-badges"><span class="source-pill">Web Based from Siteliner</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.siteliner.com/" target="_blank">https://www.siteliner.com/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Checkbot: SEO, Web Speed & Security Tester</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from Checkbot</span></div>
+                      </div>
+                      <a class="resource-link" href="https://chromewebstore.google.com/detail/checkbot-seo-web-speed-se/dagohlmlhagincbfilmkadjgmdnkjinl?pli=1" target="_blank">https://chromewebstore.google.com/detail/checkbot-seo-web-speed-se/dagohlmlhagincbfilmkadjgmdnkjinl?pli=1</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Minion: On-Page SEO, Broken Link Checker, Hreflang Checker & more</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from SEO minion</span></div>
+                      </div>
+                      <a class="resource-link" href="https://keywordseverywhere.com/seominion/" target="_blank">https://keywordseverywhere.com/seominion/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Detailed SEO Extension</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from Detailed</span></div>
+                      </div>
+                      <a class="resource-link" href="https://detailed.com/extension/" target="_blank">https://detailed.com/extension/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEO Pro Extension</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from Marketing Syrup</span></div>
+                      </div>
+                      <a class="resource-link" href="https://marketingsyrup.com/seo-pro-extension/" target="_blank">https://marketingsyrup.com/seo-pro-extension/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">SEOInfo</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from Weeblr</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.weeblrpress.com/blog/seoinfo-our-free-chrome-and-firefox-extension" target="_blank">https://www.weeblrpress.com/blog/seoinfo-our-free-chrome-and-firefox-extension</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Spark Content Optimizer</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from SEOClarity</span></div>
+                      </div>
+                      <a class="resource-link" href="https://chromewebstore.google.com/detail/spark-seo-by-seoclarity/lbdjpmmladpghbcpadpeaiiopkcejpnf?hl=en" target="_blank">https://chromewebstore.google.com/detail/spark-seo-by-seoclarity/lbdjpmmladpghbcpadpeaiiopkcejpnf?hl=en</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Link Redirect Trace</div>
+                        <div class="resource-badges"><span class="source-pill">Browser Extension from LinkResearchTools</span></div>
+                      </div>
+                      <a class="resource-link" href="https://smart.linkresearchtools.com/seo-tools/link-redirect-trace-extension" target="_blank">https://smart.linkresearchtools.com/seo-tools/link-redirect-trace-extension</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Yoast SEO</div>
+                        <div class="resource-badges"><span class="source-pill">WordPress Plugin from Yoast</span></div>
+                      </div>
+                      <a class="resource-link" href="https://yoast.com/product/yoast-seo-premium-wordpress/" target="_blank">https://yoast.com/product/yoast-seo-premium-wordpress/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Rank Math SEO</div>
+                        <div class="resource-badges"><span class="source-pill">WordPress Plugin from Rank Math</span></div>
+                      </div>
+                      <a class="resource-link" href="https://rankmath.com/" target="_blank">https://rankmath.com/</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
+              </details>
 
-            <!-- Topic 5: Technical Optimization -->
-            <details class="topic-card" id="seo-fundamentals-5-technical-optimization" data-search="seo fundamentals technical optimization crawling indexing guides">
+              <!-- Topic 5: Technical Optimization -->
+              <details class="topic-card" id="seo-fundamentals-5-technical-optimization" data-search="seo fundamentals technical optimization crawling indexing guides">
                 <summary class="topic-summary"><span>Technical optimization</span><span class="topic-meta">9 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Overview of Crawling and Indexing Topics</div>
-                                <div class="resource-badges"><span class="source-pill">Google</span></div>
-                            </div>
-                            <a class="resource-link" href="https://developers.google.com/search/docs/crawling-indexing" target="_blank">https://developers.google.com/search/docs/crawling-indexing</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Beginner's Guide to Technical SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Patrick Stox / Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/seo/technical-seo" target="_blank">https://ahrefs.com/seo/technical-seo</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Ultimate Guide to Technical SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Christina Perricone / HubSpot</span></div>
-                            </div>
-                            <a class="resource-link" href="https://blog.hubspot.com/marketing/technical-seo-guide" target="_blank">https://blog.hubspot.com/marketing/technical-seo-guide</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">What Is Technical SEO? Basics and 10 Best Practices</div>
-                                <div class="resource-badges"><span class="source-pill">Tushar Pol / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/blog/technical-seo/" target="_blank">https://www.semrush.com/blog/technical-seo/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Technical SEO Guides Hub</div>
-                                <div class="resource-badges"><span class="source-pill">ContentKing</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.conductor.com/academy/technical-seo-hub/" target="_blank">https://www.conductor.com/academy/technical-seo-hub/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">An In-Depth Guide to Technical SEO</div>
-                                <div class="resource-badges"><span class="source-pill">Tom Whatley / CXL</span></div>
-                            </div>
-                            <a class="resource-link" href="https://cxl.com/blog/technical-seo/" target="_blank">https://cxl.com/blog/technical-seo/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Technical SEO Library</div>
-                                <div class="resource-badges"><span class="source-pill">Lumar</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.lumar.io/learn/seo/" target="_blank">https://www.lumar.io/learn/seo/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Technical SEO Course with Bastian Grimm</div>
-                                <div class="resource-badges"><span class="source-pill">Bastian Grimm / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/techincal-seo-and-ai-search-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/techincal-seo-and-ai-search-essentials-with-semrush/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">What's Technical SEO? 8 Technical Aspects Everyone Should Know</div>
-                                <div class="resource-badges"><span class="source-pill">Yoast</span></div>
-                            </div>
-                            <a class="resource-link" href="https://yoast.com/what-is-technical-seo/" target="_blank">https://yoast.com/what-is-technical-seo/</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Overview of Crawling and Indexing Topics</div>
+                        <div class="resource-badges"><span class="source-pill">Google</span></div>
+                      </div>
+                      <a class="resource-link" href="https://developers.google.com/search/docs/crawling-indexing" target="_blank">https://developers.google.com/search/docs/crawling-indexing</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Beginner's Guide to Technical SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Patrick Stox / Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/seo/technical-seo" target="_blank">https://ahrefs.com/seo/technical-seo</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Ultimate Guide to Technical SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Christina Perricone / HubSpot</span></div>
+                      </div>
+                      <a class="resource-link" href="https://blog.hubspot.com/marketing/technical-seo-guide" target="_blank">https://blog.hubspot.com/marketing/technical-seo-guide</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">What Is Technical SEO? Basics and 10 Best Practices</div>
+                        <div class="resource-badges"><span class="source-pill">Tushar Pol / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/blog/technical-seo/" target="_blank">https://www.semrush.com/blog/technical-seo/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Technical SEO Guides Hub</div>
+                        <div class="resource-badges"><span class="source-pill">ContentKing</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.conductor.com/academy/technical-seo-hub/" target="_blank">https://www.conductor.com/academy/technical-seo-hub/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">An In-Depth Guide to Technical SEO</div>
+                        <div class="resource-badges"><span class="source-pill">Tom Whatley / CXL</span></div>
+                      </div>
+                      <a class="resource-link" href="https://cxl.com/blog/technical-seo/" target="_blank">https://cxl.com/blog/technical-seo/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Technical SEO Library</div>
+                        <div class="resource-badges"><span class="source-pill">Lumar</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.lumar.io/learn/seo/" target="_blank">https://www.lumar.io/learn/seo/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Technical SEO Course with Bastian Grimm</div>
+                        <div class="resource-badges"><span class="source-pill">Bastian Grimm / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/techincal-seo-and-ai-search-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/techincal-seo-and-ai-search-essentials-with-semrush/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">What's Technical SEO? 8 Technical Aspects Everyone Should Know</div>
+                        <div class="resource-badges"><span class="source-pill">Yoast</span></div>
+                      </div>
+                      <a class="resource-link" href="https://yoast.com/what-is-technical-seo/" target="_blank">https://yoast.com/what-is-technical-seo/</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
+              </details>
 
-            <!-- Topic 6: Link Building -->
-            <details class="topic-card" id="seo-fundamentals-6-link-building" data-search="seo fundamentals link building beginner's guide backlink management">
-                <summary class="topic-summary"><span>Link building</span><span class="topic-meta">8 resources</span></summary>
+              <!-- Topic 6: Link Building -->
+              <details class="topic-card" id="seo-fundamentals-6-link-building" data-search="seo fundamentals link building beginner's guide backlink management">
+                <summary class="topic-summary"><span>Link building</span><span class="topic-meta">9 resources</span></summary>
                 <div class="topic-body">
-                    <ul class="resource-list">
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Beginner's Guide to Link Building</div>
-                                <div class="resource-badges"><span class="source-pill">Paddy Moogan / Moz</span></div>
-                            </div>
-                            <a class="resource-link" href="https://moz.com/beginners-guide-to-link-building" target="_blank">https://moz.com/beginners-guide-to-link-building</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Link Building for SEO: The Beginner's Guide</div>
-                                <div class="resource-badges"><span class="source-pill">Tim Soulo / Ahrefs</span></div>
-                            </div>
-                            <a class="resource-link" href="https://ahrefs.com/seo/link-building" target="_blank">https://ahrefs.com/seo/link-building</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Link Building for SEO: The Definitive Guide (2022)</div>
-                                <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
-                            </div>
-                            <a class="resource-link" href="https://backlinko.com/link-building" target="_blank">https://backlinko.com/link-building</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">7 Golden Rules of Link Building for 2021 and Beyond</div>
-                                <div class="resource-badges"><span class="source-pill">Christoph Cemper</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.linkresearchtools.com/blog/golden-rules-link-building/" target="_blank">https://www.linkresearchtools.com/blog/golden-rules-link-building/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">60+ Link Building Techniques Checklist [2022 Update]</div>
-                                <div class="resource-badges"><span class="source-pill">Mangools</span></div>
-                            </div>
-                            <a class="resource-link" href="https://mangools.com/blog/link-building-techniques-checklist/" target="_blank">https://mangools.com/blog/link-building-techniques-checklist/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">The Link Building Book</div>
-                                <div class="resource-badges"><span class="source-pill">Paddy Moogan</span></div>
-                            </div>
-                            <a class="resource-link" href="https://aira.net/link-building-book/introduction/" target="_blank">https://aira.net/link-building-book/introduction/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Link Prospecting Hacks From An Agency</div>
-                                <div class="resource-badges"><span class="source-pill">Pitchbox</span></div>
-                            </div>
-                            <a class="resource-link" href="https://pitchbox.com/blog/link-prospecting-hacks/" target="_blank">https://pitchbox.com/blog/link-prospecting-hacks/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Backlink Management Course with Greg Gifford</div>
-                                <div class="resource-badges"><span class="source-pill">Greg Gifford / Semrush</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
-                        </li>
-                        <li class="resource-item">
-                            <div class="resource-head">
-                                <div class="resource-title">Link Building & Outreach in an SEO Process: Common Mistakes & Tips for Success</div>
-                                <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
-                            </div>
-                            <a class="resource-link" href="https://www.youtube.com/watch?v=yt8db_rOwdc" target="_blank">https://www.youtube.com/watch?v=yt8db_rOwdc</a>
-                        </li>
-                    </ul>
+                  <ul class="resource-list">
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Beginner's Guide to Link Building</div>
+                        <div class="resource-badges"><span class="source-pill">Paddy Moogan / Moz</span></div>
+                      </div>
+                      <a class="resource-link" href="https://moz.com/beginners-guide-to-link-building" target="_blank">https://moz.com/beginners-guide-to-link-building</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Link Building for SEO: The Beginner's Guide</div>
+                        <div class="resource-badges"><span class="source-pill">Tim Soulo / Ahrefs</span></div>
+                      </div>
+                      <a class="resource-link" href="https://ahrefs.com/seo/link-building" target="_blank">https://ahrefs.com/seo/link-building</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Link Building for SEO: The Definitive Guide (2022)</div>
+                        <div class="resource-badges"><span class="source-pill">Backlinko</span></div>
+                      </div>
+                      <a class="resource-link" href="https://backlinko.com/link-building" target="_blank">https://backlinko.com/link-building</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">7 Golden Rules of Link Building for 2021 and Beyond</div>
+                        <div class="resource-badges"><span class="source-pill">Christoph Cemper</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.linkresearchtools.com/blog/golden-rules-link-building/" target="_blank">https://www.linkresearchtools.com/blog/golden-rules-link-building/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">60+ Link Building Techniques Checklist [2022 Update]</div>
+                        <div class="resource-badges"><span class="source-pill">Mangools</span></div>
+                      </div>
+                      <a class="resource-link" href="https://mangools.com/blog/link-building-techniques-checklist/" target="_blank">https://mangools.com/blog/link-building-techniques-checklist/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">The Link Building Book</div>
+                        <div class="resource-badges"><span class="source-pill">Paddy Moogan</span></div>
+                      </div>
+                      <a class="resource-link" href="https://aira.net/link-building-book/introduction/" target="_blank">https://aira.net/link-building-book/introduction/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Link Prospecting Hacks From An Agency</div>
+                        <div class="resource-badges"><span class="source-pill">Pitchbox</span></div>
+                      </div>
+                      <a class="resource-link" href="https://pitchbox.com/blog/link-prospecting-hacks/" target="_blank">https://pitchbox.com/blog/link-prospecting-hacks/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Backlink Management Course with Greg Gifford</div>
+                        <div class="resource-badges"><span class="source-pill">Greg Gifford / Semrush</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.semrush.com/academy/courses/seo-essentials-with-semrush/" target="_blank">https://www.semrush.com/academy/courses/seo-essentials-with-semrush/</a>
+                    </li>
+                    <li class="resource-item">
+                      <div class="resource-head">
+                        <div class="resource-title">Link Building & Outreach in an SEO Process: Common Mistakes & Tips for Success</div>
+                        <div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div>
+                      </div>
+                      <a class="resource-link" href="https://www.youtube.com/watch?v=yt8db_rOwdc" target="_blank">https://www.youtube.com/watch?v=yt8db_rOwdc</a>
+                    </li>
+                  </ul>
                 </div>
-            </details>
-        </section>
+              </details>
+            </div>
+          </div>
 
-          <!-- Execute an SEO Process section (fixed, same style as fundamentals) -->
-          <section id="execute-process-section" class="mt-5">
-            <div class="mb-4 mt-3"><div class="section-heading">Execute an SEO Process</div><p class="section-sub">Move from knowledge to execution with strategy, goals, measurement, reporting, audits, buy-in, process management, and common mistakes.</p></div>
-            <div class="hotbox mb-4"><div class="fw-bold mb-2">Hot trend focus inside this path</div><div class="d-flex flex-wrap gap-2"><span class="trend-pill">Search Everywhere Optimization</span><span class="trend-pill">GEO</span><span class="trend-pill">AEO</span><span class="trend-pill">AI visibility</span><span class="trend-pill">AI Overviews</span></div></div>
+          <!-- SECTION 2: Execute an SEO Process - collapsible -->
+          <div class="section-collapsible" id="execute-process-section">
+            <div class="section-header" data-toggle="section">
+              <div>
+                <div class="section-heading">Execute an SEO Process</div>
+                <p class="section-sub">Move from knowledge to execution with strategy, goals, measurement, reporting, audits, buy-in, process management, and common mistakes.</p>
+              </div>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-body">
+              <div class="hotbox mb-4">
+                <div class="fw-bold mb-2">Hot trend focus inside this path</div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="trend-pill">Search Everywhere Optimization</span>
+                  <span class="trend-pill">GEO</span>
+                  <span class="trend-pill">AEO</span>
+                  <span class="trend-pill">AI visibility</span>
+                  <span class="trend-pill">AI Overviews</span>
+                </div>
+              </div>
 
-            <!-- 8 topics exactly like fundamentals (content preserved) -->
-            <details class="topic-card" id="execute-an-seo-process-1-establishing-an-seo-strategy" data-search="execute an seo process establishing an seo strategy creating an seo strategy from scratch kevin indig enduring seo strategy 2023 template">
-              <summary class="topic-summary"><span>Establishing an SEO Strategy</span><span class="topic-meta">6 resources</span></summary>
-              <div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Creating an SEO Strategy from Scratch</div><div class="resource-badges"><span class="source-pill">Kevin Indig</span></div></div><a class="resource-link" href="https://www.kevin-indig.com/creating-an-seo-strategy-from-scratch" target="_blank">https://www.kevin-indig.com/creating-an-seo-strategy-from-scratch</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Create an Enduring SEO Strategy in 2023 (Step-By-Step)</div><div class="resource-badges"><span class="source-pill">Jonas Sickler / Terakeet</span></div></div><a class="resource-link" href="https://terakeet.com/blog/seo-strategy/" target="_blank">https://terakeet.com/blog/seo-strategy/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Strategy: How to Create One for 2023 (+ Template)</div><div class="resource-badges"><span class="source-pill">Carlos Silva</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-strategy/" target="_blank">https://www.semrush.com/blog/seo-strategy/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set A Winning SEO Strategy: Concepts, Steps, Do's & Don'ts and Mistakes to Avoid</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=5SzJ0oVFor8" target="_blank">https://www.youtube.com/watch?v=5SzJ0oVFor8</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Create an SEO Strategy for 2022 [Template Included]</div><div class="resource-badges"><span class="source-pill">Drew Fortin / HubSpot</span></div></div><a class="resource-link" href="https://blog.hubspot.com/marketing/seo-strategy" target="_blank">https://blog.hubspot.com/marketing/seo-strategy</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">9 Essential Steps In Building A Winning SEO Strategy</div><div class="resource-badges"><span class="source-pill">Loren Baker / Search Engine Journal</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo/strategy/#close" target="_blank">https://www.searchenginejournal.com/seo/strategy/#close</a></li></ul></div>
-            </details>
-            <!-- For brevity I include the remaining execute topics exactly as original, but I will ensure all 8 appear. Similarly I will place all 8 topics content from original seo-roadmap.html (they are fully present in the given file). I'll use the exact content but since I have to provide final, I will copy them directly. -->
-            <details class="topic-card" id="execute-an-seo-process-2-setting-seo-goals" data-search="execute an seo process setting seo goals smart seo goals moz databox ahrefs"><summary class="topic-summary"><span>Setting SEO Goals</span><span class="topic-meta">6 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">How Do You Set Smart SEO Goals for Your Team/Agency/Project?</div><div class="resource-badges"><span class="source-pill">Rand Fishkin / Moz</span></div></div><a class="resource-link" href="https://moz.com/blog/smart-seo-goals" target="_blank">https://moz.com/blog/smart-seo-goals</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set SEO Goals for Your Team (That Actually Drive Action)</div><div class="resource-badges"><span class="source-pill">Elise Dopson</span></div></div><a class="resource-link" href="https://databox.com/how-to-set-seo-goals" target="_blank">https://databox.com/how-to-set-seo-goals</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set the Right SEO Goals with 3 Examples</div><div class="resource-badges"><span class="source-pill">Kayle Larkin / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-goals/" target="_blank">https://ahrefs.com/blog/seo-goals/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set & Achieve Realistic SEO Goals</div><div class="resource-badges"><span class="source-pill">Paul Schmidt / Search Engine Journal</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/set-achieve-realistic-seo-goals/288839/" target="_blank">https://www.searchenginejournal.com/set-achieve-realistic-seo-goals/288839/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">OKRs for SEO: How to Set SEO Goals That Increase Your Value & Get You Greater Investment</div><div class="resource-badges"><span class="source-pill">Kameron Jenkins / Botify</span></div></div><a class="resource-link" href="https://www.botify.com/blog/seo-okrs" target="_blank">https://www.botify.com/blog/seo-okrs</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set Goals for SEO</div><div class="resource-badges"><span class="source-pill">Sharon Lunny / Seer Interactive</span></div></div><a class="resource-link" href="https://www.seerinteractive.com/insights/how-to-set-seo-goals" target="_blank">https://www.seerinteractive.com/insights/how-to-set-seo-goals</a></li></ul></div></details>
-            <!-- The rest 6 topics (measuring, reporting, audit, buy-in, process management, mistakes) I preserve exactly from original file but due to length I ensure they are in final. I will embed them as they were originally. -->
-            <details class="topic-card" id="execute-an-seo-process-3-measuring-seo" data-search="execute an seo process measuring seo seo analytics supermetrics"><summary class="topic-summary"><span>Measuring SEO</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Analytics: A Step-by-Step Process with Tools, Examples, and Resources</div><div class="resource-badges"><span class="source-pill">Branko Kral / Supermetrics</span></div></div><a class="resource-link" href="https://supermetrics.com/blog/seo-analytics" target="_blank">https://supermetrics.com/blog/seo-analytics</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Measuring SEO Results</div><div class="resource-badges"><span class="source-pill">Backlinko</span></div></div><a class="resource-link" href="https://backlinko.com/hub/seo/seo-results" target="_blank">https://backlinko.com/hub/seo/seo-results</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Critical SEO Metrics You Need To Track</div><div class="resource-badges"><span class="source-pill">Joe Kindness / AgencyAnalytics</span></div></div><a class="resource-link" href="https://agencyanalytics.com/blog/seo-metrics" target="_blank">https://agencyanalytics.com/blog/seo-metrics</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Measuring & Tracking SEO Success</div><div class="resource-badges"><span class="source-pill">Moz</span></div></div><a class="resource-link" href="https://moz.com/beginners-guide-to-seo/measuring-and-tracking-success" target="_blank">https://moz.com/beginners-guide-to-seo/measuring-and-tracking-success</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Use Google Analytics to Improve SEO Performance</div><div class="resource-badges"><span class="source-pill">Michal Pecánek / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/google-analytics-for-seo/" target="_blank">https://ahrefs.com/blog/google-analytics-for-seo/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Ways for Using Google Analytics to Track Your SEO Efforts for Free</div><div class="resource-badges"><span class="source-pill">Elise Dopson / Databox</span></div></div><a class="resource-link" href="https://databox.com/google-analytics-for-seo" target="_blank">https://databox.com/google-analytics-for-seo</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Measure SEO Performance & Results (The Right Way)</div><div class="resource-badges"><span class="source-pill">Michal Pecánek / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-performance-results/" target="_blank">https://ahrefs.com/blog/seo-performance-results/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How To Measure SEO Performance and Results</div><div class="resource-badges"><span class="source-pill">Erika Varagouli / Semrush</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-results/" target="_blank">https://www.semrush.com/blog/seo-results/</a></li></ul></div></details>
-            <!-- reporting, audit, buy-in, process management, mistakes (identical from original) -->
-            <details class="topic-card" id="execute-an-seo-process-4-reporting-seo" data-search="execute an seo process reporting seo moz mini guide"><summary class="topic-summary"><span>Reporting SEO</span><span class="topic-meta">6 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">The Mini Guide to SEO Reporting</div><div class="resource-badges"><span class="source-pill">Moz</span></div></div><a class="resource-link" href="https://moz.com/mini-guide-to-seo-reporting" target="_blank">https://moz.com/mini-guide-to-seo-reporting</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The Anatomy of the Perfect SEO Report</div><div class="resource-badges"><span class="source-pill">Melissa Fach / Semrush</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-report/" target="_blank">https://www.semrush.com/blog/seo-report/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Steal Our SEO Report Template (and Make It Even Better)</div><div class="resource-badges"><span class="source-pill">Jake Sheridan / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-report-template/" target="_blank">https://ahrefs.com/blog/seo-report-template/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Reporting: How To Build Meaningful Analytics Reports</div><div class="resource-badges"><span class="source-pill">Bill Sebald</span></div></div><a class="resource-link" href="https://www.greenlanemarketing.com/resources/articles/making-better-seo-reports-for-your-clients" target="_blank">https://www.greenlanemarketing.com/resources/articles/making-better-seo-reports-for-your-clients</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Reports: Which Metrics Matter & How to Use Them Well</div><div class="resource-badges"><span class="source-pill">Helen Pollitt</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo-reports-which-metrics-matter-how-to-use-them-well/341839/" target="_blank">https://www.searchenginejournal.com/seo-reports-which-metrics-matter-how-to-use-them-well/341839/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Develop Successful SEO Reports</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://speakerdeck.com/aleyda/how-to-develop-successful-seo-reports-number-seokomm" target="_blank">https://speakerdeck.com/aleyda/how-to-develop-successful-seo-reports-number-seokomm</a></li></ul></div></details>
-            <details class="topic-card" id="execute-an-seo-process-5-developing-an-seo-audit"><summary class="topic-summary"><span>Developing an SEO Audit</span><span class="topic-meta">9 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">A Simple (But Effective) 14-Step SEO Audit & Checklist</div><div class="resource-badges"><span class="source-pill">Joshua Hardwick</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-audit/" target="_blank">https://ahrefs.com/blog/seo-audit/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The 15-Step SEO Audit Checklist for 2023</div><div class="resource-badges"><span class="source-pill">Backlinko</span></div></div><a class="resource-link" href="https://backlinko.com/tools/seo-checker" target="_blank">https://backlinko.com/tools/seo-checker</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">242 Point SEO Audit Checklist</div><div class="resource-badges"><span class="source-pill">Andy Drinkwater</span></div></div><a class="resource-link" href="https://andydrinkwater.com/seo-audit-checklist/" target="_blank">https://andydrinkwater.com/seo-audit-checklist/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Perform a Complete SEO Audit (in 14 Steps)</div><div class="resource-badges"><span class="source-pill">Vlado Pavlik</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-audit/" target="_blank">https://www.semrush.com/blog/seo-audit/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Develop Actionable and Impactful SEO Audits</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://www.aleydasolis.com/en/search-engine-optimization/how-to-winning-seo-website-audit-growth/" target="_blank">https://www.aleydasolis.com/en/search-engine-optimization/how-to-winning-seo-website-audit-growth/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Approach Website SEO Audits</div><div class="resource-badges"><span class="source-pill">Geoff Kennedy</span></div></div><a class="resource-link" href="https://sitebulb.com/resources/guides/how-to-approach-website-seo-audits/" target="_blank">https://sitebulb.com/resources/guides/how-to-approach-website-seo-audits/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Tech SEO Implemented</div><div class="resource-badges"><span class="source-pill">Areej AbuAli</span></div></div><a class="resource-link" href="https://www.areejabuali.com/blog/getting-tech-seo-implemented" target="_blank">https://www.areejabuali.com/blog/getting-tech-seo-implemented</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Rethinking Technical SEO Audits</div><div class="resource-badges"><span class="source-pill">Andrew Charlton</span></div></div><a class="resource-link" href="https://bertiecharlton.com/rethinking-technical-seo-audits/" target="_blank">https://bertiecharlton.com/rethinking-technical-seo-audits/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Let's never talk about SEO audits again</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/lets-never-talk-about-seo-audits" target="_blank">https://newsletter.seomba.com/p/lets-never-talk-about-seo-audits</a></li></ul></div></details>
-            <details class="topic-card" id="execute-an-seo-process-6-getting-seo-buy-in"><summary class="topic-summary"><span>Getting SEO Buy-In</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting SEO Buy-in: Learn How to Get SEO Resources and Support</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=IxaVJcgKU5M" target="_blank">https://www.youtube.com/watch?v=IxaVJcgKU5M</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Buy-in Requires Executive Empathy</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/getting-buy-in-requires-executive" target="_blank">https://newsletter.seomba.com/p/getting-buy-in-requires-executive</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Be an SEO Chameleon: How to Get a “YES” from Stakeholders</div><div class="resource-badges"><span class="source-pill">Ashleigh Noad</span></div></div><a class="resource-link" href="https://www.womenintechseo.com/knowledge/be-an-seo-chameleon/" target="_blank">https://www.womenintechseo.com/knowledge/be-an-seo-chameleon/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Get SEO Buy-In: 7 Actionable Tips</div><div class="resource-badges"><span class="source-pill">Despina Gavoyannis</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-buy-in/" target="_blank">https://ahrefs.com/blog/seo-buy-in/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to get more of what you want in SEO</div><div class="resource-badges"><span class="source-pill">Philipp Götza</span></div></div><a class="resource-link" href="https://searchengineland.com/seo-want-get-443884" target="_blank">https://searchengineland.com/seo-want-get-443884</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Get Buy-In for Your SEO Projects — Whiteboard Friday</div><div class="resource-badges"><span class="source-pill">Shawn Huber</span></div></div><a class="resource-link" href="https://moz.com/blog/buy-in-for-seo-whiteboard-friday" target="_blank">https://moz.com/blog/buy-in-for-seo-whiteboard-friday</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Buy-In for Your SEO Strategy</div><div class="resource-badges"><span class="source-pill">Sara Taher</span></div></div><a class="resource-link" href="https://www.sara-taher.com/getting-buy-in-for-your-seo-strategy" target="_blank">https://www.sara-taher.com/getting-buy-in-for-your-seo-strategy</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Create SEO proposals that get approved: Pitching big initiatives to clients and stakeholders</div><div class="resource-badges"><span class="source-pill">Gus Pelogia</span></div></div><a class="resource-link" href="https://www.wix.com/seo/learn/resource/create-an-seo-proposal" target="_blank">https://www.wix.com/seo/learn/resource/create-an-seo-proposal</a></li></ul></div></details>
-            <details class="topic-card" id="execute-an-seo-process-7-seo-process-management"><summary class="topic-summary"><span>SEO Process Management</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Tips for effective SEO Project Management</div><div class="resource-badges"><span class="source-pill">Sam Mangialavori</span></div></div><a class="resource-link" href="https://www.brainlabsdigital.com/blog/tips-for-effective-seo-project-management/" target="_blank">https://www.brainlabsdigital.com/blog/tips-for-effective-seo-project-management/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">What Makes your SEO Fail (and how to fix it)</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://fr.slideshare.net/aleydasolis/what-makes-your-seo-fail-and-how-to-fix-it-brightonseo" target="_blank">https://fr.slideshare.net/aleydasolis/what-makes-your-seo-fail-and-how-to-fix-it-brightonseo</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to turn your agency into the “McKinsey of SEO”</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/how-to-turn-your-agency-into-the" target="_blank">https://newsletter.seomba.com/p/how-to-turn-your-agency-into-the</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Integrating SEO within the Product Triangle To Align Efforts & Maximize Impact</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://www.aleydasolis.com/en/search-engine-optimization/seo-product-triangle/" target="_blank">https://www.aleydasolis.com/en/search-engine-optimization/seo-product-triangle/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Thriving as an SEO Specialist: Frameworks & Tips to Manage Complex SEO Processes</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://fr.slideshare.net/aleydasolis/thriving-as-an-seo-specialist-frameworks-tips-to-manage-complex-seo-processes" target="_blank">https://fr.slideshare.net/aleydasolis/thriving-as-an-seo-specialist-frameworks-tips-to-manage-complex-seo-processes</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Project Management for Agencies: How to Successfully Manage an SEO Process as an Agency</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=q_CSuBqYkZI" target="_blank">https://www.youtube.com/watch?v=q_CSuBqYkZI</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Project Management: A Guide To Get Organised</div><div class="resource-badges"><span class="source-pill">Lauren Carel</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo-project-management/459118/" target="_blank">https://www.searchenginejournal.com/seo-project-management/459118/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The ultimate guide to SEO project management for digital agencies</div><div class="resource-badges"><span class="source-pill">Gus Pelogia</span></div></div><a class="resource-link" href="https://www.teamwork.com/blog/seo-project-management/" target="_blank">https://www.teamwork.com/blog/seo-project-management/</a></li></ul></div></details>
-            <details class="topic-card" id="execute-an-seo-process-8-common-seo-execution-mistakes-to-avoid"><summary class="topic-summary"><span>Common SEO Execution Mistakes To Avoid</span><span class="topic-meta">5 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Common SEO Mistakes (And How to Fix Them)</div><div class="resource-badges"><span class="source-pill">Si Quan Ong</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-mistakes/" target="_blank">https://ahrefs.com/blog/seo-mistakes/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">11 Common SEO Mistakes You’re Probably Making</div><div class="resource-badges"><span class="source-pill">Trevin Shirey</span></div></div><a class="resource-link" href="https://www.webfx.com/blog/seo/11-common-seo-mistakes-youre-probably-making/" target="_blank">https://www.webfx.com/blog/seo/11-common-seo-mistakes-youre-probably-making/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">10 Common SEO Mistakes To Avoid in 2024</div><div class="resource-badges"><span class="source-pill">Raine Guerrero</span></div></div><a class="resource-link" href="https://www.siegemedia.com/seo/common-seo-mistakes" target="_blank">https://www.siegemedia.com/seo/common-seo-mistakes</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Mistakes: Common SEO Issues & How to Fix Them</div><div class="resource-badges"><span class="source-pill">Kari DeRie</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/biggest-seo-mistakes/" target="_blank">https://www.semrush.com/blog/biggest-seo-mistakes/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Biggest SEO Mistakes That Might Be Ruining Your Site in 2024</div><div class="resource-badges"><span class="source-pill">Tatiana Tsyulia</span></div></div><a class="resource-link" href="https://www.link-assistant.com/news/seo-mistakes-to-avoid.html" target="_blank">https://www.link-assistant.com/news/seo-mistakes-to-avoid.html</a></li></ul></div></details>
-          </section>
+              <!-- Topic 1 -->
+              <details class="topic-card" id="execute-an-seo-process-1-establishing-an-seo-strategy" data-search="execute an seo process establishing an seo strategy creating an seo strategy from scratch kevin indig enduring seo strategy 2023 template">
+                <summary class="topic-summary"><span>Establishing an SEO Strategy</span><span class="topic-meta">6 resources</span></summary>
+                <div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Creating an SEO Strategy from Scratch</div><div class="resource-badges"><span class="source-pill">Kevin Indig</span></div></div><a class="resource-link" href="https://www.kevin-indig.com/creating-an-seo-strategy-from-scratch" target="_blank">https://www.kevin-indig.com/creating-an-seo-strategy-from-scratch</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Create an Enduring SEO Strategy in 2023 (Step-By-Step)</div><div class="resource-badges"><span class="source-pill">Jonas Sickler / Terakeet</span></div></div><a class="resource-link" href="https://terakeet.com/blog/seo-strategy/" target="_blank">https://terakeet.com/blog/seo-strategy/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Strategy: How to Create One for 2023 (+ Template)</div><div class="resource-badges"><span class="source-pill">Carlos Silva</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-strategy/" target="_blank">https://www.semrush.com/blog/seo-strategy/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set A Winning SEO Strategy: Concepts, Steps, Do's & Don'ts and Mistakes to Avoid</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=5SzJ0oVFor8" target="_blank">https://www.youtube.com/watch?v=5SzJ0oVFor8</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Create an SEO Strategy for 2022 [Template Included]</div><div class="resource-badges"><span class="source-pill">Drew Fortin / HubSpot</span></div></div><a class="resource-link" href="https://blog.hubspot.com/marketing/seo-strategy" target="_blank">https://blog.hubspot.com/marketing/seo-strategy</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">9 Essential Steps In Building A Winning SEO Strategy</div><div class="resource-badges"><span class="source-pill">Loren Baker / Search Engine Journal</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo/strategy/#close" target="_blank">https://www.searchenginejournal.com/seo/strategy/#close</a></li></ul></div>
+              </details>
+
+              <!-- Topic 2 -->
+              <details class="topic-card" id="execute-an-seo-process-2-setting-seo-goals" data-search="execute an seo process setting seo goals smart seo goals moz databox ahrefs"><summary class="topic-summary"><span>Setting SEO Goals</span><span class="topic-meta">6 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">How Do You Set Smart SEO Goals for Your Team/Agency/Project?</div><div class="resource-badges"><span class="source-pill">Rand Fishkin / Moz</span></div></div><a class="resource-link" href="https://moz.com/blog/smart-seo-goals" target="_blank">https://moz.com/blog/smart-seo-goals</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set SEO Goals for Your Team (That Actually Drive Action)</div><div class="resource-badges"><span class="source-pill">Elise Dopson</span></div></div><a class="resource-link" href="https://databox.com/how-to-set-seo-goals" target="_blank">https://databox.com/how-to-set-seo-goals</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set the Right SEO Goals with 3 Examples</div><div class="resource-badges"><span class="source-pill">Kayle Larkin / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-goals/" target="_blank">https://ahrefs.com/blog/seo-goals/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set & Achieve Realistic SEO Goals</div><div class="resource-badges"><span class="source-pill">Paul Schmidt / Search Engine Journal</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/set-achieve-realistic-seo-goals/288839/" target="_blank">https://www.searchenginejournal.com/set-achieve-realistic-seo-goals/288839/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">OKRs for SEO: How to Set SEO Goals That Increase Your Value & Get You Greater Investment</div><div class="resource-badges"><span class="source-pill">Kameron Jenkins / Botify</span></div></div><a class="resource-link" href="https://www.botify.com/blog/seo-okrs" target="_blank">https://www.botify.com/blog/seo-okrs</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Set Goals for SEO</div><div class="resource-badges"><span class="source-pill">Sharon Lunny / Seer Interactive</span></div></div><a class="resource-link" href="https://www.seerinteractive.com/insights/how-to-set-seo-goals" target="_blank">https://www.seerinteractive.com/insights/how-to-set-seo-goals</a></li></ul></div></details>
+
+              <!-- Topic 3 -->
+              <details class="topic-card" id="execute-an-seo-process-3-measuring-seo" data-search="execute an seo process measuring seo seo analytics supermetrics"><summary class="topic-summary"><span>Measuring SEO</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Analytics: A Step-by-Step Process with Tools, Examples, and Resources</div><div class="resource-badges"><span class="source-pill">Branko Kral / Supermetrics</span></div></div><a class="resource-link" href="https://supermetrics.com/blog/seo-analytics" target="_blank">https://supermetrics.com/blog/seo-analytics</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Measuring SEO Results</div><div class="resource-badges"><span class="source-pill">Backlinko</span></div></div><a class="resource-link" href="https://backlinko.com/hub/seo/seo-results" target="_blank">https://backlinko.com/hub/seo/seo-results</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Critical SEO Metrics You Need To Track</div><div class="resource-badges"><span class="source-pill">Joe Kindness / AgencyAnalytics</span></div></div><a class="resource-link" href="https://agencyanalytics.com/blog/seo-metrics" target="_blank">https://agencyanalytics.com/blog/seo-metrics</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Measuring & Tracking SEO Success</div><div class="resource-badges"><span class="source-pill">Moz</span></div></div><a class="resource-link" href="https://moz.com/beginners-guide-to-seo/measuring-and-tracking-success" target="_blank">https://moz.com/beginners-guide-to-seo/measuring-and-tracking-success</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Use Google Analytics to Improve SEO Performance</div><div class="resource-badges"><span class="source-pill">Michal Pecánek / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/google-analytics-for-seo/" target="_blank">https://ahrefs.com/blog/google-analytics-for-seo/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Ways for Using Google Analytics to Track Your SEO Efforts for Free</div><div class="resource-badges"><span class="source-pill">Elise Dopson / Databox</span></div></div><a class="resource-link" href="https://databox.com/google-analytics-for-seo" target="_blank">https://databox.com/google-analytics-for-seo</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Measure SEO Performance & Results (The Right Way)</div><div class="resource-badges"><span class="source-pill">Michal Pecánek / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-performance-results/" target="_blank">https://ahrefs.com/blog/seo-performance-results/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How To Measure SEO Performance and Results</div><div class="resource-badges"><span class="source-pill">Erika Varagouli / Semrush</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-results/" target="_blank">https://www.semrush.com/blog/seo-results/</a></li></ul></div></details>
+
+              <!-- Topic 4 -->
+              <details class="topic-card" id="execute-an-seo-process-4-reporting-seo" data-search="execute an seo process reporting seo moz mini guide"><summary class="topic-summary"><span>Reporting SEO</span><span class="topic-meta">6 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">The Mini Guide to SEO Reporting</div><div class="resource-badges"><span class="source-pill">Moz</span></div></div><a class="resource-link" href="https://moz.com/mini-guide-to-seo-reporting" target="_blank">https://moz.com/mini-guide-to-seo-reporting</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The Anatomy of the Perfect SEO Report</div><div class="resource-badges"><span class="source-pill">Melissa Fach / Semrush</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-report/" target="_blank">https://www.semrush.com/blog/seo-report/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Steal Our SEO Report Template (and Make It Even Better)</div><div class="resource-badges"><span class="source-pill">Jake Sheridan / Ahrefs</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-report-template/" target="_blank">https://ahrefs.com/blog/seo-report-template/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Reporting: How To Build Meaningful Analytics Reports</div><div class="resource-badges"><span class="source-pill">Bill Sebald</span></div></div><a class="resource-link" href="https://www.greenlanemarketing.com/resources/articles/making-better-seo-reports-for-your-clients" target="_blank">https://www.greenlanemarketing.com/resources/articles/making-better-seo-reports-for-your-clients</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Reports: Which Metrics Matter & How to Use Them Well</div><div class="resource-badges"><span class="source-pill">Helen Pollitt</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo-reports-which-metrics-matter-how-to-use-them-well/341839/" target="_blank">https://www.searchenginejournal.com/seo-reports-which-metrics-matter-how-to-use-them-well/341839/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Develop Successful SEO Reports</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://speakerdeck.com/aleyda/how-to-develop-successful-seo-reports-number-seokomm" target="_blank">https://speakerdeck.com/aleyda/how-to-develop-successful-seo-reports-number-seokomm</a></li></ul></div></details>
+
+              <!-- Topic 5 -->
+              <details class="topic-card" id="execute-an-seo-process-5-developing-an-seo-audit"><summary class="topic-summary"><span>Developing an SEO Audit</span><span class="topic-meta">9 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">A Simple (But Effective) 14-Step SEO Audit & Checklist</div><div class="resource-badges"><span class="source-pill">Joshua Hardwick</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-audit/" target="_blank">https://ahrefs.com/blog/seo-audit/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The 15-Step SEO Audit Checklist for 2023</div><div class="resource-badges"><span class="source-pill">Backlinko</span></div></div><a class="resource-link" href="https://backlinko.com/tools/seo-checker" target="_blank">https://backlinko.com/tools/seo-checker</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">242 Point SEO Audit Checklist</div><div class="resource-badges"><span class="source-pill">Andy Drinkwater</span></div></div><a class="resource-link" href="https://andydrinkwater.com/seo-audit-checklist/" target="_blank">https://andydrinkwater.com/seo-audit-checklist/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Perform a Complete SEO Audit (in 14 Steps)</div><div class="resource-badges"><span class="source-pill">Vlado Pavlik</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/seo-audit/" target="_blank">https://www.semrush.com/blog/seo-audit/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Develop Actionable and Impactful SEO Audits</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://www.aleydasolis.com/en/search-engine-optimization/how-to-winning-seo-website-audit-growth/" target="_blank">https://www.aleydasolis.com/en/search-engine-optimization/how-to-winning-seo-website-audit-growth/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Approach Website SEO Audits</div><div class="resource-badges"><span class="source-pill">Geoff Kennedy</span></div></div><a class="resource-link" href="https://sitebulb.com/resources/guides/how-to-approach-website-seo-audits/" target="_blank">https://sitebulb.com/resources/guides/how-to-approach-website-seo-audits/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Tech SEO Implemented</div><div class="resource-badges"><span class="source-pill">Areej AbuAli</span></div></div><a class="resource-link" href="https://www.areejabuali.com/blog/getting-tech-seo-implemented" target="_blank">https://www.areejabuali.com/blog/getting-tech-seo-implemented</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Rethinking Technical SEO Audits</div><div class="resource-badges"><span class="source-pill">Andrew Charlton</span></div></div><a class="resource-link" href="https://bertiecharlton.com/rethinking-technical-seo-audits/" target="_blank">https://bertiecharlton.com/rethinking-technical-seo-audits/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Let's never talk about SEO audits again</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/lets-never-talk-about-seo-audits" target="_blank">https://newsletter.seomba.com/p/lets-never-talk-about-seo-audits</a></li></ul></div></details>
+
+              <!-- Topic 6 -->
+              <details class="topic-card" id="execute-an-seo-process-6-getting-seo-buy-in"><summary class="topic-summary"><span>Getting SEO Buy-In</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting SEO Buy-in: Learn How to Get SEO Resources and Support</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=IxaVJcgKU5M" target="_blank">https://www.youtube.com/watch?v=IxaVJcgKU5M</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Buy-in Requires Executive Empathy</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/getting-buy-in-requires-executive" target="_blank">https://newsletter.seomba.com/p/getting-buy-in-requires-executive</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Be an SEO Chameleon: How to Get a “YES” from Stakeholders</div><div class="resource-badges"><span class="source-pill">Ashleigh Noad</span></div></div><a class="resource-link" href="https://www.womenintechseo.com/knowledge/be-an-seo-chameleon/" target="_blank">https://www.womenintechseo.com/knowledge/be-an-seo-chameleon/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Get SEO Buy-In: 7 Actionable Tips</div><div class="resource-badges"><span class="source-pill">Despina Gavoyannis</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-buy-in/" target="_blank">https://ahrefs.com/blog/seo-buy-in/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to get more of what you want in SEO</div><div class="resource-badges"><span class="source-pill">Philipp Götza</span></div></div><a class="resource-link" href="https://searchengineland.com/seo-want-get-443884" target="_blank">https://searchengineland.com/seo-want-get-443884</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to Get Buy-In for Your SEO Projects — Whiteboard Friday</div><div class="resource-badges"><span class="source-pill">Shawn Huber</span></div></div><a class="resource-link" href="https://moz.com/blog/buy-in-for-seo-whiteboard-friday" target="_blank">https://moz.com/blog/buy-in-for-seo-whiteboard-friday</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Getting Buy-In for Your SEO Strategy</div><div class="resource-badges"><span class="source-pill">Sara Taher</span></div></div><a class="resource-link" href="https://www.sara-taher.com/getting-buy-in-for-your-seo-strategy" target="_blank">https://www.sara-taher.com/getting-buy-in-for-your-seo-strategy</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Create SEO proposals that get approved: Pitching big initiatives to clients and stakeholders</div><div class="resource-badges"><span class="source-pill">Gus Pelogia</span></div></div><a class="resource-link" href="https://www.wix.com/seo/learn/resource/create-an-seo-proposal" target="_blank">https://www.wix.com/seo/learn/resource/create-an-seo-proposal</a></li></ul></div></details>
+
+              <!-- Topic 7 -->
+              <details class="topic-card" id="execute-an-seo-process-7-seo-process-management"><summary class="topic-summary"><span>SEO Process Management</span><span class="topic-meta">8 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">Tips for effective SEO Project Management</div><div class="resource-badges"><span class="source-pill">Sam Mangialavori</span></div></div><a class="resource-link" href="https://www.brainlabsdigital.com/blog/tips-for-effective-seo-project-management/" target="_blank">https://www.brainlabsdigital.com/blog/tips-for-effective-seo-project-management/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">What Makes your SEO Fail (and how to fix it)</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://fr.slideshare.net/aleydasolis/what-makes-your-seo-fail-and-how-to-fix-it-brightonseo" target="_blank">https://fr.slideshare.net/aleydasolis/what-makes-your-seo-fail-and-how-to-fix-it-brightonseo</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">How to turn your agency into the “McKinsey of SEO”</div><div class="resource-badges"><span class="source-pill">Tom Critchlow</span></div></div><a class="resource-link" href="https://newsletter.seomba.com/p/how-to-turn-your-agency-into-the" target="_blank">https://newsletter.seomba.com/p/how-to-turn-your-agency-into-the</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Integrating SEO within the Product Triangle To Align Efforts & Maximize Impact</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://www.aleydasolis.com/en/search-engine-optimization/seo-product-triangle/" target="_blank">https://www.aleydasolis.com/en/search-engine-optimization/seo-product-triangle/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Thriving as an SEO Specialist: Frameworks & Tips to Manage Complex SEO Processes</div><div class="resource-badges"><span class="source-pill">Aleyda Solis</span></div></div><a class="resource-link" href="https://fr.slideshare.net/aleydasolis/thriving-as-an-seo-specialist-frameworks-tips-to-manage-complex-seo-processes" target="_blank">https://fr.slideshare.net/aleydasolis/thriving-as-an-seo-specialist-frameworks-tips-to-manage-complex-seo-processes</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Project Management for Agencies: How to Successfully Manage an SEO Process as an Agency</div><div class="resource-badges"><span class="source-pill">Crawling Mondays</span></div></div><a class="resource-link" href="https://www.youtube.com/watch?v=q_CSuBqYkZI" target="_blank">https://www.youtube.com/watch?v=q_CSuBqYkZI</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Project Management: A Guide To Get Organised</div><div class="resource-badges"><span class="source-pill">Lauren Carel</span></div></div><a class="resource-link" href="https://www.searchenginejournal.com/seo-project-management/459118/" target="_blank">https://www.searchenginejournal.com/seo-project-management/459118/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">The ultimate guide to SEO project management for digital agencies</div><div class="resource-badges"><span class="source-pill">Gus Pelogia</span></div></div><a class="resource-link" href="https://www.teamwork.com/blog/seo-project-management/" target="_blank">https://www.teamwork.com/blog/seo-project-management/</a></li></ul></div></details>
+
+              <!-- Topic 8 -->
+              <details class="topic-card" id="execute-an-seo-process-8-common-seo-execution-mistakes-to-avoid"><summary class="topic-summary"><span>Common SEO Execution Mistakes To Avoid</span><span class="topic-meta">5 resources</span></summary><div class="topic-body"><ul class="resource-list"><li class="resource-item"><div class="resource-head"><div class="resource-title">15 Common SEO Mistakes (And How to Fix Them)</div><div class="resource-badges"><span class="source-pill">Si Quan Ong</span></div></div><a class="resource-link" href="https://ahrefs.com/blog/seo-mistakes/" target="_blank">https://ahrefs.com/blog/seo-mistakes/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">11 Common SEO Mistakes You’re Probably Making</div><div class="resource-badges"><span class="source-pill">Trevin Shirey</span></div></div><a class="resource-link" href="https://www.webfx.com/blog/seo/11-common-seo-mistakes-youre-probably-making/" target="_blank">https://www.webfx.com/blog/seo/11-common-seo-mistakes-youre-probably-making/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">10 Common SEO Mistakes To Avoid in 2024</div><div class="resource-badges"><span class="source-pill">Raine Guerrero</span></div></div><a class="resource-link" href="https://www.siegemedia.com/seo/common-seo-mistakes" target="_blank">https://www.siegemedia.com/seo/common-seo-mistakes</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">SEO Mistakes: Common SEO Issues & How to Fix Them</div><div class="resource-badges"><span class="source-pill">Kari DeRie</span></div></div><a class="resource-link" href="https://www.semrush.com/blog/biggest-seo-mistakes/" target="_blank">https://www.semrush.com/blog/biggest-seo-mistakes/</a></li><li class="resource-item"><div class="resource-head"><div class="resource-title">Biggest SEO Mistakes That Might Be Ruining Your Site in 2024</div><div class="resource-badges"><span class="source-pill">Tatiana Tsyulia</span></div></div><a class="resource-link" href="https://www.link-assistant.com/news/seo-mistakes-to-avoid.html" target="_blank">https://www.link-assistant.com/news/seo-mistakes-to-avoid.html</a></li></ul></div></details>
+            </div>
+          </div>
 
           <div class="empty-state mt-4" id="empty-state">No matching topics found. Try a different keyword such as AI SEO, GEO, AEO, or a topic name from the sidebar.</div>
         </div>
@@ -929,17 +1014,14 @@
   </section>
 </main>
 
-<!-- Footer (same as about-us) -->
+<!-- Footer -->
 <div data-include="footer.html"></div>
 
 <!-- Social buttons + back to top -->
 <div class="social-buttons-container">
-  <!-- 1. Nút WhatsApp luôn hiển thị -->
   <a href="https://wa.me/84916882795" class="social-button whatsapp" aria-label="WhatsApp" target="_blank">
     <iconify-icon icon="ic:baseline-whatsapp"></iconify-icon>
   </a>
-
-  <!-- 2. Nút chính để mở menu các mạng xã hội khác (Facebook, Twitter, Linkedin) -->
   <div class="social-dropdown-wrapper">
     <button class="social-button social-main" aria-label="Social media">
       <iconify-icon icon="ion:share-social"></iconify-icon>
@@ -956,8 +1038,6 @@
       </a>
     </div>
   </div>
-
-  <!-- 3. Nút Back to Top -->
   <button class="back-to-top" aria-label="Back to top">
     <iconify-icon icon="material-symbols:arrow-upward"></iconify-icon>
   </button>
@@ -971,7 +1051,25 @@
 <script src="include.js"></script>
 <script>
   window.addEventListener('load', function() { const preloader = document.getElementById('preloader'); if(preloader) preloader.style.display = 'none'; });
-  // search and filter logic as originally
+
+  // Section collapsible toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionHeaders = document.querySelectorAll('.section-header[data-toggle="section"]');
+    sectionHeaders.forEach(header => {
+      header.addEventListener('click', function() {
+        const parent = this.closest('.section-collapsible');
+        if (parent) {
+          parent.classList.toggle('collapsed');
+          const icon = this.querySelector('.toggle-icon');
+          if (icon) {
+            icon.classList.toggle('open');
+          }
+        }
+      });
+    });
+  });
+
+  // Search and filter logic
   (function(){
     const search = document.getElementById('roadmap-search');
     const filterCount = document.getElementById('filter-count');
@@ -989,7 +1087,8 @@
         card.style.display = match ? '' : 'none';
         if(match){ visibleCards++; visibleResources += (card.querySelectorAll('.resource-item').length); }
       });
-      document.querySelectorAll('.roadmap-section').forEach(section => {
+      // Show/hide section bodies based on child visibility
+      document.querySelectorAll('.section-collapsible').forEach(section => {
         const anyVisible = section.querySelectorAll('.topic-card').some(c => c.style.display !== 'none');
         section.style.display = anyVisible ? '' : 'none';
       });
@@ -1009,11 +1108,10 @@
     setActiveLink();
     applyFilter();
   })();
-</script>
-<script>
+
+  // Accordion behavior for topic cards (close others)
   document.addEventListener('DOMContentLoaded', function() {
     const allDetails = document.querySelectorAll('.topic-card');
-    
     function closeOtherDetails(currentDetail) {
       allDetails.forEach(detail => {
         if (detail !== currentDetail && detail.open) {
@@ -1021,21 +1119,15 @@
         }
       });
     }
-
     allDetails.forEach(detail => {
       const summary = detail.querySelector('.topic-summary');
       if (summary) {
         summary.addEventListener('click', function(event) {
-          // Nếu đang mở và click để đóng -> không can thiệp
           if (detail.open) {
-            // Cho phép đóng bình thường
             return;
           }
-          // Ngăn hành vi mặc định để xử lý đồng bộ
           event.preventDefault();
-          // Đóng tất cả các details khác
           closeOtherDetails(detail);
-          // Mở detail hiện tại
           detail.open = true;
         });
       }
