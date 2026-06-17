@@ -1099,18 +1099,63 @@
     function applyFilter(){
       const q = normalize(search.value);
       let visibleCards = 0, visibleResources = 0;
+      
+      // 1. Lọc các topic cards
       cards.forEach(card => {
         const text = normalize(card.dataset.search || card.textContent);
         const match = !q || text.includes(q);
         card.style.display = match ? '' : 'none';
-        if(match){ visibleCards++; visibleResources += (card.querySelectorAll('.resource-item').length); }
+        if(match){ 
+          visibleCards++; 
+          visibleResources += (card.querySelectorAll('.resource-item').length); 
+        }
       });
-      // Show/hide section bodies based on child visibility
-      document.querySelectorAll('.section-collapsible').forEach(section => {
-        const anyVisible = section.querySelectorAll('.topic-card').some(c => c.style.display !== 'none');
+      
+      // 2. Xử lý các section lớn
+      const allSections = document.querySelectorAll('.section-collapsible');
+      allSections.forEach(section => {
+        // Tìm các topic card bên trong section
+        const topicCards = section.querySelectorAll('.topic-card');
+        const anyVisible = Array.from(topicCards).some(c => c.style.display !== 'none');
+        
+        // Ẩn section nếu không có topic nào visible
         section.style.display = anyVisible ? '' : 'none';
+        
+        // Nếu section có kết quả và đang bị đóng -> tự động mở
+        if (anyVisible && section.classList.contains('collapsed')) {
+          section.classList.remove('collapsed');
+          const icon = section.querySelector('.toggle-icon');
+          if (icon) icon.classList.add('open');
+        }
+        
+        // Nếu section không có kết quả và đang mở -> tự động đóng
+        if (!anyVisible && !section.classList.contains('collapsed')) {
+          section.classList.add('collapsed');
+          const icon = section.querySelector('.toggle-icon');
+          if (icon) icon.classList.remove('open');
+        }
       });
-      navLinks.forEach(link => { link.parentElement.style.display = (!q || normalize(link.dataset.search || link.textContent).includes(q)) ? '' : 'none'; });
+      
+      // 3. Tự động mở topic card đầu tiên có kết quả (nếu có từ khóa search)
+      if (q) {
+        const firstVisibleCard = document.querySelector('.topic-card[style*="display: block"]');
+        if (firstVisibleCard && !firstVisibleCard.open) {
+          // Đóng tất cả topic khác
+          cards.forEach(c => { if (c !== firstVisibleCard && c.open) c.open = false; });
+          firstVisibleCard.open = true;
+        }
+      }
+      
+      // 4. Cập nhật sidebar links
+      navLinks.forEach(link => { 
+        const linkText = normalize(link.dataset.search || link.textContent);
+        const targetId = link.dataset.target;
+        const targetCard = document.getElementById(targetId);
+        const isVisible = targetCard && targetCard.style.display !== 'none';
+        link.parentElement.style.display = (!q || (isVisible && linkText.includes(q))) ? '' : 'none';
+      });
+      
+      // 5. Cập nhật thông báo
       filterCount.textContent = q ? `${visibleCards} topics matched · ${visibleResources} resources` : 'Showing all resources';
       emptyState.style.display = (cards.some(c => c.style.display !== 'none')) ? 'none' : 'block';
     }
