@@ -1052,18 +1052,36 @@
 <script>
   window.addEventListener('load', function() { const preloader = document.getElementById('preloader'); if(preloader) preloader.style.display = 'none'; });
 
-  // Section collapsible toggle
+  // Section collapsible toggle - chỉ mở 1 section tại 1 thời điểm
   document.addEventListener('DOMContentLoaded', function() {
+    const allSections = document.querySelectorAll('.section-collapsible');
     const sectionHeaders = document.querySelectorAll('.section-header[data-toggle="section"]');
+    
     sectionHeaders.forEach(header => {
       header.addEventListener('click', function() {
-        const parent = this.closest('.section-collapsible');
-        if (parent) {
-          parent.classList.toggle('collapsed');
-          const icon = this.querySelector('.toggle-icon');
-          if (icon) {
-            icon.classList.toggle('open');
+        const currentSection = this.closest('.section-collapsible');
+        if (!currentSection) return;
+        
+        const isCurrentlyCollapsed = currentSection.classList.contains('collapsed');
+        
+        // Đóng TẤT CẢ các section khác
+        allSections.forEach(section => {
+          if (section !== currentSection) {
+            section.classList.add('collapsed');
+            const icon = section.querySelector('.toggle-icon');
+            if (icon) icon.classList.remove('open');
           }
+        });
+        
+        // Toggle section hiện tại
+        if (isCurrentlyCollapsed) {
+          currentSection.classList.remove('collapsed');
+          const icon = currentSection.querySelector('.toggle-icon');
+          if (icon) icon.classList.add('open');
+        } else {
+          currentSection.classList.add('collapsed');
+          const icon = currentSection.querySelector('.toggle-icon');
+          if (icon) icon.classList.remove('open');
         }
       });
     });
