@@ -1496,7 +1496,57 @@
       emptyState.style.display = (cards.some(c => c.style.display !== 'none')) ? 'none' : 'block';
     }
     if(search) search.addEventListener('input', applyFilter);
-    if(jumpSelect) jumpSelect.addEventListener('change', function(){ if(this.value) window.location.hash = this.value; });
+    if(jumpSelect) {
+      jumpSelect.addEventListener('change', function() {
+        const targetId = this.value;
+        if (!targetId) return;
+        
+        // Cập nhật URL hash
+        window.location.hash = targetId;
+        
+        // Tìm topic và mở section cha
+        const targetTopic = document.querySelector(targetId);
+        if (!targetTopic) return;
+        
+        const parentSection = targetTopic.closest('.section-collapsible');
+        if (!parentSection) return;
+        
+        // Đóng TẤT CẢ các section khác
+        const allSections = document.querySelectorAll('.section-collapsible');
+        allSections.forEach(section => {
+          if (section !== parentSection) {
+            section.classList.add('collapsed');
+            const icon = section.querySelector('.toggle-icon');
+            if (icon) icon.classList.remove('open');
+          }
+        });
+        
+        // Mở section cha nếu đang đóng
+        if (parentSection.classList.contains('collapsed')) {
+          parentSection.classList.remove('collapsed');
+          const icon = parentSection.querySelector('.toggle-icon');
+          if (icon) icon.classList.add('open');
+        }
+        
+        // Đóng tất cả topic khác
+        const allTopics = document.querySelectorAll('.topic-card');
+        allTopics.forEach(topic => {
+          if (topic !== targetTopic && topic.open) {
+            topic.open = false;
+          }
+        });
+        
+        // Mở topic được chọn
+        if (!targetTopic.open) {
+          targetTopic.open = true;
+        }
+        
+        // Scroll đến đúng vị trí
+        setTimeout(() => {
+          targetTopic.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      });
+    }
     const sections = Array.from(document.querySelectorAll('.topic-card'));
     function setActiveLink(){
       let activeId = ''; let best = Infinity;
