@@ -312,6 +312,219 @@
       visibility: visible;
       margin-bottom: 8px;
     }
+    /* ===== STICKY SEARCH BOX ===== */
+    .filter-card.sticky-search {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      border-radius: 0;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--roadmap-border);
+      margin-bottom: 0;
+      transition: all 0.3s ease;
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .filter-card.sticky-search.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .filter-card.sticky-search .filter-meta {
+      display: none;
+    }
+
+    .filter-card.sticky-search label {
+      display: none;
+    }
+
+    .filter-card.sticky-search .filter-input {
+      padding: 0.6rem 1rem !important;
+      font-size: 0.95rem;
+    }
+
+    /* Điều chỉnh padding cho body để tránh nội dung bị che */
+    body.has-sticky-search {
+      padding-top: 0;
+    }
+
+    body.has-sticky-search .roadmap-hero {
+      padding-top: 6rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .filter-card.sticky-search .filter-input {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem !important;
+      }
+    }
+    /* ===== FLOATING JUMP BUTTON ===== */
+    .floating-jump-btn {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      z-index: 1040;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--roadmap-accent);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.3rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .floating-jump-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+      background: #2a2a2a;
+    }
+
+    .floating-jump-btn .iconify-icon {
+      font-size: 1.6rem;
+    }
+
+    .floating-jump-btn .badge-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ff6b6b;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 50%;
+      min-width: 20px;
+      text-align: center;
+      border: 2px solid var(--roadmap-accent);
+    }
+
+    /* Mobile jump panel */
+    .floating-jump-panel {
+      position: fixed;
+      bottom: 210px;
+      right: 20px;
+      z-index: 1039;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+      border: 1px solid var(--roadmap-border);
+      width: 320px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 1.2rem 1.2rem 0.8rem;
+      display: none;
+      animation: slideUp 0.25s ease;
+    }
+
+    .floating-jump-panel.open {
+      display: block;
+    }
+
+    .floating-jump-panel .panel-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--roadmap-muted);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .floating-jump-panel select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid var(--roadmap-border);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      background: #fff;
+      margin-bottom: 0.5rem;
+      outline: none;
+    }
+
+    .floating-jump-panel select:focus {
+      border-color: var(--roadmap-accent);
+    }
+
+    .floating-jump-panel .close-panel {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 0.5rem;
+      border: none;
+      background: transparent;
+      color: var(--roadmap-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-top: 1px solid var(--roadmap-border);
+      margin-top: 0.3rem;
+    }
+
+    .floating-jump-panel .close-panel:hover {
+      color: var(--roadmap-text);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Điều chỉnh cho mobile */
+    @media (max-width: 576px) {
+      .floating-jump-panel {
+        right: 10px;
+        width: calc(100% - 20px);
+        bottom: 190px;
+      }
+      
+      .floating-jump-btn {
+        width: 48px;
+        height: 48px;
+        bottom: 120px;
+        right: 10px;
+        font-size: 1.1rem;
+      }
+      
+      .floating-jump-btn .iconify-icon {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Ẩn mobile select cũ */
+    .roadmap-mobile-sidebar {
+      display: none !important;
+    }
+
+    /* Hiển thị trên desktop (ẩn nút floating) */
+    @media (min-width: 992px) {
+      .floating-jump-btn {
+        display: none;
+      }
+      .floating-jump-panel {
+        display: none !important;
+      }
+      .roadmap-mobile-sidebar {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -6365,6 +6578,136 @@
     <iconify-icon icon="material-symbols:arrow-upward"></iconify-icon>
   </button>
 </div>
+<!-- ===== FLOATING JUMP TO TOPIC BUTTON ===== -->
+<button class="floating-jump-btn" id="floatingJumpBtn" aria-label="Jump to a topic">
+  <iconify-icon icon="mdi:compass"></iconify-icon>
+  <span class="badge-count">51</span>
+</button>
+
+<div class="floating-jump-panel" id="floatingJumpPanel">
+  <div class="panel-title">Jump to a topic</div>
+  <select id="jump-select-floating" class="form-select">
+    <option value="">Choose a topic</option>
+    <optgroup label="SEO Fundamentals">
+      <option value="#seo-fundamentals-1-introduction-to-seo">Introduction to SEO</option>
+      <option value="#seo-fundamentals-2-keyword-research">Keyword Research</option>
+      <option value="#seo-fundamentals-3-competition-analysis">Competition analysis</option>
+      <option value="#seo-fundamentals-4-content-optimization">Content optimization</option>
+      <option value="#seo-fundamentals-5-technical-optimization">Technical optimization</option>
+      <option value="#seo-fundamentals-6-link-building">Link building</option>
+    </optgroup>
+    <optgroup label="Execute an SEO Process">
+      <option value="#execute-an-seo-process-1-establishing-an-seo-strategy">Establishing an SEO Strategy</option>
+      <option value="#execute-an-seo-process-2-setting-seo-goals">Setting SEO Goals</option>
+      <option value="#execute-an-seo-process-3-measuring-seo">Measuring SEO</option>
+      <option value="#execute-an-seo-process-4-reporting-seo">Reporting SEO</option>
+      <option value="#execute-an-seo-process-5-developing-an-seo-audit">Developing an SEO Audit</option>
+      <option value="#execute-an-seo-process-6-getting-seo-buy-in">Getting SEO Buy-In</option>
+      <option value="#execute-an-seo-process-7-seo-process-management">SEO Process Management</option>
+      <option value="#execute-an-seo-process-8-common-seo-execution-mistakes-to-avoid">Common SEO Execution Mistakes</option>
+    </optgroup>
+    <optgroup label="SEO in your CMS">
+      <option value="#seo-in-your-cms-1-shopify-seo-guidelines">Shopify SEO Guidelines</option>
+      <option value="#seo-in-your-cms-2-magento-seo-guidelines">Magento SEO Guidelines</option>
+      <option value="#seo-in-your-cms-3-webflow-seo-guidelines">Webflow SEO Guidelines</option>
+      <option value="#seo-in-your-cms-4-squarespace-seo-guidelines">Squarespace SEO Guidelines</option>
+      <option value="#seo-in-your-cms-5-wordpress-seo-guidelines">WordPress SEO Guidelines</option>
+      <option value="#seo-in-your-cms-6-wix-seo-guidelines">Wix SEO Guidelines</option>
+    </optgroup>
+    <optgroup label="SEO in other Search Engines">
+      <option value="#seo-other-search-engines-1-bing-seo-guidelines-tips">Bing SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-2-yandex-seo-guidelines-tips">Yandex SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-3-baidu-seo-guidelines-tips">Baidu SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-4-naver-seo-guidelines-tips">Naver SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-5-amazon-seo-guidelines-tips">Amazon SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-6-youtube-seo-guidelines-tips">YouTube SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-7-tiktok-seo-guidelines-tips">TikTok SEO Guidelines & Tips</option>
+      <option value="#seo-other-search-engines-8-reddit-for-seo-guidelines-tips">Reddit For SEO Guidelines & Tips</option>
+    </optgroup>
+    <optgroup label="Keep up with SEO News">
+      <option value="#keep-up-seo-news-1-search-engines-official-publications">Search Engine's Official Publications</option>
+      <option value="#keep-up-seo-news-2-search-news-publications">Search News Publications</option>
+      <option value="#keep-up-seo-news-3-search-news-aggregators">Search News Aggregators</option>
+      <option value="#keep-up-seo-news-4-seo-podcasts">SEO Podcasts</option>
+      <option value="#keep-up-seo-news-5-seo-newsletters">SEO Newsletters</option>
+      <option value="#keep-up-seo-news-6-online-events">Online Events</option>
+    </optgroup>
+    <optgroup label="Optimize for AI Search">
+      <option value="#optimize-ai-search-1-ai-search-landscape">AI Search Landscape</option>
+      <option value="#optimize-ai-search-2-ai-search-optimization-fundamentals">AI Search Optimization Fundamentals</option>
+      <option value="#optimize-ai-search-3-optimizing-content-for-ai-search">Optimizing Content for AI Search</option>
+      <option value="#optimize-ai-search-4-technical-optimization-for-ai-search">Technical Optimization for AI Search</option>
+      <option value="#optimize-ai-search-5-measuring-ai-search-visibility-traffic">Measuring AI Search Visibility & Traffic</option>
+      <option value="#optimize-ai-search-6-ai-search-tracking-optimization-tools">AI Search Tracking & Optimization Tools</option>
+    </optgroup>
+    <optgroup label="Deepen your SEO Knowledge">
+      <option value="#deepen-seo-knowledge-1-javascript-seo-guidelines">Javascript SEO Guidelines</option>
+      <option value="#deepen-seo-knowledge-2-internal-linking-optimization">Internal Linking Optimization</option>
+      <option value="#deepen-seo-knowledge-3-logfile-analysis-for-seo">Logfile Analysis for SEO</option>
+      <option value="#deepen-seo-knowledge-4-crawl-budget-optimization">Crawl budget optimization</option>
+      <option value="#deepen-seo-knowledge-5-mobile-optimization">Mobile optimization</option>
+      <option value="#deepen-seo-knowledge-6-web-speed-optimization">Web speed optimization</option>
+      <option value="#deepen-seo-knowledge-7-edge-seo">Edge SEO</option>
+      <option value="#deepen-seo-knowledge-8-xml-sitemaps-optimization">XML Sitemaps optimization</option>
+      <option value="#deepen-seo-knowledge-9-robots-txt-optimization">Robots.txt optimization</option>
+      <option value="#deepen-seo-knowledge-10-paginations-optimization">Paginations optimization</option>
+      <option value="#deepen-seo-knowledge-11-developing-topic-clusters">Developing topic clusters</option>
+      <option value="#deepen-seo-knowledge-12-keyword-mapping">Keyword mapping</option>
+      <option value="#deepen-seo-knowledge-13-content-quality-e-e-a-t">Content Quality and E-E-A-T</option>
+      <option value="#deepen-seo-knowledge-14-keyword-cannibalization-analysis">Keyword cannibalization analysis</option>
+      <option value="#deepen-seo-knowledge-15-image-optimization">Image optimization</option>
+      <option value="#deepen-seo-knowledge-16-video-optimization">Video optimization</option>
+      <option value="#deepen-seo-knowledge-17-structured-data">Structured data</option>
+      <option value="#deepen-seo-knowledge-18-content-pruning-seo">Content pruning for SEO</option>
+      <option value="#deepen-seo-knowledge-19-avoiding-duplicate-content">Avoiding Duplicate Content</option>
+      <option value="#deepen-seo-knowledge-20-programmatic-seo">Programmatic SEO</option>
+      <option value="#deepen-seo-knowledge-21-backlinks-analysis">Backlinks analysis</option>
+      <option value="#deepen-seo-knowledge-22-outreach-link-building">Outreach for link building</option>
+      <option value="#deepen-seo-knowledge-23-disavowing-backlinks">Disavowing backlinks</option>
+      <option value="#deepen-seo-knowledge-24-digital-pr-link-building">Digital PR & Link Building</option>
+      <option value="#deepen-seo-knowledge-25-broken-link-building">Broken link building</option>
+      <option value="#deepen-seo-knowledge-26-seo-forecasting">SEO Forecasting</option>
+      <option value="#deepen-seo-knowledge-27-calculate-seo-roi">Calculate SEO ROI</option>
+      <option value="#deepen-seo-knowledge-28-show-seo-value-non-seos">Show SEO Value to Non-SEOs</option>
+      <option value="#deepen-seo-knowledge-29-budgeting-seo">Budgeting SEO</option>
+      <option value="#deepen-seo-knowledge-30-seo-myths">SEO Myths</option>
+      <option value="#deepen-seo-knowledge-31-building-seo-team">Building an SEO Team</option>
+      <option value="#deepen-seo-knowledge-32-seo-product-management">SEO Product Management</option>
+      <option value="#deepen-seo-knowledge-33-communication-seo-stakeholders">Communication with SEO Stakeholders</option>
+      <option value="#deepen-seo-knowledge-34-creating-seo-contracts">Creating SEO Contracts</option>
+      <option value="#deepen-seo-knowledge-35-seo-jobs-interviews">SEO Jobs Interviews</option>
+      <option value="#deepen-seo-knowledge-36-serp-features-optimization">SERP Features optimization</option>
+      <option value="#deepen-seo-knowledge-37-google-aio-llms-optimization">Google AIO's & LLMs Optimization</option>
+      <option value="#deepen-seo-knowledge-38-seo-testing">SEO Testing</option>
+      <option value="#deepen-seo-knowledge-39-web-stories">Web Stories</option>
+      <option value="#deepen-seo-knowledge-40-google-discover">Google Discover</option>
+      <option value="#deepen-seo-knowledge-41-knowledge-panel-optimization">Knowledge Panel optimization</option>
+      <option value="#deepen-seo-knowledge-42-search-rankings-drop-analysis">Search Rankings Drop Analysis</option>
+      <option value="#deepen-seo-knowledge-43-seo-brand-recognition-visibility">SEO for Brand Recognition</option>
+      <option value="#deepen-seo-knowledge-44-zero-click-search">Zero Click Search</option>
+      <option value="#deepen-seo-knowledge-45-seo-web-migrations">SEO for Web Migrations</option>
+      <option value="#deepen-seo-knowledge-46-seo-web-redesigns">SEO for Web Redesigns</option>
+      <option value="#deepen-seo-knowledge-47-seo-new-web-launch">SEO for New Web Launch</option>
+      <option value="#deepen-seo-knowledge-48-google-core-updates">Google Core Updates Analysis</option>
+      <option value="#deepen-seo-knowledge-49-dealing-google-penalties">Dealing with Google Penalties</option>
+      <option value="#deepen-seo-knowledge-50-removing-urls-google">Removing URLs from Google</option>
+      <option value="#deepen-seo-knowledge-51-optimizing-product-pages">Optimizing Product Pages</option>
+    </optgroup>
+    <optgroup label="Free SEO Tools To Use">
+      <option value="#free-seo-tools-1-keyword-research-tools">Keyword Research Tools</option>
+      <option value="#free-seo-tools-2-on-page-seo-tools">On-Page SEO Tools</option>
+      <option value="#free-seo-tools-3-link-building-tools">Link Building Tools</option>
+      <option value="#free-seo-tools-4-monitoring-rank-tracking-tools">Monitoring & Rank Tracking Tools</option>
+      <option value="#free-seo-tools-5-seo-dashboard-reporting-tools">SEO Dashboard & Reporting Tools</option>
+      <option value="#free-seo-tools-6-web-speed-optimization-tools">Web Speed Optimization Tools</option>
+      <option value="#free-seo-tools-7-structured-data-tools">Structured Data Tools</option>
+      <option value="#free-seo-tools-8-mobile-seo-tools">Mobile SEO Tools</option>
+      <option value="#free-seo-tools-9-local-seo-tools">Local SEO Tools</option>
+      <option value="#free-seo-tools-10-international-seo-tools">International SEO Tools</option>
+    </optgroup>
+  </select>
+  <button class="close-panel" id="closeJumpPanel">Close</button>
+</div>
 
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
@@ -6623,6 +6966,173 @@
       });
     });
   });
+  // ===== STICKY SEARCH =====
+document.addEventListener('DOMContentLoaded', function() {
+  const searchCard = document.querySelector('.filter-card');
+  if (!searchCard) return;
+  
+  const heroSection = document.querySelector('.roadmap-hero');
+  const navbar = document.querySelector('.navbar');
+  
+  // Tạo bản sao sticky nếu chưa có
+  let stickySearch = document.querySelector('.filter-card.sticky-search');
+  if (!stickySearch) {
+    stickySearch = searchCard.cloneNode(true);
+    stickySearch.classList.add('sticky-search');
+    // Xóa các phần không cần trong bản sticky
+    const label = stickySearch.querySelector('label');
+    if (label) label.remove();
+    const meta = stickySearch.querySelector('.filter-meta');
+    if (meta) meta.remove();
+    document.body.appendChild(stickySearch);
+  }
+  
+  // Lắng nghe sự kiện cuộn
+  let lastScrollY = 0;
+  let isSticky = false;
+  
+  function handleScroll() {
+    const scrollY = window.scrollY;
+    const heroBottom = heroSection ? heroSection.offsetHeight : 400;
+    
+    // Tính vị trí bắt đầu sticky (ngay dưới navbar)
+    const navbarHeight = navbar ? navbar.offsetHeight : 70;
+    const stickyThreshold = navbarHeight + 10;
+    
+    // Xác định xem search card gốc đã bị cuộn qua khỏi tầm nhìn chưa
+    const searchRect = searchCard.getBoundingClientRect();
+    const isOutOfView = searchRect.top < navbarHeight;
+    
+    // Hiển thị/ẩn sticky
+    if (isOutOfView && scrollY > stickyThreshold) {
+      if (!isSticky) {
+        isSticky = true;
+        stickySearch.classList.add('show');
+        document.body.classList.add('has-sticky-search');
+      }
+    } else {
+      if (isSticky) {
+        isSticky = false;
+        stickySearch.classList.remove('show');
+        document.body.classList.remove('has-sticky-search');
+      }
+    }
+    
+    lastScrollY = scrollY;
+  }
+  
+  // Debounce để tối ưu performance
+  let ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+  
+  // Đồng bộ input giữa search gốc và search sticky
+  const originalInput = searchCard.querySelector('#roadmap-search');
+  const stickyInput = stickySearch.querySelector('#roadmap-search');
+  
+  if (originalInput && stickyInput) {
+    originalInput.addEventListener('input', function() {
+      stickyInput.value = this.value;
+      // Trigger filter event
+      const event = new Event('input', { bubbles: true });
+      stickyInput.dispatchEvent(event);
+    });
+    
+    stickyInput.addEventListener('input', function() {
+      originalInput.value = this.value;
+      const event = new Event('input', { bubbles: true });
+      originalInput.dispatchEvent(event);
+    });
+  }
+});
+// ===== FLOATING JUMP BUTTON =====
+document.addEventListener('DOMContentLoaded', function() {
+  const jumpBtn = document.getElementById('floatingJumpBtn');
+  const jumpPanel = document.getElementById('floatingJumpPanel');
+  const closeBtn = document.getElementById('closeJumpPanel');
+  const jumpSelectFloating = document.getElementById('jump-select-floating');
+  
+  // Toggle panel
+  if (jumpBtn) {
+    jumpBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      jumpPanel.classList.toggle('open');
+    });
+  }
+  
+  // Close panel
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      jumpPanel.classList.remove('open');
+    });
+  }
+  
+  // Close panel khi click ra ngoài
+  document.addEventListener('click', function(e) {
+    if (jumpPanel && jumpPanel.classList.contains('open')) {
+      if (!jumpPanel.contains(e.target) && !jumpBtn.contains(e.target)) {
+        jumpPanel.classList.remove('open');
+      }
+    }
+  });
+  
+  // Xử lý chọn topic
+  if (jumpSelectFloating) {
+    jumpSelectFloating.addEventListener('change', function() {
+      const targetId = this.value;
+      if (!targetId) return;
+      
+      // Tìm topic và mở
+      const targetTopic = document.querySelector(targetId);
+      if (targetTopic) {
+        // Đóng panel
+        jumpPanel.classList.remove('open');
+        
+        // Đóng tất cả section khác, mở section chứa topic
+        const allSections = document.querySelectorAll('.section-collapsible');
+        const parentSection = targetTopic.closest('.section-collapsible');
+        
+        allSections.forEach(section => {
+          if (section !== parentSection) {
+            section.classList.add('collapsed');
+            const icon = section.querySelector('.toggle-icon');
+            if (icon) icon.classList.remove('open');
+          }
+        });
+        
+        if (parentSection) {
+          parentSection.classList.remove('collapsed');
+          const icon = parentSection.querySelector('.toggle-icon');
+          if (icon) icon.classList.add('open');
+        }
+        
+        // Đóng tất cả topic khác, mở topic được chọn
+        const allTopics = document.querySelectorAll('.topic-card');
+        allTopics.forEach(topic => {
+          if (topic !== targetTopic && topic.open) {
+            topic.open = false;
+          }
+        });
+        targetTopic.open = true;
+        
+        // Scroll đến topic
+        setTimeout(() => {
+          targetTopic.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 200);
+      }
+      
+      // Reset select
+      this.value = '';
+    });
+  }
+});
 </script>
 </body>
 </html>
