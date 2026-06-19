@@ -30,6 +30,13 @@
     <priority>0.7</priority>
   </url>
 
+  <url>
+    <loc>https://aldahub.com/seo-roadmap</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
   <!-- Blog articles -->
   <url>
     <loc>https://aldahub.com/what-is-a-hand-raiser-the-key-to-high-intent-sales</loc>
