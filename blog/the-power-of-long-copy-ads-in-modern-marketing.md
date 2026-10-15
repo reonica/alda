@@ -1,4 +1,5 @@
 ---
+draft: false
 title: The Power of Long Copy Ads in Modern Marketing
 date: 2026-01-11T17:50:00.000+07:00
 author: Côme

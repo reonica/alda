@@ -28,6 +28,7 @@ pnpm test
 - `assets/`: dependency-free public CSS and JavaScript.
 - `images/`: existing media, retaining CMS upload paths.
 - `admin/`: Decap CMS; Netlify Identity/Git Gateway are only loaded in the admin area.
+- `src/_data/{settings,navigation,footer,home,auditCta}.json`: content modules editable through CMS; templates retain layout, forms and routing.
 - `content/case-studies/`: internal drafts; deliberately excluded from the public build.
 - `lib/routes.cjs`: generated page/article and encoded topic-path migrations in `_redirects`.
 - `netlify.toml`: hosting configuration and the frozen legacy blog query migrations.
@@ -37,6 +38,12 @@ The input directory is the repository root so the existing CMS `blog/` workflow 
 ## Writing and publishing
 
 Create or edit Markdown in `blog/`, or use `/admin/` on the production site. Supply title, date, author, description, an optional featured image and tags. New CMS entries default to `draft: true`. Set `draft: false` only when ready to publish. Drafts are excluded from pages, listings, tag archives, sitemap and legacy redirects. All public content, navigation and footer are rendered during deployment; no browser GitHub API calls are needed.
+
+CMS labels and navigation use Vietnamese. The branded entry screen retains existing Netlify Identity accounts, login/recovery and session resume. In **Nội dung website**, edit brand/contact settings, navbar links/order/CTA, footer links/newsletter copy, homepage hero and the shared audit CTA. Custom previews support articles and all five modules, including unsaved images. See [CMS editor guide](docs/cms-editor.md) and [login/access guide](docs/cms-login.md).
+
+Saving in CMS commits to the existing `main` branch and starts a Netlify build. This is the existing simple publishing workflow, not an approval queue or scheduled publishing system. A future publication date alone does not delay publication. Existing article filenames/URLs are preserved on title edits. Article deletion is hidden in CMS; set Draft on an article to remove it from the public build.
+
+Module content is plain text and clean internal links. Build validation rejects unsafe links and links to pages that are not published; a failed Netlify build keeps the previously successful site live. Form backend identities, canonical origin and executable templates are not editable in CMS. The admin area uses no-cache headers so configuration changes are revalidated after deployment.
 
 The optional `modified` field records a real, substantial editorial update. It is shown in the article and shared by `BlogPosting.dateModified` and sitemap `lastmod`. Leave it empty when unknown; publishing or rebuilding a site must not fabricate an update date.
 

@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { assetUrl } = require('./lib/assets.cjs');
+const { validateCmsSettings, validateCmsTargets, navActive } = require('./lib/cms-settings.cjs');
 const { legacyRoutes, canonicalPath, postSlugs, topicSlug } = require('./lib/routes.cjs');
 const { breadcrumbsFor, structuredData } = require('./lib/structured-data.cjs');
 const { icon } = require('./lib/icons.cjs');
@@ -9,9 +10,10 @@ module.exports = function (config) {
   config.addNunjucksShortcode('icon', icon);
   let topics = [];
   let publishedSlugs = [];
-  config.on('eleventy.before', () => { publishedSlugs = postSlugs(); });
+  config.on('eleventy.before', () => { validateCmsSettings(__dirname); publishedSlugs = postSlugs(); });
   config.setNunjucksEnvironmentOptions({ autoescape: true });
   config.addFilter('assetUrl', assetUrl);
+  config.addFilter('navActive', navActive);
   for (const pattern of ['README.md', 'docs/**', 'tests/**', 'content/**', 'node_modules/**']) config.ignores.add(pattern);
   config.addPassthroughCopy('assets');
   config.addPassthroughCopy('images');
@@ -53,6 +55,7 @@ module.exports = function (config) {
   });
   config.on('eleventy.after', ({ dir }) => {
     const output = path.resolve(dir.output);
+    validateCmsTargets(__dirname, output);
     fs.writeFileSync(path.join(output, '_redirects'), legacyRoutes(topics).map(route => `${route.from} ${route.to} ${route.status || 301}${route.force ? '!' : ''}`).join('\n') + '\n');
   });
   return { dir: { input: '.', includes: 'src/_includes', data: 'src/_data', output: '_site' }, templateFormats: ['njk', 'md'], markdownTemplateEngine: false, htmlTemplateEngine: 'njk' };

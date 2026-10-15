@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   // Keep Netlify Identity invitation/recovery handling confined to the admin page.
-  if (/^#(?:invite_token|recovery_token|confirmation_token)=/.test(location.hash) && !location.pathname.startsWith('/admin/')) {
+  if (/(?:^#\/?|&)(?:(?:invite|recovery|confirmation|email_change)_token|access_token)=/.test(location.hash) && !location.pathname.startsWith('/admin/')) {
     location.replace(`/admin/${location.hash}`);
     return;
   }

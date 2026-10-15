@@ -1,0 +1,16 @@
+{
+  "navigationTitle": "Explore",
+  "links": [
+    { "label": "Services", "url": "/services/" },
+    { "label": "Our Approach", "url": "/approach/" },
+    { "label": "About", "url": "/about/" },
+    { "label": "Blog", "url": "/blog/" },
+    { "label": "SEO Roadmap", "url": "/seo-roadmap/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "whatsappLabel": "Talk to us on WhatsApp",
+  "newsletterTitle": "Marketing insights",
+  "newsletterDescription": "Subscribe for practical ideas on data, search and conversion.",
+  "newsletterButton": "Subscribe",
+  "bottomText": "Data-led marketing. Built for sustainable growth."
+}

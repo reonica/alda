@@ -1,4 +1,5 @@
 ---
+draft: false
 title: Unlocking Data-Driven Digital Marketing with ALDA Framework
 date: 2025-09-06T00:10:00.000+07:00
 author: Côme

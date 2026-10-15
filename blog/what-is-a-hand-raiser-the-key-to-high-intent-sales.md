@@ -1,4 +1,5 @@
 ---
+draft: false
 title: What Is a Hand Raiser? The Key to High-Intent Sales
 date: 2026-01-05T21:31:00.000+07:00
 author: Côme

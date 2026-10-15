@@ -15,7 +15,7 @@ layout: layouts/base.njk
       <span>{{ content | readingTime }} min read</span>
     </p>
     {% if featured_image %}
-    <img class="article-featured-image" src="{{ featured_image }}" alt="" width="1200" height="675" decoding="async" fetchpriority="high">
+    <img class="article-featured-image" src="{{ featured_image }}" alt="{{ featured_image_alt or '' }}" width="1200" height="675" decoding="async" fetchpriority="high">
     {% endif %}
   </header>
   <div class="container article-body">

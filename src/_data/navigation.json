@@ -1,0 +1,11 @@
+{
+  "menuLabel": "Menu",
+  "items": [
+    { "label": "Services", "url": "/services/" },
+    { "label": "Our Approach", "url": "/approach/" },
+    { "label": "About", "url": "/about/" },
+    { "label": "Resources", "url": "/blog/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "cta": { "label": "Get a Free Marketing Audit", "url": "/free-marketing-audit/" }
+}

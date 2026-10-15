@@ -1,32 +1,306 @@
+# CMS content is committed to the existing repository main branch.
+# No local_backend or test backend in production.
 backend:
   name: git-gateway
   branch: main
-
-# Thư mục lưu media
-media_folder: "images/blog"
-public_folder: "/images/blog"
-
-# Cấu hình collections
-collections:
-  - name: "blog"
-    label: "Blog Posts"
-    folder: "blog"
-    create: true
-    slug: "{{slug}}"
-    preview_path: "blog/{{slug}}/"
-    fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publication Date", name: "date", widget: "datetime"}
-      - {label: "Last Substantial Update", name: "modified", widget: "datetime", required: false, default: "", hint: "Leave empty unless the published article received a substantial update. Used for the visible update date, structured data, and sitemap."}
-      - {label: "Author", name: "author", widget: "string", default: "Aldahub"}
-      - {label: "Description", name: "description", widget: "text"}
-      - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
-      - {label: "Draft", name: "draft", widget: "boolean", default: true, required: false, hint: "Draft posts are excluded from the public website. Turn off when ready to publish."}
-      - {label: "Tags", name: "tags", widget: "list"}
-      - {label: "Body", name: "body", widget: "markdown"}
-
-# Cấu hình giao diện
-locale: 'en'
+  commit_messages:
+    create: "Create {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
+    uploadMedia: "Upload media: {{path}}"
+    deleteMedia: "Delete media: {{path}}"
+media_folder: images/blog
+public_folder: /images/blog
+site_url: https://aldahub.com
+display_url: https://aldahub.com
+logo:
+  src: https://aldahub.com/images/alda/alda-logo.png
+  show_in_header: true
+locale: vi
 show_preview_links: true
-display_url: "https://aldahub.com"
-logo_url: "https://aldahub.com/images/alda/alda-logo.png"
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+collections:
+  - name: blog
+    label: Bài viết
+    label_singular: Bài viết
+    description: >-
+      Bản nháp không xuất hiện trên website. Tắt “Bản nháp” và lưu khi muốn xuất bản; Netlify cần build xong
+      để nội dung lên web.
+    folder: blog
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    slug: "{{slug}}"
+    preview_path: blog/{{slug}}/
+    summary: "{{title}}"
+    sortable_fields:
+      - date
+      - title
+    view_filters:
+      - label: Bản nháp
+        field: draft
+        pattern: true
+      - label: Đã xuất bản
+        field: draft
+        pattern: false
+    fields:
+      - label: Tiêu đề bài viết
+        name: title
+        widget: string
+        hint: Dùng tiêu đề rõ nội dung. Khi sửa bài cũ, URL hiện tại được giữ nguyên.
+      - label: Ngày xuất bản
+        name: date
+        widget: datetime
+        default: "{{now}}"
+        hint: Ngày hiển thị trên bài; đây không phải tính năng hẹn giờ xuất bản.
+      - label: Ngày cập nhật nội dung
+        name: modified
+        widget: datetime
+        required: false
+        default: ""
+        hint: Chỉ điền khi có cập nhật đáng kể cho bài đã xuất bản. Để trống nếu chưa cập nhật.
+      - label: Tác giả
+        name: author
+        widget: string
+        default: AldaHub
+      - label: Mô tả / SEO description
+        name: description
+        widget: text
+        hint: >-
+          Tóm tắt nội dung hữu ích cho người đọc và kết quả tìm kiếm. Khoảng 140–160 ký tự là gợi ý, không
+          phải giới hạn bắt buộc.
+      - label: Ảnh đại diện
+        name: featured_image
+        widget: image
+        required: false
+        choose_url: false
+        hint: Ưu tiên ảnh ngang, đã có quyền sử dụng. Ảnh được lưu trong thư viện hiện tại.
+      - label: Mô tả ảnh (alt)
+        name: featured_image_alt
+        widget: string
+        required: false
+        hint: Mô tả nội dung ảnh có ý nghĩa; để trống nếu ảnh chỉ trang trí.
+      - label: Bản nháp — chưa công khai
+        name: draft
+        widget: boolean
+        default: true
+        required: false
+        hint: >-
+          Bật: lưu nội dung nhưng không tạo trang công khai. Tắt và lưu: xuất bản sau khi Netlify build thành
+          công.
+      - label: Chủ đề / tags
+        name: tags
+        widget: list
+        required: false
+        hint: Nhập các chủ đề, phân cách bằng dấu phẩy; giữ tên ngắn gọn và nhất quán.
+      - label: Nội dung bài viết
+        name: body
+        widget: markdown
+        hint: Tiêu đề bài đã là H1. Dùng H2/H3 cho các phần bên trong; không chèn script hoặc HTML.
+  - name: website
+    label: Nội dung website
+    description: >-
+      Sửa nội dung trong cấu trúc hiện tại. Mỗi lần lưu tạo commit trên main và Netlify triển khai lại. Phần
+      xem trước mô phỏng nội dung, không gửi biểu mẫu.
+    format: json
+    delete: false
+    files:
+      - name: settings
+        label: Thương hiệu & liên hệ
+        file: src/_data/settings.json
+        fields:
+          - label: Tên thương hiệu
+            name: name
+            widget: string
+          - label: Slogan đầy đủ
+            name: slogan
+            widget: text
+            hint: >-
+              Slogan đã duyệt: Alda Hub - Data Alchemy Marketing Agency, Where Data Becomes Gold. Hiện ở
+              footer và metadata, không đứng riêng trên hero.
+          - label: Mô tả website mặc định / SEO
+            name: description
+            widget: text
+          - label: Logo
+            name: logo
+            widget: image
+            choose_url: false
+            hint: Chọn ảnh trong thư viện. Logo dùng cho navbar, favicon và dữ liệu thương hiệu.
+          - label: Liên kết WhatsApp
+            name: whatsapp
+            widget: string
+            pattern:
+              - ^https://wa\.me/[1-9][0-9]{5,14}$
+              - Dùng https://wa.me/ kèm số quốc tế, không có dấu + hay dấu cách.
+      - name: navigation
+        label: Navbar / menu đầu trang
+        file: src/_data/navigation.json
+        fields:
+          - label: Nhãn menu trên mobile
+            name: menuLabel
+            widget: string
+            pattern:
+              - ^.{1,12}$
+              - Dùng nhãn ngắn, tối đa 12 ký tự.
+          - label: Các liên kết trên menu
+            name: items
+            widget: list
+            min: 1
+            max: 7
+            summary: "{{fields.label}} → {{fields.url}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+            hint: Kéo để đổi thứ tự. Mỗi đường dẫn chỉ xuất hiện một lần.
+          - label: Nút hành động chính
+            name: cta
+            widget: object
+            collapsed: true
+            summary: "{{fields.label}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+      - name: footer
+        label: Footer / chân trang
+        file: src/_data/footer.json
+        fields:
+          - label: Tiêu đề cột liên kết
+            name: navigationTitle
+            widget: string
+          - label: Các liên kết cuối trang
+            name: links
+            widget: list
+            min: 1
+            max: 12
+            summary: "{{fields.label}} → {{fields.url}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+            hint: Kéo để đổi thứ tự. Mỗi đường dẫn chỉ xuất hiện một lần.
+          - label: Nhãn WhatsApp
+            name: whatsappLabel
+            widget: string
+          - label: Tiêu đề newsletter
+            name: newsletterTitle
+            widget: string
+          - label: Giới thiệu newsletter
+            name: newsletterDescription
+            widget: text
+          - label: Nhãn nút đăng ký
+            name: newsletterButton
+            widget: string
+          - label: Dòng mô tả cuối trang
+            name: bottomText
+            widget: text
+      - name: home
+        label: Trang chủ / hero
+        file: src/_data/home.json
+        fields:
+          - label: SEO title trang chủ
+            name: title
+            widget: string
+          - label: Headline — phần chính
+            name: headline
+            widget: string
+          - label: Headline — phần nhấn
+            name: headlineAccent
+            widget: string
+          - label: Caption dưới headline
+            name: caption
+            widget: text
+            hint: Lồng định vị Data Alchemy vào đoạn giới thiệu. Không thêm một dòng slogan riêng trên headline.
+          - label: Nút hành động chính
+            name: primaryCta
+            widget: object
+            collapsed: true
+            summary: "{{fields.label}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+          - label: Liên kết phụ
+            name: secondaryCta
+            widget: object
+            collapsed: true
+            summary: "{{fields.label}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+          - label: Chú thích dưới nút
+            name: note
+            widget: string
+      - name: auditCta
+        label: Khối CTA dùng chung
+        file: src/_data/auditCta.json
+        fields:
+          - label: Dòng giới thiệu nhỏ
+            name: eyebrow
+            widget: string
+          - label: Tiêu đề
+            name: heading
+            widget: string
+          - label: Mô tả
+            name: description
+            widget: text
+          - label: Nút hành động
+            name: button
+            widget: object
+            collapsed: true
+            summary: "{{fields.label}}"
+            fields:
+              - label: Nhãn nút / liên kết
+                name: label
+                widget: string
+              - label: Đường dẫn
+                name: url
+                widget: string
+                pattern:
+                  - ^/(?:[a-z0-9_-]+/)*(?:#[a-zA-Z][\w-]*)?$
+                  - Dùng URL nội bộ có dấu / cuối, ví dụ /services/.
+                hint: Liên kết tới trang đã xuất bản. Không đổi URL của bài cũ khi sửa tiêu đề.
+          - label: Nhãn WhatsApp
+            name: whatsappLabel
+            widget: string
