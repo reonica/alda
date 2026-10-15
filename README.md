@@ -2,6 +2,8 @@
 
 English marketing website for [aldahub.com](https://aldahub.com), generated with Eleventy 3 from Nunjucks and Markdown. The production host is Netlify. Vercel remains supported as a secondary preview host with forms disabled and search indexing blocked.
 
+The approved brand slogan is **Alda Hub - Data Alchemy Marketing Agency, Where Data Becomes Gold**. Preserve this exact wording in the shared `site.slogan` value. The growth headline complements the slogan and does not replace it.
+
 ## Development
 
 Use Node.js 22 and pnpm 10.28.2 (declared in `package.json`).

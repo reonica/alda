@@ -24,7 +24,7 @@
   {% for stylesheet in extraStyles %}<link rel="stylesheet" href="{{ stylesheet }}">{% endfor %}
   <script src="/assets/site.js" defer></script>
   {% for script in extraScripts %}<script src="{{ script }}" defer></script>{% endfor %}
-  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'Organization', 'name': site.name, 'url': site.url, 'logo': site.url + '/images/alda/alda-logo.png' } | jsonLd | safe }}</script>
+  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'Organization', 'name': site.name, 'slogan': site.slogan, 'url': site.url, 'logo': site.url + '/images/alda/alda-logo.png' } | jsonLd | safe }}</script>
 </head>
 <body{% if site.preview or not site.netlifyForms %} data-form-preview{% endif %}>
   <a class="skip-link" href="#main">Skip to content</a>

@@ -465,6 +465,19 @@ li {
   background: var(--green);
   margin-right: 8px
 }
+.brand-slogan {
+  max-width: 560px;
+  margin-bottom: 1.2rem;
+  color: var(--green);
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.site-footer .brand-slogan {
+  max-width: 300px;
+  color: #d5dccf;
+  font-size: .82rem;
+}
 
 .hero-note {
   margin: 20px 0 0;

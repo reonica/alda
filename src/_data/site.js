@@ -1,7 +1,10 @@
+const slogan = 'Alda Hub - Data Alchemy Marketing Agency, Where Data Becomes Gold';
+
 module.exports = {
   name: 'AldaHub',
+  slogan,
   url: 'https://aldahub.com',
-  description: 'Data-led decisions. Sustainable growth through SEO, AI search, social performance marketing and conversion optimization.',
+  description: `${slogan}. Grow through data-led SEO, AIO, social performance and conversion optimization.`,
   whatsapp: 'https://wa.me/84916882795',
   year: new Date().getFullYear(),
   preview: Boolean(process.env.CONTEXT && process.env.CONTEXT !== 'production') || Boolean(process.env.VERCEL_ENV),
