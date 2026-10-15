@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { structuredData, breadcrumbsFor } = require('../lib/structured-data.cjs');
-const site = require('../src/_data/site.js');
+const site = require('../src/_data/site.js')();
 
 const root = path.resolve(__dirname, '..');
 const output = path.join(root, '_site');

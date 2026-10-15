@@ -1,14 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager - Aldahub</title>
+  <title>Quản lý nội dung | Alda Hub</title>
   <link rel="icon" type="image/png" href="/images/alda/alda-logo.png">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="same-origin">
+  <link rel="stylesheet" href="/admin/admin.css">
 </head>
-<body>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
+<body class="admin-page">
+  <main id="admin-welcome" class="admin-shell" aria-labelledby="admin-title">
+    <header class="admin-header">
+      <a class="admin-brand" href="/" aria-label="Alda Hub — về website"><img src="/images/alda/alda-logo.png" width="44" height="44" alt=""><span>Alda Hub<span class="admin-brand-caption">Content Studio</span></span></a>
+      <a class="admin-site-link" href="/" target="_blank" rel="noopener">Xem website <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M5 15 15 5M5 5h10v10"/></svg></a>
+    </header>
+    <div class="admin-grid">
+      <section class="admin-intro">
+        <p class="admin-eyebrow">Data Alchemy Marketing Agency</p>
+        <h1 id="admin-title">Nội dung tốt.<br><span>Tăng trưởng bền vững.</span></h1>
+        <p class="admin-lead">Không gian quản lý bài viết, hình ảnh và các nội dung trên website Alda Hub.</p>
+        <ul class="admin-features">
+          <li><span aria-hidden="true">01</span><div><strong>Viết &amp; biên tập</strong><p>Soạn bài, xem trước và chuẩn bị nội dung trước khi xuất bản.</p></div></li>
+          <li><span aria-hidden="true">02</span><div><strong>Quản lý website</strong><p>Cập nhật nội dung trang chủ, thanh điều hướng và footer.</p></div></li>
+          <li><span aria-hidden="true">03</span><div><strong>Lưu lại từng thay đổi</strong><p>Nội dung được lưu trong repo alda và cập nhật qua Netlify.</p></div></li>
+        </ul>
+      </section>
+      <section class="admin-login" aria-labelledby="login-title" aria-busy="true">
+        <p class="admin-eyebrow">Chào mừng trở lại</p>
+        <h2 id="login-title">Đăng nhập CMS</h2>
+        <p class="admin-login-copy">Sử dụng tài khoản Netlify Identity của website. Tài khoản và mật khẩu hiện tại được giữ nguyên.</p>
+        <p id="admin-user" class="admin-user" hidden></p>
+        <p id="admin-status" class="admin-status" role="status" aria-live="polite">Đang kết nối dịch vụ đăng nhập…</p>
+        <div class="admin-actions">
+          <button class="admin-button" id="admin-login" type="button" disabled>Đăng nhập</button>
+          <button class="admin-button" id="admin-enter" type="button" hidden>Tiếp tục vào CMS</button>
+          <button class="admin-text-button" id="admin-logout" type="button" hidden>Đăng xuất tài khoản này</button>
+          <button class="admin-text-button" id="admin-retry" type="button" hidden>Thử tải lại</button>
+        </div>
+        <details class="admin-help">
+          <summary>Cần trợ giúp đăng nhập?</summary>
+          <p><strong>Quên mật khẩu:</strong> bấm Đăng nhập, sau đó chọn “Forgot password?” trong cửa sổ Netlify Identity.</p>
+          <p><strong>Lần đầu truy cập:</strong> mở email mời được gửi cho tài khoản của bạn và làm theo liên kết để đặt mật khẩu. Nếu liên kết đã hết hạn, nhờ chủ website gửi lại lời mời.</p>
+          <p><strong>Chưa có quyền:</strong> chủ website quản lý tài khoản và quyền truy cập trong Netlify → Identity.</p>
+        </details>
+        <p class="admin-publish-note">Lưu nội dung trong CMS tạo commit trên nhánh main. Website cập nhật khi Netlify build thành công.</p>
+        <noscript><p class="admin-error">Hãy bật JavaScript để đăng nhập và sử dụng CMS.</p></noscript>
+      </section>
+    </div>
+    <footer class="admin-footer">Alda Hub — Where Data Becomes Gold.</footer>
+  </main>
+  <div id="nc-root" hidden></div>
+  <script src="/admin/admin.js"></script>
+  <!-- Keep this order: both integrations must subscribe before Identity auto-initializes. -->
+  <script id="admin-identity-script" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script id="admin-cms-script" src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
 </body>
 </html>

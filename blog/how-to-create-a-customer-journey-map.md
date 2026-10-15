@@ -1,4 +1,5 @@
 ---
+draft: false
 title: How to Create a Customer Journey Map?
 date: 2025-12-30T21:40:00.000+07:00
 author: Côme

@@ -189,6 +189,12 @@
     Cache-Control = "public, max-age=3600, must-revalidate"
 
 [[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"

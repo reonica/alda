@@ -1,4 +1,5 @@
 ---
+draft: false
 title: How To Build A Data-driven SEO Strategy
 date: 2025-10-22T23:24:00.000+07:00
 author: Côme

@@ -1,4 +1,5 @@
 ---
+draft: false
 title: How to Build a Data-Driven Marketing Strategy in 7 Steps
 date: 2025-08-28T17:17:00.000+07:00
 author: Côme
