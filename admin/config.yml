@@ -16,7 +16,8 @@ collections:
     preview_path: "blog/{{slug}}/"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Publication Date", name: "date", widget: "datetime"}
+      - {label: "Last Substantial Update", name: "modified", widget: "datetime", required: false, default: "", hint: "Leave empty unless the published article received a substantial update. Used for the visible update date, structured data, and sitemap."}
       - {label: "Author", name: "author", widget: "string", default: "Aldahub"}
       - {label: "Description", name: "description", widget: "text"}
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false}

@@ -1,8 +1,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { legacyRoutes, canonicalPath, postSlugs, topicSlug } = require('./lib/routes.cjs');
+const { breadcrumbsFor, structuredData } = require('./lib/structured-data.cjs');
+const { icon } = require('./lib/icons.cjs');
 
 module.exports = function (config) {
+  config.addNunjucksShortcode('icon', icon);
   let topics = [];
   let publishedSlugs = [];
   config.on('eleventy.before', () => { publishedSlugs = postSlugs(); });
@@ -27,6 +30,8 @@ module.exports = function (config) {
     return topics;
   });
   config.addFilter('topicSlug', topicSlug);
+  config.addFilter('breadcrumbsFor', breadcrumbsFor);
+  config.addFilter('structuredData', structuredData);
   config.addCollection('indexable', collection => collection.getAll().filter(item => item.url && !item.data.noindex && item.url !== '/404.html' && !item.url.endsWith('.xml') && !item.url.endsWith('.txt')));
   config.addFilter('absoluteUrl', value => new URL(value || '/', 'https://aldahub.com').href);
   config.addFilter('dateDisplay', value => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(value)));

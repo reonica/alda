@@ -16,6 +16,26 @@
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); } });
   }
 
+  const backToTop = document.querySelector('[data-back-to-top]');
+  if (backToTop) {
+    let pending = false;
+    const updateBackToTop = () => {
+      backToTop.hidden = window.scrollY < 400;
+      pending = false;
+    };
+    updateBackToTop();
+    window.addEventListener('scroll', () => {
+      if (!pending) {
+        pending = true;
+        window.requestAnimationFrame(updateBackToTop);
+      }
+    }, { passive: true });
+    backToTop.addEventListener('click', () => {
+      document.querySelector('.site-header .brand')?.focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  }
+
   // Only interaction metadata is emitted. No field values or personal information.
   const track = (name, detail = {}) => {
     const event = { event: name, page_path: location.pathname, ...detail };

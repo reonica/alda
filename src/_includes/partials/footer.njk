@@ -1,12 +1,12 @@
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div><a class="brand footer-brand" href="/">AldaHub.</a><p class="brand-slogan">{{ site.slogan }}</p><a class="text-link" href="{{ site.whatsapp }}" data-whatsapp target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp ↗</a></div>
+    <div><a class="brand footer-brand" href="/">AldaHub.</a><p class="brand-slogan">{{ site.slogan }}</p><a class="text-link" href="{{ site.whatsapp }}" data-whatsapp target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp {% icon "arrow-up-right" %}</a></div>
     <nav aria-label="Footer navigation"><p class="eyebrow">Explore</p><a href="/services/">Services</a><a href="/approach/">Our Approach</a><a href="/about/">About</a><a href="/blog/">Blog</a><a href="/seo-roadmap/">SEO Roadmap</a><a href="/contact/">Contact</a></nav>
     <div><p class="eyebrow">Marketing insights</p><p>Subscribe for practical ideas on data, search and conversion.</p>
       <form name="newsletter" method="post" action="/thank-you/newsletter/" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form" data-lead-form>
         <input type="hidden" name="form-name" value="newsletter">
         <p class="honeypot"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-        <label for="newsletter-email">Email address</label><div class="newsletter-input"><input id="newsletter-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"><button class="button" type="submit"{% if site.preview or not site.netlifyForms %} disabled{% endif %}>Subscribe <span aria-hidden="true">↗</span></button></div>
+        <label for="newsletter-email">Email address</label><div class="newsletter-input"><input id="newsletter-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"><button class="button" type="submit"{% if site.preview or not site.netlifyForms %} disabled{% endif %}>Subscribe <span aria-hidden="true">{% icon "arrow-up-right" %}</span></button></div>
         <p class="form-note">By subscribing, you ask to receive marketing emails. <a href="/privacy/">Privacy details</a>.</p>
         <p class="form-status" role="status" aria-live="polite">{% if site.preview or not site.netlifyForms %}Preview: forms do not send here. Use the live website or WhatsApp to contact us.{% endif %}</p>
       </form>

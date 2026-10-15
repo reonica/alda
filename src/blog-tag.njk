@@ -13,7 +13,7 @@ eleventyComputed:
 ---
 <section class="page-hero">
   <div class="container">
-    <a class="text-link" href="/blog/">← All insights</a>
+    <a class="text-link" href="/blog/">{% icon "arrow-left" %} All insights</a>
     <p class="eyebrow">Browse by topic</p>
     <h1>{{ topic.label }}</h1>
     <p class="lead">Explore {{ topic.posts | length }} {% if topic.posts | length == 1 %}article{% else %}articles{% endif %} on {{ topic.label }}. Put the ideas to work in your next marketing decision.</p>
@@ -37,7 +37,7 @@ eleventyComputed:
           <p class="article-meta"><time datetime="{{ post.date | dateISO }}">{{ post.date | dateDisplay }}</time> <span aria-hidden="true">·</span> {{ post.data.author or 'AldaHub' }}</p>
           <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
           <p>{{ post.data.description or post.templateContent | summary }}</p>
-          <a class="text-link" href="{{ post.url }}">Read article <span class="sr-only">— {{ post.data.title }}</span><span aria-hidden="true"> ↗</span></a>
+          <a class="text-link" href="{{ post.url }}">Read article <span class="sr-only">— {{ post.data.title }}</span><span aria-hidden="true"> {% icon "arrow-up-right" %}</span></a>
         </div>
       </article>
       {% endfor %}
