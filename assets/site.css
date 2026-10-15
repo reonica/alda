@@ -435,11 +435,24 @@ li {
   -webkit-appearance: none;
   appearance: none;
   display: none;
-  border: 1px solid var(--green);
+  flex: 0 0 auto;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 96px;
+  min-height: 44px;
+  border: 1px solid var(--ink);
   background: var(--paper);
-  color: var(--green);
-  padding: 9px 12px;
-  border-radius: 5px
+  color: var(--ink);
+  -webkit-text-fill-color: currentColor;
+  padding: 10px 12px;
+  border-radius: 5px;
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap
 }
 
 .nav-toggle:hover,
@@ -447,10 +460,21 @@ li {
   background: var(--lime)
 }
 
-.nav-toggle span {
-  margin-left: 14px;
-  display: inline-flex;
-  vertical-align: middle
+.nav-toggle-label {
+  display: block;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+  line-height: 1.1;
+  white-space: nowrap
+}
+
+.nav-toggle > .icon {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  color: inherit
 }
 
 .breadcrumbs {
@@ -512,30 +536,13 @@ li {
   margin-bottom: 32px
 }
 
-.hero-copy .eyebrow {
-  font-size: .68rem
-}
-
-.status-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  margin-right: 8px
-}
-.brand-slogan {
-  max-width: 560px;
-  margin-bottom: 1.2rem;
-  color: var(--green);
-  font-size: .82rem;
-  font-weight: 600;
-  line-height: 1.6;
-}
 .site-footer .brand-slogan {
   max-width: 300px;
+  margin-bottom: 1.2rem;
   color: #d5dccf;
   font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.6
 }
 
 .hero-note {
@@ -1397,7 +1404,7 @@ li {
   }
 
   .js .nav-toggle {
-    display: block
+    display: inline-flex
   }
 
   .primary-nav {
@@ -1537,10 +1544,6 @@ li {
 
   .hero-copy .lead {
     font-size: 1.02rem
-  }
-
-  .hero-copy .eyebrow {
-    font-size: .62rem
   }
 
   .hero-copy .button {

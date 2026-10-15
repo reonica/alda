@@ -21,10 +21,10 @@
   <meta name="google-site-verification" content="jPxWtw0kVIXkko44wgf0GKk4MknVp5H8b-afd1Q4HH0">
   <meta name="google-site-verification" content="2RtHjSNW15IAd84z6m7YjUxzseVmRlJqfG_TUUMmnyo">
   <link rel="icon" type="image/png" href="/images/alda/alda-logo.png">
-  <link rel="stylesheet" href="/assets/site.css">
-  {% for stylesheet in extraStyles %}<link rel="stylesheet" href="{{ stylesheet }}">{% endfor %}
-  <script src="/assets/site.js" defer></script>
-  {% for script in extraScripts %}<script src="{{ script }}" defer></script>{% endfor %}
+  <link rel="stylesheet" href="{{ '/assets/site.css' | assetUrl }}">
+  {% for stylesheet in extraStyles %}<link rel="stylesheet" href="{{ stylesheet | assetUrl }}">{% endfor %}
+  <script src="{{ '/assets/site.js' | assetUrl }}" defer></script>
+  {% for script in extraScripts %}<script src="{{ script | assetUrl }}" defer></script>{% endfor %}
   <script type="application/ld+json">{{ { site: site, page: page, title: title, description: description, article: article, service: service, author: author, featured_image: featured_image, modified: modified } | structuredData | jsonLd | safe }}</script>
 </head>
 <body id="top"{% if site.preview or not site.netlifyForms %} data-form-preview{% endif %}>

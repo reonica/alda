@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="AldaHub home"><img src="/images/alda/alda-logo.png" width="54" height="54" alt=""><span>Alda<span class="brand-light">Hub</span><span class="brand-dot">.</span></span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" hidden>Menu <span aria-hidden="true">{% icon "menu" %}</span></button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" hidden><span class="nav-toggle-label">Menu</span>{% icon "menu" %}</button>
     <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
       {% for item in site.navigation %}<a href="{{ item.url }}"{% if nav == item.key %} class="active"{% if page.url == item.url %} aria-current="page"{% endif %}{% endif %}>{{ item.label }}</a>{% endfor %}
       <a class="button button-small" href="/free-marketing-audit/"{% if page.url == '/free-marketing-audit/' %} aria-current="page"{% endif %}>Get a Free Marketing Audit <span aria-hidden="true">{% icon "arrow-up-right" %}</span></a>
