@@ -6,8 +6,182 @@
   NODE_VERSION = "22"
   PNPM_VERSION = "10.28.2"
 
-# Redirects are generated from real pages and published article slugs.
+# Page/article and encoded topic-path aliases are generated in _redirects.
 # Netlify serves _site/404.html with HTTP 404 for all unknown paths.
+#
+# Frozen migration for the old blog's three pages and 21 normalized tags.
+# Netlify matches decoded query values; _redirects cannot represent spaces.
+# /blog and /blog/ are normalized by Netlify, so one source rule covers both.
+# Do not add a page=1 redirect: retained query parameters would cause a loop.
+# New CMS tags already link to canonical static archives and need no query rule.
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/page/2/"
+  status = 301
+  force = true
+  query = {page = "2"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/page/3/"
+  status = 301
+  force = true
+  query = {page = "3"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/advertising/"
+  status = 301
+  force = true
+  query = {tag = "advertising"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/alda-framework/"
+  status = 301
+  force = true
+  query = {tag = "alda framework"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/alda-hub/"
+  status = 301
+  force = true
+  query = {tag = "alda hub"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/aldahub/"
+  status = 301
+  force = true
+  query = {tag = "aldahub"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/brand-marketing/"
+  status = 301
+  force = true
+  query = {tag = "brand marketing"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/branding/"
+  status = 301
+  force = true
+  query = {tag = "branding"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/crisis-management/"
+  status = 301
+  force = true
+  query = {tag = "crisis management"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/cro/"
+  status = 301
+  force = true
+  query = {tag = "cro"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/customer-journey/"
+  status = 301
+  force = true
+  query = {tag = "customer journey"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/data-analysis/"
+  status = 301
+  force = true
+  query = {tag = "data analysis"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/data-driven-digital-marketing/"
+  status = 301
+  force = true
+  query = {tag = "data-driven digital marketing"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/data-driven-marketing-strategy/"
+  status = 301
+  force = true
+  query = {tag = "data-driven marketing strategy"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/data-driven-seo-strategy/"
+  status = 301
+  force = true
+  query = {tag = "data-driven seo strategy"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/digital-marketing-strategies/"
+  status = 301
+  force = true
+  query = {tag = "digital marketing strategies"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/digital-marketing-strategy/"
+  status = 301
+  force = true
+  query = {tag = "digital marketing strategy"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/digital-marketing-tips/"
+  status = 301
+  force = true
+  query = {tag = "digital marketing tips"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/financial-services-branding/"
+  status = 301
+  force = true
+  query = {tag = "financial services branding"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/marketing-services/"
+  status = 301
+  force = true
+  query = {tag = "marketing services"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/media-buying/"
+  status = 301
+  force = true
+  query = {tag = "media buying"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/restaurant-marketing-strategy/"
+  status = 301
+  force = true
+  query = {tag = "restaurant marketing strategy"}
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/tag/seo-strategy/"
+  status = 301
+  force = true
+  query = {tag = "seo strategy"}
+
+# Keep the broad legacy HTML URL fallback after all query-specific rules.
+# Query parameters pass through, so .html query links resolve in two hops.
+[[redirects]]
+  from = "/blog.html"
+  to = "/blog/"
+  status = 301
 
 [[headers]]
   for = "/assets/*"

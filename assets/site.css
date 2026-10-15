@@ -65,6 +65,14 @@ img {
   height: auto
 }
 
+.icon {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  vertical-align: -.18em
+}
+
 h1,
 h2,
 h3,
@@ -286,10 +294,16 @@ li {
 }
 
 .check-list li:before {
-  content: '↗';
+  --list-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 17 17 7M7 7h10v10' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  content: '';
   position: absolute;
   left: 0;
-  color: var(--green)
+  top: .3em;
+  width: 1.1em;
+  height: 1.1em;
+  background-color: var(--green);
+  -webkit-mask: var(--list-arrow) center / contain no-repeat;
+  mask: var(--list-arrow) center / contain no-repeat
 }
 
 .step-list {
@@ -418,15 +432,60 @@ li {
 }
 
 .nav-toggle {
+  -webkit-appearance: none;
+  appearance: none;
   display: none;
-  border: 1px solid var(--line);
-  background: transparent;
+  border: 1px solid var(--green);
+  background: var(--paper);
+  color: var(--green);
   padding: 9px 12px;
   border-radius: 5px
 }
 
+.nav-toggle:hover,
+.nav-toggle[aria-expanded=true] {
+  background: var(--lime)
+}
+
 .nav-toggle span {
-  margin-left: 14px
+  margin-left: 14px;
+  display: inline-flex;
+  vertical-align: middle
+}
+
+.breadcrumbs {
+  padding-top: 20px;
+  font-size: .76rem;
+  color: var(--muted)
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0
+}
+
+.breadcrumbs li {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere
+}
+
+.breadcrumbs li + li::before {
+  content: "/";
+  margin-right: 10px
+}
+
+.breadcrumbs [aria-current=page] {
+  color: var(--ink)
+}
+
+.breadcrumbs + .article,
+.breadcrumbs + .page-hero {
+  padding-top: 36px
 }
 
 .home-hero {
@@ -1003,29 +1062,61 @@ li {
 .whatsapp-float {
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   z-index: 30;
   display: flex;
   align-items: center;
   gap: 9px;
-  background: var(--ink);
-  color: #fff;
-  border: 1px solid #6c795d;
+  background: #25d366;
+  color: #083b1d;
+  border: 1px solid #128c46;
+  min-height: 48px;
   padding: 10px 16px;
   border-radius: 30px;
   text-decoration: none;
   font-size: .75rem;
+  font-weight: 700;
   box-shadow: 0 3px 15px #0002
 }
 
 .whatsapp-float:hover {
-  background: var(--green);
+  background: #1fbd5a;
+  color: #083b1d
+}
+
+.whatsapp-float .icon-whatsapp {
+  width: 24px;
+  height: 24px;
   color: #fff
 }
 
-.whatsapp-float span {
-  font-size: 1rem;
-  color: var(--lime)
+.back-to-top {
+  -webkit-appearance: none;
+  appearance: none;
+  position: fixed;
+  right: 20px;
+  bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--green);
+  box-shadow: 0 3px 15px #0002
+}
+
+.back-to-top:hover {
+  background: var(--lime)
+}
+
+.back-to-top .icon {
+  width: 22px;
+  height: 22px
 }
 
 .form-panel {
@@ -1663,9 +1754,22 @@ li {
 
   .whatsapp-float {
     right: 15px;
-    bottom: 15px;
-    font-size: .7rem;
-    padding: 9px 13px
+    bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+    padding: 0
+  }
+
+  .whatsapp-float span {
+    display: none
+  }
+
+  .back-to-top {
+    right: 15px;
+    bottom: calc(79px + env(safe-area-inset-bottom, 0px));
+    width: 52px;
+    height: 52px
   }
 
   .newsletter-input .button {

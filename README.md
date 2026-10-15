@@ -29,7 +29,8 @@ pnpm test
 - `images/`: existing media, retaining CMS upload paths.
 - `admin/`: Decap CMS; Netlify Identity/Git Gateway are only loaded in the admin area.
 - `content/case-studies/`: internal drafts; deliberately excluded from the public build.
-- `lib/routes.cjs`: explicit legacy URL migration. `_redirects` is generated during build.
+- `lib/routes.cjs`: generated page/article and encoded topic-path migrations in `_redirects`.
+- `netlify.toml`: hosting configuration and the frozen legacy blog query migrations.
 
 The input directory is the repository root so the existing CMS `blog/` workflow stays intact. Only `.njk` and `.md` are templates; documentation, tests, internal content and dependencies are ignored. New public pages belong in `src/` with an explicit permalink and the shared layout.
 
@@ -37,13 +38,15 @@ The input directory is the repository root so the existing CMS `blog/` workflow 
 
 Create or edit Markdown in `blog/`, or use `/admin/` on the production site. Supply title, date, author, description, an optional featured image and tags. New CMS entries default to `draft: true`. Set `draft: false` only when ready to publish. Drafts are excluded from pages, listings, tag archives, sitemap and legacy redirects. All public content, navigation and footer are rendered during deployment; no browser GitHub API calls are needed.
 
+The optional `modified` field records a real, substantial editorial update. It is shown in the article and shared by `BlogPosting.dateModified` and sitemap `lastmod`. Leave it empty when unknown; publishing or rebuilding a site must not fabricate an update date.
+
 Do not add invented client identities, testimonials, figures or study findings. Anonymous case studies still require a real project, evidence and permission. Demonstrations must be labeled as illustrative. The secondary hero CTA is “See Our Approach” until verified case studies are available.
 
 ## Deployment
 
 Netlify reads `netlify.toml`: Node 22, `pnpm run build`, publish `_site`. A connected Git repository can rebuild automatically when its configured production branch changes; a Git push alone does not configure that connection. Preview branches/PRs depend on the hosting account’s deploy settings.
 
-The previous catch-all rewrites were removed. Netlify serves generated `404.html` with HTTP 404 for missing paths. Existing page and article URLs have explicit 301 mappings; canonical URLs use HTTPS, no www and trailing slashes. Legacy article slugs move to `/blog/<slug>/`. Legacy pagination and known tag query redirects are generated, including forced query rules so real files do not shadow them. Tag pages and pagination have complete static HTML and distinct metadata. Unknown tag/category paths return 404. Query combinations that were never valid content URLs are not blanket-rewritten into articles.
+The previous catch-all rewrites were removed. Netlify serves generated `404.html` with HTTP 404 for missing paths. Existing page and article URLs have explicit 301 mappings; canonical URLs use HTTPS, no www and trailing slashes. Legacy article slugs move to `/blog/<slug>/`. Legacy pagination pages 2–3 and 21 normalized tag queries are frozen in `netlify.toml`, with decoded tag values and forced rules so static files do not shadow them. Netlify normalizes `/blog` and `/blog/`; one query rule covers both. The `/blog.html` fallback follows these rules and keeps query parameters, so legacy HTML query links can take two redirects. There is deliberately no `page=1` redirect: the listing already serves that page, and Netlify retains the query string, which would otherwise create a redirect loop. New CMS tags get canonical static archive links automatically and do not need additions to this historical query mapping. Encoded topic-path aliases remain generated from published content. Tag pages and pagination have complete static HTML and distinct metadata. Unknown tag/category paths return 404. Query combinations that were never valid content URLs are not blanket-rewritten into articles.
 
 On Vercel, `vercel.json` selects `_site`. This secondary host does not process Netlify Forms. It is marked noindex and the enhanced form handler explains that submissions must use the live site or WhatsApp.
 
@@ -58,6 +61,16 @@ Search Console verification values, WhatsApp number and the confirmed map locati
 ### Measurement
 
 `assets/site.js` emits `aldahub:conversion` DOM events and, when an existing `dataLayer` is available, pushes `whatsapp_click` and `form_submit_success` events. Payloads contain only event name, page path and form name. No tracking service is added and no personal form data is sent to analytics. A WhatsApp click is interest, not a confirmed lead. Qualified leads and customer outcomes require actual follow-up records.
+
+### Search foundations and structured data
+
+`lib/structured-data.cjs` generates a linked graph with stable Organization/WebSite identifiers, factual BlogPosting metadata for articles, Service data on the four service detail pages, and BreadcrumbList data matching visible article/service breadcrumbs. The approved slogan remains in Organization data. Do not add reviews, ratings, address details, author biographies or profile links without verified information.
+
+The site provides static initial HTML, canonical URLs, robots/sitemap and proper missing-page responses. These are technical foundations, not evidence that Google has indexed the new URLs, selected every canonical or met Core Web Vitals targets. Check the published URLs in Search Console, Rich Results Test and PageSpeed Insights. Google does not require a special AI schema or `llms.txt` for generative AI search; prioritize original, useful, sourced content and check the property's Search generative AI inclusion and performance reports. See [Google's official AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide).
+
+### Interface controls
+
+UI arrows and the menu icon are inline SVG from `lib/icons.cjs`, so their shape does not depend on mobile system fonts or emoji. The WhatsApp glyph comes from Simple Icons under CC0 and is displayed with WhatsApp green. Mobile menu controls use the site's dark green and lime. Back to top appears after 400px of scrolling, restores focus to the brand link, and respects reduced-motion preferences. The floating controls account for mobile safe areas.
 
 ## Release checks
 

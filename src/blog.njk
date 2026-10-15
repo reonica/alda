@@ -18,7 +18,7 @@ permalink: "/blog/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumbe
     <p class="eyebrow">The AldaHub journal</p>
     <h1>Ideas for better marketing decisions.</h1>
     <p class="lead">Explore practical guides to understanding your audience, connecting your channels and measuring what moves your business forward.</p>
-    <a class="text-link" href="/seo-roadmap/">Learning search marketing? Explore the SEO Roadmap ↗</a>
+    <a class="text-link" href="/seo-roadmap/">Learning search marketing? Explore the SEO Roadmap {% icon "arrow-up-right" %}</a>
   </div>
 </section>
 <section class="section" aria-labelledby="articles-heading">
@@ -39,20 +39,20 @@ permalink: "/blog/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumbe
           <p class="article-meta"><time datetime="{{ post.date | dateISO }}">{{ post.date | dateDisplay }}</time> <span aria-hidden="true">·</span> {{ post.data.author or 'AldaHub' }}</p>
           <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
           <p>{{ post.data.description or post.templateContent | summary }}</p>
-          <a class="text-link" href="{{ post.url }}">Read article <span class="sr-only">— {{ post.data.title }}</span><span aria-hidden="true"> ↗</span></a>
+          <a class="text-link" href="{{ post.url }}">Read article <span class="sr-only">— {{ post.data.title }}</span><span aria-hidden="true"> {% icon "arrow-up-right" %}</span></a>
         </div>
       </article>
       {% endfor %}
     </div>
     {% if pagination.hrefs | length > 1 %}
     <nav class="pagination" aria-label="Article pages">
-      {% if pagination.href.previous %}<a class="button button-secondary" href="{{ pagination.href.previous }}" rel="prev">← Newer articles</a>{% endif %}
+      {% if pagination.href.previous %}<a class="button button-secondary" href="{{ pagination.href.previous }}" rel="prev">{% icon "arrow-left" %} Newer articles</a>{% endif %}
       <ol>
         {% for href in pagination.hrefs %}
         <li>{% if page.url == href %}<span aria-current="page" aria-label="Page {{ loop.index }}, current page">{{ loop.index }}</span>{% else %}<a href="{{ href }}" aria-label="Page {{ loop.index }}">{{ loop.index }}</a>{% endif %}</li>
         {% endfor %}
       </ol>
-      {% if pagination.href.next %}<a class="button button-secondary" href="{{ pagination.href.next }}" rel="next">Older articles →</a>{% endif %}
+      {% if pagination.href.next %}<a class="button button-secondary" href="{{ pagination.href.next }}" rel="next">Older articles {% icon "arrow-right" %}</a>{% endif %}
     </nav>
     {% endif %}
   </div>

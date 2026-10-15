@@ -3,7 +3,6 @@ layout: layouts/base.njk
 ---
 <article class="section article">
   <header class="container article-header">
-    <a class="text-link" href="/blog/">← All insights</a>
     <p class="eyebrow">Marketing insights</p>
     <h1>{{ title }}</h1>
     {% if description %}<p class="lead">{{ description }}</p>{% endif %}
@@ -11,6 +10,7 @@ layout: layouts/base.njk
       <span>By {{ author or 'AldaHub' }}</span>
       <span aria-hidden="true">·</span>
       <time datetime="{{ page.date | dateISO }}">{{ page.date | dateDisplay }}</time>
+      {% if modified %}<span aria-hidden="true">·</span><span>Updated <time datetime="{{ modified | dateISO }}">{{ modified | dateDisplay }}</time></span>{% endif %}
       <span aria-hidden="true">·</span>
       <span>{{ content | readingTime }} min read</span>
     </p>
@@ -27,7 +27,7 @@ layout: layouts/base.njk
         {% for tag in tags %}<a class="tag" href="/blog/tag/{{ tag | topicSlug }}/">{{ tag }}</a> {% endfor %}
       </p>
       {% endif %}
-      <a class="text-link" href="/blog/">← Explore more marketing insights</a>
+      <a class="text-link" href="/blog/">{% icon "arrow-left" %} Explore more marketing insights</a>
     </footer>
   </div>
 </article>

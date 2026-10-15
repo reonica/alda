@@ -108,6 +108,7 @@ function postSources() {
       title: frontMatterScalar(frontMatter[1], 'title'),
       author: frontMatterScalar(frontMatter[1], 'author'),
       description: frontMatterScalar(frontMatter[1], 'description'),
+      modified: frontMatterScalar(frontMatter[1], 'modified'),
       tags: [...(frontMatter[1].match(/^tags:\s*\r?\n((?:[ \t]+-[^\r\n]*(?:\r?\n|$))+)/m)?.[1] || '').matchAll(/^[ \t]+-\s*(.+)$/gm)].map(match => match[1].replace(/^(['"])(.*)\1$/, '$2')),
       draft: /^draft:\s*true\s*$/m.test(frontMatter[1]),
     };
@@ -123,6 +124,20 @@ function localTarget(value, fromRoute) {
   const candidate = path.join(output, relative);
   if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
   return path.join(candidate, 'index.html');
+}
+
+function configuredRedirects() {
+  const source = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
+  return source.split(/^\[\[redirects\]\]\s*$/m).slice(1).map(block => {
+    const string = key => JSON.parse(block.match(new RegExp(`^\\s*${key}\\s*=\\s*("(?:\\\\.|[^"\\\\])*")`, 'm'))?.[1] || '""');
+    const query = block.match(/^\s*query\s*=\s*\{([^}]+)\}/m)?.[1] || '';
+    return {
+      from: string('from'), to: string('to'),
+      status: Number(block.match(/^\s*status\s*=\s*(\d+)/m)?.[1] || 301),
+      force: /^\s*force\s*=\s*true\s*$/m.test(block),
+      query: Object.fromEntries([...query.matchAll(/(\w+)\s*=\s*("(?:\\.|[^"\\])*")/g)].map(match => [match[1], JSON.parse(match[2])])),
+    };
+  });
 }
 
 function assertPreviewForms(directory) {
@@ -227,6 +242,11 @@ test('sitemap contains the public journey and posts, with no drafts, utility pag
   for (const post of postSources()) {
     const url = `${origin}/blog/${post.slug}/`;
     assert.equal(urls.includes(url), !post.draft, `Sitemap visibility for ${post.slug}`);
+    const entry = [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)].find(match => match[1].includes(`<loc>${url}</loc>`))?.[1];
+    if (entry) {
+      if (post.modified) assert.ok(entry.includes(`<lastmod>${new Date(post.modified).toISOString()}</lastmod>`), `${post.slug}: real editorial update date`);
+      else assert.ok(!entry.includes('<lastmod>'), `${post.slug}: do not label the publication or build date as an update`);
+    }
   }
   for (const url of urls) {
     assert.ok(url.startsWith(`${origin}/`), `Noncanonical sitemap URL: ${url}`);
@@ -288,7 +308,7 @@ test('legacy routes redirect permanently and unknown URLs have no homepage 200 f
   const redirects = fs.readFileSync(path.join(output, '_redirects'), 'utf8').split(/\r?\n/).filter(line => line.trim() && !line.trim().startsWith('#')).map(line => {
     const parts = line.trim().split(/\s+/);
     return { from: parts[0], to: parts.at(-2), status: Number(parts.at(-1).replace('!', '')) };
-  });
+  }).concat(configuredRedirects());
   for (const redirect of redirects) {
     assert.ok(!(redirect.status === 200 && (redirect.from === '/*' || redirect.from === '/:slug')), `Soft 404 rewrite: ${JSON.stringify(redirect)}`);
   }
@@ -306,28 +326,53 @@ test('legacy routes redirect permanently and unknown URLs have no homepage 200 f
   assert.ok(fs.existsSync(path.join(output, '404.html')), 'Deployment must provide the static 404 page');
 });
 
-test('legacy pagination and tag queries use targeted forced permanent redirects', () => {
+test('legacy blog queries use decoded values without redirecting page one to itself', () => {
   const lines = fs.readFileSync(path.join(output, '_redirects'), 'utf8').split(/\r?\n/).map(line => line.trim());
+  assert.ok(!lines.some(line => /^\/blog(?:\/|\.html)?\s+(?:page|tag)=/.test(line)), 'Decoded query migrations belong in TOML, where spaces are valid values');
+  const rules = configuredRedirects();
+  const normalizePath = value => value.replace(/\/$/, '') || '/';
+  // Model the observed CDN behavior: decoded query matching, slash normalization,
+  // and forwarding the original query when the destination supplies none.
+  const resolve = route => {
+    let url = new URL(route, origin);
+    const visited = new Set();
+    for (let hops = 0; hops < 5; hops++) {
+      const identity = normalizePath(url.pathname) + url.search;
+      assert.ok(!visited.has(identity), `Redirect loop for ${route}: ${url}`);
+      visited.add(identity);
+      const match = rules.find(rule => normalizePath(rule.from) === normalizePath(url.pathname) && (!Object.keys(rule.query).length || (Object.keys(rule.query).length === [...url.searchParams].length && Object.entries(rule.query).every(([key, value]) => url.searchParams.get(key) === value))));
+      if (!match) return url;
+      assert.equal(match.status, 301, `${route}: permanent migration`);
+      if (Object.keys(match.query).length) assert.ok(match.force, `${route}: query migration overrides a real page`);
+      const next = new URL(match.to, origin);
+      if (!next.search) next.search = url.search;
+      url = next;
+    }
+    assert.fail(`Too many redirects for ${route}`);
+  };
   const published = postSources().filter(post => !post.draft);
   const pageCount = Math.ceil(published.length / 6);
   for (let number = 1; number <= pageCount; number++) {
     const destination = number === 1 ? '/blog/' : `/blog/page/${number}/`;
     for (const from of ['/blog', '/blog/', '/blog.html']) {
-      assert.ok(lines.includes(`${from} page=${number} ${destination} 301!`), `Query redirect must override the existing page and target the right page: ${from}?page=${number}`);
+      assert.equal(normalizePath(resolve(`${from}?page=${number}`).pathname), normalizePath(destination), `Legacy page ${number}: ${from}`);
     }
     assert.ok(fs.existsSync(localTarget(destination, '/')), `Pagination redirect must resolve: ${destination}`);
   }
-  const labels = new Set(published.flatMap(post => post.tags));
-  assert.ok(labels.size > 0, 'Published post topics must remain available');
-  for (const label of labels) {
-    const slug = label.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const destination = `/blog/tag/${slug}/`;
+  const tagRules = rules.filter(rule => Object.hasOwn(rule.query, 'tag'));
+  assert.ok(tagRules.some(rule => rule.query.tag === 'data analysis'), 'Multiword legacy label must match its decoded value');
+  assert.ok(tagRules.some(rule => rule.query.tag === 'cro'), 'Single-word legacy label must remain supported');
+  for (const rule of tagRules) {
+    const label = rule.query.tag;
+    assert.ok(!/%[0-9a-f]{2}/i.test(label), `TOML query values must be decoded: ${label}`);
     for (const from of ['/blog', '/blog/', '/blog.html']) {
-      const query = encodeURIComponent(label.toLowerCase());
-      assert.ok(lines.includes(`${from} tag=${query} ${destination} 301!`), `Legacy topic query must preserve its destination: ${from}?tag=${query}`);
+      for (const query of [encodeURIComponent(label), new URLSearchParams({ tag: label }).toString().slice(4)]) {
+        assert.equal(resolve(`${from}?tag=${query}`).pathname, rule.to, `Legacy topic must resolve for percent/plus encoding: ${from}?tag=${query}`);
+      }
     }
-    assert.ok(fs.existsSync(localTarget(destination, '/')), `Topic redirect must resolve: ${destination}`);
+    assert.ok(fs.existsSync(localTarget(rule.to, '/')), `Topic redirect must resolve: ${rule.to}`);
   }
+  assert.equal(resolve('/blog/?tag=data%20analysis&utm_source=test').pathname, '/blog/', 'Unrecognized query combinations stay on the listing');
 });
 
 test('preview forms have disabled submit controls and a static delivery notice', context => {

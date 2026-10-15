@@ -15,6 +15,7 @@
   <meta property="og:image" content="{{ (featured_image or '/images/alda/alda-logo.png') | absoluteUrl }}">
   <meta name="twitter:card" content="summary_large_image">
   {% if article %}<meta property="article:published_time" content="{{ date | dateISO }}">{% endif %}
+  {% if article and modified %}<meta property="article:modified_time" content="{{ modified | dateISO }}">{% endif %}
   <meta name="theme-color" content="#171917">
   <meta name="google-site-verification" content="9bHvrkrhUepII74YkTKqknmoWnGsNtwpUPhlwcsk42A">
   <meta name="google-site-verification" content="jPxWtw0kVIXkko44wgf0GKk4MknVp5H8b-afd1Q4HH0">
@@ -24,13 +25,14 @@
   {% for stylesheet in extraStyles %}<link rel="stylesheet" href="{{ stylesheet }}">{% endfor %}
   <script src="/assets/site.js" defer></script>
   {% for script in extraScripts %}<script src="{{ script }}" defer></script>{% endfor %}
-  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'Organization', 'name': site.name, 'slogan': site.slogan, 'url': site.url, 'logo': site.url + '/images/alda/alda-logo.png' } | jsonLd | safe }}</script>
+  <script type="application/ld+json">{{ { site: site, page: page, title: title, description: description, article: article, service: service, author: author, featured_image: featured_image, modified: modified } | structuredData | jsonLd | safe }}</script>
 </head>
-<body{% if site.preview or not site.netlifyForms %} data-form-preview{% endif %}>
+<body id="top"{% if site.preview or not site.netlifyForms %} data-form-preview{% endif %}>
   <a class="skip-link" href="#main">Skip to content</a>
   {% include "partials/header.njk" %}
-  <main id="main">{{ content | safe }}</main>
+  <main id="main">{% include "partials/breadcrumbs.njk" %}{{ content | safe }}</main>
   {% include "partials/footer.njk" %}
-  <a class="whatsapp-float" href="{{ site.whatsapp }}" data-whatsapp target="_blank" rel="noopener noreferrer" aria-label="Chat with AldaHub on WhatsApp"><span aria-hidden="true">↗</span> WhatsApp</a>
+  <a class="whatsapp-float" href="{{ site.whatsapp }}" data-whatsapp target="_blank" rel="noopener noreferrer" aria-label="Chat with AldaHub on WhatsApp">{% icon "whatsapp" %}<span>WhatsApp</span></a>
+  <button class="back-to-top" type="button" aria-label="Back to top" data-back-to-top hidden>{% icon "arrow-up" %}</button>
 </body>
 </html>

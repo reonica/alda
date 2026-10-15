@@ -1,0 +1,10 @@
+{% set breadcrumbs = { page: page, title: title, article: article, service: service } | breadcrumbsFor %}
+{% if breadcrumbs | length %}
+<nav class="breadcrumbs container" aria-label="Breadcrumb">
+  <ol>
+    {% for item in breadcrumbs %}
+    <li>{% if loop.last %}<span aria-current="page">{{ item.name }}</span>{% else %}<a href="{{ item.url }}">{{ item.name }}</a>{% endif %}</li>
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}
