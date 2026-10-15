@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { assetUrl } = require('./lib/assets.cjs');
 const { legacyRoutes, canonicalPath, postSlugs, topicSlug } = require('./lib/routes.cjs');
 const { breadcrumbsFor, structuredData } = require('./lib/structured-data.cjs');
 const { icon } = require('./lib/icons.cjs');
@@ -10,6 +11,7 @@ module.exports = function (config) {
   let publishedSlugs = [];
   config.on('eleventy.before', () => { publishedSlugs = postSlugs(); });
   config.setNunjucksEnvironmentOptions({ autoescape: true });
+  config.addFilter('assetUrl', assetUrl);
   for (const pattern of ['README.md', 'docs/**', 'tests/**', 'content/**', 'node_modules/**']) config.ignores.add(pattern);
   config.addPassthroughCopy('assets');
   config.addPassthroughCopy('images');
