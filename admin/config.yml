@@ -13,28 +13,19 @@ collections:
     folder: "blog"
     create: true
     slug: "{{slug}}"
+    preview_path: "blog/{{slug}}/"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Author", name: "author", widget: "string", default: "Aldahub"}
       - {label: "Description", name: "description", widget: "text"}
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true, required: false, hint: "Draft posts are excluded from the public website. Turn off when ready to publish."}
       - {label: "Tags", name: "tags", widget: "list"}
       - {label: "Body", name: "body", widget: "markdown"}
-  
-  - name: "pages"
-    label: "Pages"
-    files:
-      - label: "Homepage"
-        name: "home"
-        file: "content/home.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Description", name: "description", widget: "text"}
-          - {label: "Body", name: "body", widget: "markdown"}
 
 # Cấu hình giao diện
 locale: 'en'
-show_preview_links: false
+show_preview_links: true
 display_url: "https://aldahub.com"
-logo_url: "https://aldahub.com/images/logo.png"
+logo_url: "https://aldahub.com/images/alda/alda-logo.png"

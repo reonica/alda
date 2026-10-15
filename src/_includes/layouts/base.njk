@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title | escape }}{% if title != site.name %} | AldaHub{% endif %}</title>
+  <meta name="description" content="{{ (description or site.description) | escape }}">
+  <link rel="canonical" href="{{ page.url | absoluteUrl }}">
+  {% if noindex or site.preview %}<meta name="robots" content="noindex, follow">{% endif %}
+  <meta property="og:type" content="{% if article %}article{% else %}website{% endif %}">
+  <meta property="og:site_name" content="AldaHub">
+  <meta property="og:title" content="{{ title | escape }}">
+  <meta property="og:description" content="{{ (description or site.description) | escape }}">
+  <meta property="og:url" content="{{ page.url | absoluteUrl }}">
+  <meta property="og:image" content="{{ (featured_image or '/images/alda/alda-logo.png') | absoluteUrl }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% if article %}<meta property="article:published_time" content="{{ date | dateISO }}">{% endif %}
+  <meta name="theme-color" content="#171917">
+  <meta name="google-site-verification" content="9bHvrkrhUepII74YkTKqknmoWnGsNtwpUPhlwcsk42A">
+  <meta name="google-site-verification" content="jPxWtw0kVIXkko44wgf0GKk4MknVp5H8b-afd1Q4HH0">
+  <meta name="google-site-verification" content="2RtHjSNW15IAd84z6m7YjUxzseVmRlJqfG_TUUMmnyo">
+  <link rel="icon" type="image/png" href="/images/alda/alda-logo.png">
+  <link rel="stylesheet" href="/assets/site.css">
+  {% for stylesheet in extraStyles %}<link rel="stylesheet" href="{{ stylesheet }}">{% endfor %}
+  <script src="/assets/site.js" defer></script>
+  {% for script in extraScripts %}<script src="{{ script }}" defer></script>{% endfor %}
+  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'Organization', 'name': site.name, 'slogan': site.slogan, 'url': site.url, 'logo': site.url + '/images/alda/alda-logo.png' } | jsonLd | safe }}</script>
+</head>
+<body{% if site.preview or not site.netlifyForms %} data-form-preview{% endif %}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include "partials/header.njk" %}
+  <main id="main">{{ content | safe }}</main>
+  {% include "partials/footer.njk" %}
+  <a class="whatsapp-float" href="{{ site.whatsapp }}" data-whatsapp target="_blank" rel="noopener noreferrer" aria-label="Chat with AldaHub on WhatsApp"><span aria-hidden="true">↗</span> WhatsApp</a>
+</body>
+</html>

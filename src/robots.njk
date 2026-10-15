@@ -1,0 +1,9 @@
+---
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+---
+User-agent: *
+{% if site.preview %}Disallow: /
+{% else %}Allow: /
+Sitemap: https://aldahub.com/sitemap.xml
+{% endif %}

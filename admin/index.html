@@ -5,26 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager - Aldahub</title>
   <link rel="icon" type="image/png" href="/images/alda/alda-logo.png">
-  <!-- Identity widget styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-identity-widget@latest/build/netlify-identity-widget.css" />
+  <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
-  <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
+  <script src="https://unpkg.com/decap-cms@3.17.1/dist/decap-cms.js"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ The importance of **data-driven digital marketing** is rooted in three key facto
 
 Second, consumer expectations have evolved. Today's customers demand personalized, relevant experiences. They are more likely to engage with brands that understand their needs and speak directly to them. A generic, "one-size-fits-all" message is often seen as irrelevant and can quickly be ignored. By leveraging data, marketers can segment their audience and deliver tailored content, leading to higher engagement and conversion rates.
 
-Finally, the stakes are higher than ever. Companies that fail to use data risk wasting significant marketing budgets on ineffective campaigns. They operate in the dark, unable to measure true ROI or adapt to changing market dynamics. A study by **Alda Hub** revealed that companies leveraging data to inform their marketing decisions are six times more likely to be profitable year-over-year. This clearly illustrates that data-driven marketing is not just a competitive advantage—it's a necessity for long-term growth and survival.
+Finally, the stakes are higher than ever. Companies that fail to use data risk wasting significant marketing budgets on ineffective campaigns. They operate in the dark, unable to measure true ROI or adapt to changing market dynamics. Connecting marketing activity with business outcomes helps teams assess profitability and choose where to invest. The value of this approach should be evaluated against each business’s own baseline and results.
 
 ## II. Data-Driven Digital Marketing vs. Traditional Marketing: A Key Difference
 
