@@ -1,89 +1,21 @@
 [build]
-  publish = "./"
-  command = "echo 'Building with Netlify Includes'"
+  command = "pnpm run build"
+  publish = "_site"
 
 [build.environment]
-  NETLIFY_BUILD_USE_INCLUDES = "true"
-  
-[functions.emails]
-included_files = [
-  "./emails/**"
-]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.28.2"
 
-[context]
+# Redirects are generated from real pages and published article slugs.
+# Netlify serves _site/404.html with HTTP 404 for all unknown paths.
 
-  [context.production]
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
-    [context.production.functions]
-
-      [context.production.functions.emails]
-      included_files = [
-        "./emails/**"
-      ]
-
-  [context.main]
-
-    [context.main.functions]
-
-      [context.main.functions.emails]
-      included_files = [
-        "./emails/**"
-      ]
-
-# ========== REDIRECTS ==========
-
-# Primary domain redirects
-[[redirects]]
-  from = "https://aldahub.netlify.app/*"
-  to = "https://aldahub.com/:splat"
-  status = 301
-  force = true
-
-# Blog pagination routes - QUAN TRỌNG: đặt TRƯỚC catch-all
-[[redirects]]
-  from = "/blog"
-  to = "/blog.html"
-  status = 200
-
-[[redirects]]
-  from = "/blog/"
-  to = "/blog.html"
-  status = 200
-
-[[redirects]]
-  from = "/blog?page=:page"
-  to = "/blog.html?page=:page"
-  status = 200
-
-# Blog category and tag routes - QUAN TRỌNG: đặt TRƯỚC catch-all
-[[redirects]]
-  from = "/blog/category/:category"
-  to = "/blog.html?category=:category"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/blog/tag/:tag"
-  to = "/blog.html?tag=:tag"
-  status = 200
-  force = true
-
-# Individual blog posts - QUAN TRỌNG: đặt TRƯỚC catch-all
-[[redirects]]
-  from = "/:slug"
-  to = "/blog-post.html"
-  status = 200
-
-# Success page
-[[redirects]]
-  from = "/success"
-  to = "/success.html"
-  status = 200
-
-# Catch-all for SPA behavior - ĐẶT CUỐI CÙNG
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
-  conditions = { Method = ["GET"] }
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

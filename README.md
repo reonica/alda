@@ -1,2 +1,68 @@
-# aldahub
-Project created by Seo Nomie
+# AldaHub
+
+English marketing website for [aldahub.com](https://aldahub.com), generated with Eleventy 3 from Nunjucks and Markdown. The production host is Netlify. Vercel remains supported as a secondary preview host with forms disabled and search indexing blocked.
+
+## Development
+
+Use Node.js 22 and pnpm 10.28.2 (declared in `package.json`).
+
+```sh
+corepack enable
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+```sh
+pnpm build
+pnpm test
+```
+
+`pnpm check` runs both. The output is `_site/`; do not edit or commit generated files. Tests check real generated pages, article content, links, metadata, forms, redirects, resources and an isolated draft build.
+
+## Source layout
+
+- `src/`: pages, shared layouts/partials and global data.
+- `blog/`: the original Markdown content source. Existing filenames remain the public article slugs.
+- `assets/`: dependency-free public CSS and JavaScript.
+- `images/`: existing media, retaining CMS upload paths.
+- `admin/`: Decap CMS; Netlify Identity/Git Gateway are only loaded in the admin area.
+- `content/case-studies/`: internal drafts; deliberately excluded from the public build.
+- `lib/routes.cjs`: explicit legacy URL migration. `_redirects` is generated during build.
+
+The input directory is the repository root so the existing CMS `blog/` workflow stays intact. Only `.njk` and `.md` are templates; documentation, tests, internal content and dependencies are ignored. New public pages belong in `src/` with an explicit permalink and the shared layout.
+
+## Writing and publishing
+
+Create or edit Markdown in `blog/`, or use `/admin/` on the production site. Supply title, date, author, description, an optional featured image and tags. New CMS entries default to `draft: true`. Set `draft: false` only when ready to publish. Drafts are excluded from pages, listings, tag archives, sitemap and legacy redirects. All public content, navigation and footer are rendered during deployment; no browser GitHub API calls are needed.
+
+Do not add invented client identities, testimonials, figures or study findings. Anonymous case studies still require a real project, evidence and permission. Demonstrations must be labeled as illustrative. The secondary hero CTA is “See Our Approach” until verified case studies are available.
+
+## Deployment
+
+Netlify reads `netlify.toml`: Node 22, `pnpm run build`, publish `_site`. A connected Git repository can rebuild automatically when its configured production branch changes; a Git push alone does not configure that connection. Preview branches/PRs depend on the hosting account’s deploy settings.
+
+The previous catch-all rewrites were removed. Netlify serves generated `404.html` with HTTP 404 for missing paths. Existing page and article URLs have explicit 301 mappings; canonical URLs use HTTPS, no www and trailing slashes. Legacy article slugs move to `/blog/<slug>/`. Legacy pagination and known tag query redirects are generated, including forced query rules so real files do not shadow them. Tag pages and pagination have complete static HTML and distinct metadata. Unknown tag/category paths return 404. Query combinations that were never valid content URLs are not blanket-rewritten into articles.
+
+On Vercel, `vercel.json` selects `_site`. This secondary host does not process Netlify Forms. It is marked noindex and the enhanced form handler explains that submissions must use the live site or WhatsApp.
+
+### Forms
+
+Audit, contact and newsletter forms are present in static HTML for Netlify detection, with distinct form names and success URLs. Enable form detection in the existing Netlify project if it is disabled; this account setting cannot be confirmed from repository code. Submissions appear in Netlify Forms. Configure any desired email notifications in the Netlify dashboard; no recipient or email-delivery service is invented in this repo.
+
+On production Netlify builds, native POST works without JavaScript. Enhanced submissions only navigate after an HTTP-successful response; network/server errors leave an accessible retry message. Local and hosted previews do not send via the enhanced handler. During QA, do not submit test enquiries to production without an explicit request.
+
+Search Console verification values, WhatsApp number and the confirmed map location were retained. Public-page ad scripts, remote fonts, sliders, icon libraries, jQuery, Bootstrap alpha, runtime Markdown parsing and client-side include loading were removed. The administrative CMS script is pinned and confined to `/admin/`.
+
+### Measurement
+
+`assets/site.js` emits `aldahub:conversion` DOM events and, when an existing `dataLayer` is available, pushes `whatsapp_click` and `form_submit_success` events. Payloads contain only event name, page path and form name. No tracking service is added and no personal form data is sent to analytics. A WhatsApp click is interest, not a confirmed lead. Qualified leads and customer outcomes require actual follow-up records.
+
+## Release checks
+
+1. Run `pnpm check`.
+2. Review Home, services, article, audit/contact and roadmap at desktop/mobile widths.
+3. On a Netlify deploy, check a legacy article/page returns 301 and a nonexistent URL returns HTTP 404.
+4. Confirm Netlify detects `audit`, `contact` and `newsletter`. Verify receipt separately from email notification delivery.
+5. Confirm CMS sign-in/publishing with an authorized account. This cannot be established by a static build.
+
+Existing third-party claims inside historical articles still need editorial source review; migration preserves the articles while removing identified unsupported first-party study/results claims. The public site does not show the previous unverified testimonials, achievement counters or portfolio results.
