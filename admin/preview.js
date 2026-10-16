@@ -15,6 +15,7 @@
   const frame = (...children) => h('div', { className: 'cms-preview' }, notice(), ...children);
 
   CMS.registerPreviewStyle('/admin/preview.css');
+  CMS.registerPreviewStyle('/assets/article-content.css');
   CMS.registerPreviewTemplate('blog', component(props => {
     const data = dataOf(props);
     let date = '';

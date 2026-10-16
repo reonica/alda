@@ -28,6 +28,7 @@ pnpm test
 - `assets/`: dependency-free public CSS and JavaScript.
 - `images/`: existing media, retaining CMS upload paths.
 - `admin/`: Decap CMS; Netlify Identity/Git Gateway are only loaded in the admin area.
+- `cms/`: source for the rich-text article widget. Eleventy bundles its pinned dependencies into `_site/admin/editor.js` and `editor.css`; generated bundles are not committed.
 - `src/_data/{settings,navigation,footer,home,auditCta}.json`: content modules editable through CMS; templates retain layout, forms and routing.
 - `content/case-studies/`: internal drafts; deliberately excluded from the public build.
 - `lib/routes.cjs`: generated page/article and encoded topic-path migrations in `_redirects`.
@@ -46,6 +47,10 @@ Saving in CMS commits to the existing `main` branch and starts a Netlify build. 
 Module content is plain text and clean internal links. Build validation rejects unsafe links and links to pages that are not published; a failed Netlify build keeps the previously successful site live. Form backend identities, canonical origin and executable templates are not editable in CMS. The admin area uses no-cache headers so configuration changes are revalidated after deployment.
 
 The optional `modified` field records a real, substantial editorial update. It is shown in the article and shared by `BlogPosting.dateModified` and sitemap `lastmod`. Leave it empty when unknown; publishing or rebuilding a site must not fabricate an update date.
+
+The article body uses a self-hosted SunEditor 3.3.3 widget with alignment, text/highlight colors, headings, font size, lists, tables, links, code blocks and undo/redo. Use **Thư viện ảnh** to insert images through the existing CMS media store. **Hộp mã** inserts visible code; **Mã nguồn** edits Markdown with supported HTML and requires Apply or Cancel before saving. See [toolbar guide](docs/editor-toolbar.md).
+
+Files remain Markdown. Ordinary content is serialized as readable Markdown; styles that Markdown cannot express are retained as sanitized HTML fragments. `lib/article-content.cjs` provides one Markdown/render/sanitization policy for CMS preview and deployment. Merely opening an existing article does not rewrite it. The 14 existing article sources remain unchanged by this upgrade. The editor bundle is confined to admin; public articles load static HTML and a small local stylesheet.
 
 Do not add invented client identities, testimonials, figures or study findings. Anonymous case studies still require a real project, evidence and permission. Demonstrations must be labeled as illustrative. The secondary hero CTA is “See Our Approach” until verified case studies are available.
 

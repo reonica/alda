@@ -30,7 +30,7 @@ function pageAt(directory, route) {
 
 function makeFixture() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aldahub-cms-test-'));
-  for (const name of ['package.json', 'eleventy.config.js', 'scripts', 'lib', 'src', 'blog']) {
+  for (const name of ['package.json', 'eleventy.config.js', 'scripts', 'lib', 'src', 'blog', 'cms']) {
     fs.cpSync(path.join(root, name), path.join(directory, name), { recursive: true });
   }
   for (const name of ['assets', 'images', 'admin', 'uploads', 'node_modules']) {
@@ -76,7 +76,7 @@ test('CMS manages existing Markdown safely and exposes the five data files used 
   assert.equal(fields.get('draft').default, true, 'New entries remain private until the editor publishes them');
   assert.equal(fields.get('modified').required, false);
   assert.equal(fields.get('modified').default, '', 'An edit must not fabricate a substantial update date');
-  assert.equal(fields.get('body').widget, 'markdown');
+  assert.equal(fields.get('body').widget, 'alda-richtext');
   assert.equal(fields.get('featured_image_alt').required, false, 'Existing posts without image alt can still be edited');
   assert.equal(fields.get('tags').widget, 'list');
   assert.ok(!fields.get('tags').fields, 'Topic labels must stay a list of strings');

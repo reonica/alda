@@ -99,8 +99,8 @@ collections:
         hint: Nhập các chủ đề, phân cách bằng dấu phẩy; giữ tên ngắn gọn và nhất quán.
       - label: Nội dung bài viết
         name: body
-        widget: markdown
-        hint: Tiêu đề bài đã là H1. Dùng H2/H3 cho các phần bên trong; không chèn script hoặc HTML.
+        widget: alda-richtext
+        hint: Tiêu đề bài đã là H1. Dùng H2/H3 cho các phần bên trong; căn lề, màu chữ và khối code được giữ khi xuất bản.
   - name: website
     label: Nội dung website
     description: >-

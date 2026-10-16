@@ -3,7 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "description": "AldaHub marketing website, built from Markdown with Eleventy",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "packageManager": "pnpm@10.28.2",
   "scripts": {
     "dev": "node scripts/build.cjs --serve",
@@ -11,5 +13,13 @@
     "test": "node --test tests/*.test.cjs",
     "check": "pnpm run build && pnpm run test"
   },
-  "devDependencies": { "@11ty/eleventy": "3.1.6" }
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.6",
+    "esbuild": "0.28.2",
+    "markdown-it": "15.0.3",
+    "sanitize-html": "2.18.1",
+    "suneditor": "3.3.3",
+    "turndown": "7.2.4",
+    "turndown-plugin-gfm": "1.0.2"
+  }
 }
