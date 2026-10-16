@@ -5,21 +5,25 @@ const { validateCmsSettings, validateCmsTargets, navActive } = require('./lib/cm
 const { legacyRoutes, canonicalPath, postSlugs, topicSlug } = require('./lib/routes.cjs');
 const { breadcrumbsFor, structuredData } = require('./lib/structured-data.cjs');
 const { icon } = require('./lib/icons.cjs');
+const { createMarkdownLibrary } = require('./lib/article-content.cjs');
+const { buildEditor } = require('./scripts/build-editor.cjs');
 
 module.exports = function (config) {
   config.addNunjucksShortcode('icon', icon);
   let topics = [];
   let publishedSlugs = [];
   config.on('eleventy.before', () => { validateCmsSettings(__dirname); publishedSlugs = postSlugs(); });
+  config.on('eleventy.before', async ({ dir }) => { await buildEditor(path.resolve(dir.output)); });
   config.setNunjucksEnvironmentOptions({ autoescape: true });
   config.addFilter('assetUrl', assetUrl);
   config.addFilter('navActive', navActive);
-  for (const pattern of ['README.md', 'docs/**', 'tests/**', 'content/**', 'node_modules/**']) config.ignores.add(pattern);
+  for (const pattern of ['README.md', 'docs/**', 'tests/**', 'content/**', 'cms/**', 'node_modules/**']) config.ignores.add(pattern);
   config.addPassthroughCopy('assets');
   config.addPassthroughCopy('images');
   config.addPassthroughCopy('admin');
   config.addPassthroughCopy('uploads');
   config.addWatchTarget('blog');
+  config.addWatchTarget('cms');
   config.addCollection('posts', collection => collection.getFilteredByGlob('./blog/*.md').filter(post => post.data.draft !== true).sort((a, b) => b.date - a.date));
   config.addCollection('topics', collection => {
     const groups = new Map();
@@ -44,7 +48,7 @@ module.exports = function (config) {
   config.addFilter('summary', (value, length = 160) => String(value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, length));
   config.addFilter('jsonLd', value => JSON.stringify(value).replace(/</g, '\\u003c'));
   config.addFilter('xmlEscape', value => String(value).replace(/[<>&"']/g, char => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' })[char]));
-  config.amendLibrary('md', md => md.set({ html: false }));
+  config.setLibrary('md', createMarkdownLibrary());
   config.addTransform('canonical-internal-links', function (html) {
     if (typeof this.page.outputPath !== 'string' || !this.page.outputPath.endsWith('.html')) return html;
     return html.replace(/href="((?:https:\/\/aldahub\.com)?\/[^"\s]*)"/g, (match, href) => {

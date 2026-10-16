@@ -1,0 +1,129 @@
+/* Shared article formatting for the public website and the CMS preview. */
+:is(.prose, .preview-prose) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:is(.prose, .preview-prose) :is(h2, h3, h4, h5, h6) {
+  color: inherit;
+  line-height: 1.3;
+  scroll-margin-top: 100px;
+}
+
+:is(.prose, .preview-prose) :is(ul, ol) {
+  padding-left: 1.7em;
+}
+
+:is(.prose, .preview-prose) li + li {
+  margin-top: .35em;
+}
+
+:is(.prose, .preview-prose) :is(code, pre, kbd) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+:is(.prose, .preview-prose) :not(pre) > code {
+  padding: .15em .35em;
+  border-radius: 4px;
+  background: #e8ebdf;
+  color: #273323;
+  font-size: .88em;
+}
+
+:is(.prose, .preview-prose) pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 20px;
+  border: 1px solid #cdd3c5;
+  border-radius: 6px;
+  background: #f0f2e9;
+  color: #191c18;
+  font-size: .85em;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+
+:is(.prose, .preview-prose) pre code {
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+:is(.prose, .preview-prose) table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin-block: 24px;
+  border-collapse: collapse;
+  font-size: .9em;
+}
+
+:is(.prose, .preview-prose) :is(th, td) {
+  min-width: 90px;
+  padding: 10px 12px;
+  border: 1px solid #cdd3c5;
+  vertical-align: top;
+  text-align: left;
+}
+
+:is(.prose, .preview-prose) th {
+  background: #e8ebdf;
+  font-weight: 700;
+}
+
+:is(.prose, .preview-prose) caption {
+  padding: 8px;
+  color: #555b50;
+  font-size: .9em;
+  text-align: left;
+}
+
+:is(.prose, .preview-prose) :is(img, figure) {
+  max-width: 100%;
+}
+
+:is(.prose, .preview-prose) img {
+  height: auto;
+}
+
+:is(.prose, .preview-prose) figure {
+  margin: 24px 0;
+}
+
+:is(.prose, .preview-prose) figcaption {
+  margin-top: 10px;
+  color: #555b50;
+  font-size: .85em;
+  text-align: center;
+}
+
+:is(.prose, .preview-prose) .__se__float-center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+:is(.prose, .preview-prose) .__se__float-left {
+  margin-right: auto;
+  text-align: left;
+}
+
+:is(.prose, .preview-prose) .__se__float-right {
+  margin-left: auto;
+  text-align: right;
+}
+
+:is(.prose, .preview-prose) hr {
+  margin-block: 32px;
+  border: 0;
+  border-top: 1px solid #cdd3c5;
+}
+
+@media (max-width: 600px) {
+  :is(.prose, .preview-prose) pre { padding: 14px; font-size: .8em; }
+  :is(.prose, .preview-prose) :is(th, td) { padding: 8px; }
+}

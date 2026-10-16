@@ -1,0 +1,160 @@
+.alda-richtext {
+  --alda-editor-ink: #191c18;
+  --alda-editor-paper: #fffdf7;
+  --alda-editor-line: #d9ddd1;
+  --alda-editor-lime: #d3ed84;
+  min-width: 0;
+  overflow: visible;
+  color: var(--alda-editor-ink);
+  background: var(--alda-editor-paper);
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 8px;
+}
+.alda-richtext-actions,
+.alda-richtext-source-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+}
+.alda-richtext-mode {
+  flex: 1 1 160px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.alda-richtext .alda-editor-action {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 5px;
+  background: white;
+  color: var(--alda-editor-ink);
+  -webkit-text-fill-color: currentColor;
+  font: 600 13px/1.3 Arial, sans-serif;
+  cursor: pointer;
+}
+.alda-richtext .alda-editor-action:hover,
+.alda-richtext .alda-editor-primary {
+  background: var(--alda-editor-lime);
+}
+.alda-richtext .alda-editor-action:focus-visible {
+  outline: 2px solid var(--alda-editor-ink);
+  outline-offset: 2px;
+}
+.alda-richtext .alda-editor-action:disabled {
+  opacity: .55;
+  cursor: default;
+}
+.alda-richtext-image-form {
+  display: grid;
+  gap: 8px;
+  margin: 0 12px 12px;
+  padding: 12px;
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 6px;
+  background: #f3f5ed;
+}
+.alda-richtext-image-path {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #596052;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.alda-richtext-image-form label {
+  font: 600 13px/1.5 Arial, sans-serif;
+}
+.alda-richtext-image-form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 5px;
+  color: var(--alda-editor-ink);
+  background: white;
+  font: 14px/1.5 Arial, sans-serif;
+}
+.alda-richtext-image-form .alda-richtext-help,
+.alda-richtext-image-form .alda-richtext-source-actions {
+  padding: 0;
+}
+.alda-richtext-help {
+  margin: 0;
+  padding: 0 12px 12px;
+  color: #596052;
+  font: 13px/1.5 Arial, sans-serif;
+}
+.alda-richtext-editor[hidden] {
+  display: none;
+}
+.alda-richtext .sun-editor {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--alda-editor-line);
+  font-family: Arial, sans-serif;
+}
+.alda-richtext .sun-editor .se-toolbar {
+  outline: none;
+  border-color: var(--alda-editor-line);
+  background: #f3f5ed;
+}
+.alda-richtext .sun-editor .se-btn-tray {
+  padding: 5px;
+}
+.alda-richtext .sun-editor button {
+  color: var(--alda-editor-ink);
+  -webkit-text-fill-color: currentColor;
+}
+.alda-richtext .sun-editor button.active {
+  background: var(--alda-editor-lime);
+}
+.alda-richtext .sun-editor-editable {
+  min-height: 360px;
+  padding: 20px;
+  color: var(--alda-editor-ink);
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.alda-richtext .sun-editor-editable img {
+  max-width: 100%;
+}
+.alda-richtext .sun-editor-editable pre {
+  overflow-x: auto;
+  padding: 16px;
+  background: #f1f3ec;
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.alda-richtext-source textarea {
+  box-sizing: border-box;
+  display: block;
+  width: calc(100% - 24px);
+  min-height: 360px;
+  margin: 0 12px;
+  padding: 14px;
+  resize: vertical;
+  border: 1px solid var(--alda-editor-line);
+  border-radius: 5px;
+  color: var(--alda-editor-ink);
+  background: white;
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace;
+  tab-size: 2;
+}
+.alda-richtext-status {
+  min-height: 18px;
+  margin: 0;
+  padding: 0 12px 10px;
+  color: #596052;
+  font: 12px/1.5 Arial, sans-serif;
+}
+@media (max-width: 600px) {
+  .alda-richtext .sun-editor-editable { padding: 14px; }
+  .alda-richtext-actions { gap: 6px; }
+  .alda-richtext .sun-editor .se-btn-tray { padding: 3px; }
+}

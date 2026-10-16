@@ -393,7 +393,7 @@ test('SEO roadmap preserves 724 usable outbound resources in static HTML', () =>
 test('repeat builds remove published posts changed to draft or deleted, and preview forms work without JavaScript', { timeout: 45000 }, () => {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'aldahub-draft-test-'));
   try {
-    for (const entry of ['package.json', 'eleventy.config.js', 'scripts', 'lib', 'src', 'blog']) {
+    for (const entry of ['package.json', 'eleventy.config.js', 'scripts', 'lib', 'src', 'blog', 'cms']) {
       const source = path.join(root, entry);
       if (fs.existsSync(source)) fs.cpSync(source, path.join(temporary, entry), { recursive: true });
     }

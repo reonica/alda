@@ -6,7 +6,7 @@ Truy cập https://aldahub.com/admin/ sau khi bản nâng cấp CMS đã đượ
 
 1. Chọn **Bài viết → Tạo bài thuộc loại Bài viết**.
 2. Điền tiêu đề, ngày, tác giả và mô tả SEO. Chọn ảnh đại diện trong thư viện và thêm mô tả alt khi ảnh mang thông tin có ý nghĩa.
-3. Soạn nội dung bằng trình soạn Markdown; dùng H2/H3 cho các mục vì tiêu đề bài đã là H1. Thêm chủ đề bằng danh sách tags.
+3. Soạn nội dung bằng toolbar văn bản định dạng; dùng H2/H3 cho các mục vì tiêu đề bài đã là H1. Có thể căn lề, đổi màu, tạo bảng và chèn hộp code. Thêm chủ đề bằng danh sách tags. Xem [hướng dẫn toolbar](editor-toolbar.md).
 4. Giữ **Bản nháp — chưa công khai** bật khi đang viết. Xem trước ở khung bên phải; trên màn hình hẹp dùng nút bật/tắt preview.
 5. Lưu để giữ bản nháp. Khi đã sẵn sàng, tắt **Bản nháp** rồi lưu/xuất bản. Netlify cần build thành công trước khi bài xuất hiện trên website.
 

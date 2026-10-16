@@ -69,6 +69,7 @@
     loginPanel.setAttribute('aria-busy', 'true');
     setStatus('Đang tải trình biên tập…');
     try {
+      await loadScript('/admin/editor.js');
       await loadScript('/admin/preview.js');
       // No config override: git-gateway, accounts, permissions and main remain in config.yml.
       window.CMS.init();
