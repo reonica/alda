@@ -58,7 +58,8 @@
 .roadmap .roadmap-content { min-width: 0; }
 .roadmap .roadmap-section { margin: 0 0 1.5rem; overflow: clip; border: 1px solid var(--roadmap-border); border-radius: 1rem; background: var(--roadmap-surface); scroll-margin-top: 7rem; }
 .roadmap .roadmap-section-summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.3rem; list-style: none; cursor: pointer; }
-.roadmap .roadmap-section-summary h2 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.35; }
+.roadmap .roadmap-section-summary h2 { flex: 1; margin: 0; font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.35; }
+.roadmap .roadmap-section-meta { flex-shrink: 0; color: var(--roadmap-muted); font-size: .75rem; }
 .roadmap .roadmap-section-summary::after,
 .roadmap .topic-summary::after { content: "+"; flex-shrink: 0; width: 1.4rem; color: var(--roadmap-accent); font-size: 1.4rem; font-weight: 400; text-align: center; }
 .roadmap .roadmap-section[open] > .roadmap-section-summary::after,
@@ -82,6 +83,7 @@
 .roadmap .resource-item { display: grid; gap: .55rem; padding: 1rem; border-radius: .5rem; background: var(--roadmap-soft); overflow-wrap: anywhere; }
 .roadmap .resource-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }
 .roadmap .resource-title { font-size: .9rem; font-weight: 700; line-height: 1.5; }
+.roadmap .resource-description { margin: 0; color: var(--roadmap-muted); font-size: .85rem; line-height: 1.6; }
 .roadmap .resource-badges { display: flex; flex-wrap: wrap; gap: .4rem; }
 .roadmap .resource-link { color: #34582a; font-size: .8rem; line-height: 1.6; text-decoration: underline; text-underline-offset: .2em; overflow-wrap: anywhere; }
 .roadmap .resource-link:hover { color: #1c3714; }
