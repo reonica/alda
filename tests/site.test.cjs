@@ -381,13 +381,20 @@ test('preview forms have disabled submit controls and a static delivery notice',
   assertPreviewForms(output);
 });
 
-test('SEO roadmap preserves 724 usable outbound resources in static HTML', () => {
+test('SEO roadmap includes 725 crawlable resources and the Google link guide in technical fundamentals', () => {
   const html = htmlAt('/seo-roadmap/');
   const section = html.match(/<section\b[^>]*aria-label="SEO resource library"[^>]*>([\s\S]*?)<\/section\s*>/i)?.[1];
   assert.ok(section, 'The resource library must be an accessible section');
   const resources = [...section.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gi)].filter(link => /^https?:\/\//.test(attributes(link[0].match(/^<a\b[^>]*>/i)[0]).href || ''));
-  assert.equal(resources.length, 724, 'All original roadmap resources must be available without JavaScript');
+  assert.equal(resources.length, 725, 'All original resources plus the Google guide must be available without JavaScript');
   for (const resource of resources) assert.ok(text(resource[1]), 'Each resource link needs a visible accessible label');
+  const technical = section.match(/<details\b[^>]*id="seo-fundamentals-5-technical-optimization"[^>]*>([\s\S]*?)<\/details>/)?.[1];
+  assert.ok(technical?.includes('href="https://developers.google.com/search/docs/crawling-indexing/links-crawlable"'));
+  assert.ok(technical.includes('Google Search Central') && technical.includes('10 resources'));
+  assert.equal(tags(section, 'details').filter(tag => tag.name === 'roadmap-paths').length, 8);
+  assert.equal(tags(section, 'details').filter(tag => tag.name === 'roadmap-topics').length, 101);
+  assert.ok(tags(section, 'details').every(tag => !Object.hasOwn(tag, 'open')), 'The library starts collapsed');
+  assert.ok(!section.includes('data-roadmap-expand'), 'Bulk expansion would conflict with focused browsing');
 });
 
 test('repeat builds remove published posts changed to draft or deleted, and preview forms work without JavaScript', { timeout: 45000 }, () => {

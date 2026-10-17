@@ -22,15 +22,40 @@
     }));
     return { topic, section, resources };
   });
-  let beforeFilter = null;
+  const setOpen = (element, open) => { if (element.open !== open) element.open = open; };
+
+  function syncSelection() {
+    const current = topics.find((topic) => topic.open && !topic.hidden && topic.closest('.roadmap-section').open);
+    jump.value = current?.id || '';
+    links.forEach((link) => {
+      if (link.dataset.roadmapTarget === current?.id) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  function openSection(selected) {
+    sections.forEach((section) => {
+      setOpen(section, section === selected);
+      if (section !== selected) section.querySelectorAll('.topic-card').forEach((topic) => setOpen(topic, false));
+    });
+    sidebarGroups.forEach((group) => setOpen(group, group.dataset.section === selected.id));
+    syncSelection();
+  }
+
+  function openTopic(selected) {
+    openSection(selected.closest('.roadmap-section'));
+    topics.forEach((topic) => setOpen(topic, topic === selected));
+    syncSelection();
+  }
+
+  function collapseAll() {
+    [...sections, ...topics, ...sidebarGroups].forEach((element) => setOpen(element, false));
+    syncSelection();
+  }
 
   function applyFilter() {
     const terms = normalize(search.value).split(' ').filter(Boolean);
     const filtering = terms.length > 0 || pathSelect.value !== '';
-    if (filtering && !beforeFilter) {
-      beforeFilter = new Map([...sections, ...topics].map((element) => [element, element.open]));
-    }
-
     let topicCount = 0;
     let resourceCount = 0;
     index.forEach(({ topic, section, resources }) => {
@@ -45,15 +70,17 @@
       if (matches) {
         topicCount += 1;
         resourceCount += matches;
-        if (terms.length) topic.open = true;
       }
+      if (topic.hidden) setOpen(topic, false);
       const metadata = topic.querySelector('.topic-meta');
       metadata.textContent = filtering ? `${matches} of ${resources.length} resources` : `${resources.length} resources`;
     });
 
     sections.forEach((section) => {
-      section.hidden = ![...section.querySelectorAll('.topic-card')].some((topic) => !topic.hidden);
-      if (filtering && !section.hidden) section.open = true;
+      const visibleTopics = [...section.querySelectorAll('.topic-card')].filter((topic) => !topic.hidden);
+      section.hidden = visibleTopics.length === 0;
+      if (section.hidden) setOpen(section, false);
+      section.querySelector('.roadmap-section-meta').textContent = `${visibleTopics.length} ${visibleTopics.length === 1 ? 'topic' : 'topics'}`;
     });
     links.forEach((link) => {
       const topic = document.getElementById(link.dataset.roadmapTarget);
@@ -61,17 +88,21 @@
     });
     sidebarGroups.forEach((group) => {
       group.hidden = ![...group.querySelectorAll('li')].some((item) => !item.hidden);
-      if (filtering && !group.hidden) group.open = true;
+      if (group.hidden) setOpen(group, false);
     });
     [...jump.options].forEach((option) => {
       if (option.value) option.disabled = document.getElementById(option.value).hidden;
     });
     if (jump.value && document.getElementById(jump.value).hidden) jump.value = '';
 
-    if (!filtering && beforeFilter) {
-      beforeFilter.forEach((open, element) => { element.open = open; });
-      beforeFilter = null;
+    // Search narrows the library without expanding every matching resource list.
+    if (filtering && topicCount === 1) {
+      openTopic(topics.find((topic) => !topic.hidden));
+    } else if (filtering && !sections.some((section) => section.open && !section.hidden)) {
+      const firstMatch = sections.find((section) => !section.hidden);
+      if (firstMatch) openSection(firstMatch);
     }
+    syncSelection();
     count.textContent = `${topicCount} ${topicCount === 1 ? 'topic' : 'topics'} · ${resourceCount} ${resourceCount === 1 ? 'resource' : 'resources'}${filtering ? ' matched' : ''}`;
     empty.hidden = topicCount !== 0;
   }
@@ -84,13 +115,7 @@
       pathSelect.value = '';
       applyFilter();
     }
-    topic.closest('.roadmap-section').open = true;
-    topic.open = true;
-    jump.value = id;
-    links.forEach((link) => {
-      if (link.dataset.roadmapTarget === id) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
+    openTopic(topic);
     if (updateHash && window.location.hash !== `#${id}`) {
       window.history.pushState(null, '', `#${id}`);
     }
@@ -108,11 +133,26 @@
     try { id = decodeURIComponent(window.location.hash.slice(1)); }
     catch { return; }
     if (id) revealTopic(id, false, scroll);
-    else {
-      jump.value = '';
-      links.forEach((link) => link.removeAttribute('aria-current'));
-    }
+    else collapseAll();
   }
+
+  // Native details grouping also works without JavaScript in supporting browsers.
+  // These listeners cover older browsers and browser-driven disclosure changes.
+  sections.forEach((section) => section.addEventListener('toggle', () => {
+    if (section.open && !section.hidden) openSection(section);
+    else {
+      section.querySelectorAll('.topic-card').forEach((topic) => setOpen(topic, false));
+      sidebarGroups.filter((group) => group.dataset.section === section.id).forEach((group) => setOpen(group, false));
+      syncSelection();
+    }
+  }));
+  topics.forEach((topic) => topic.addEventListener('toggle', () => {
+    if (topic.open && !topic.hidden) openTopic(topic);
+    else syncSelection();
+  }));
+  sidebarGroups.forEach((group) => group.addEventListener('toggle', () => {
+    if (group.open) sidebarGroups.filter((other) => other !== group).forEach((other) => setOpen(other, false));
+  }));
 
   search.addEventListener('input', applyFilter);
   pathSelect.addEventListener('change', applyFilter);
@@ -124,12 +164,7 @@
       revealTopic(link.dataset.roadmapTarget);
     });
   });
-  roadmap.querySelector('[data-roadmap-expand]').addEventListener('click', () => {
-    [...sections, ...topics].forEach((element) => { if (!element.hidden) element.open = true; });
-  });
-  roadmap.querySelector('[data-roadmap-collapse]').addEventListener('click', () => {
-    [...sections, ...topics].forEach((element) => { element.open = false; });
-  });
+  roadmap.querySelector('[data-roadmap-collapse]').addEventListener('click', collapseAll);
   roadmap.querySelector('[data-roadmap-reset]').addEventListener('click', () => {
     search.value = '';
     pathSelect.value = '';
@@ -138,7 +173,6 @@
     search.focus();
   });
   window.addEventListener('hashchange', () => revealHash());
-  window.addEventListener('popstate', () => revealHash());
 
   applyFilter();
   roadmap.querySelector('[data-roadmap-controls]').hidden = false;
